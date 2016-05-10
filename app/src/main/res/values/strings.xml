@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Pop Movies</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="content_authority">com.example.android.popularmovies</string>
+    <string name="account_type">popularmovies.example.com</string>
+    <!-- for storing values in shared preferences -->
+    <string name="pref_sort_label">Sort By</string>
+    <string name="pref_sort_key">sort_by</string>
+    <string name="pref_fragment_reset_key">orientation</string>
+    <!-- for storing values in bundle during orientation changes -->
+    <string name="reviews_data">reviews_data</string>
+    <string name="selected_position">selected_position</string>
+    <string name="default_sort">popular</string>
+    <string name="details_reset">yes</string>
+    <string name="no_details_reset">no</string>
+    <string name="default_title">Title</string>
+    <string name="default_rating">%1$s/10</string>
+    <string name="default_release_date">2016</string>
+    <string name="trailers_header">Trailers:</string>
+    <string name="reviews_header">Read Reviews</string>
+    <string name="review_author">Review by %1$s</string>
+    <string name="default_synopsis">Movie Overview not available</string>
+    <string name="network_not_available">NO NETWORK</string>
+    <string name="empty_list">   Network unavailable. \n Please check your network connection and try again. </string>
+    <string name="watch_trailer"> Watch the trailer http://youtube.com/watch?v=%1$s  for the movie  \"%2$s\" </string>
+    <string name="trailers_empty">No trailers </string>
+    <string name="reviews_empty">No reviews for this movie</string>
+    <string name="favorite_movie">Saved as favorite</string>
+    <string name="not_favorite_movie">"Not favorite anymore"</string>
+    <string name="base_url">"http://api.themoviedb.org/3/movie/"</string>
+    <string name="base_poster_path">"http://image.tmdb.org/t/p/w185//"</string>
+    <string name="query_param">sort_by</string>
+    <string name="api_key">api_key</string>
+    <string name="title_activity_detail">MovieDetail</string>
+    <string name="delimiter">-</string>
+    <string-array name="sort_entries">
+        <item>By Most Popular</item>
+        <item>By Highest-Rated</item>
+        <item>Favorites</item>
+    </string-array>
+    <string-array name="sort_values">
+        <item>popular</item>
+        <item>top_rated</item>
+        <item>favorites</item>
+    </string-array>
+    <string name="most_popular_sort_order">most_popular</string>
+    <string name="highly_rated_sort_order">highly_rated</string>
+    <string name="favorite_text">FAVORITE</string>
+</resources>
