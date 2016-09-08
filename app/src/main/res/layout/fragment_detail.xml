@@ -19,7 +19,7 @@
             android:background="@color/colorBackgd"
             android:padding="@dimen/activity_horizontal_margin"
             android:textColor="@android:color/white"
-            android:textSize="32sp"
+            android:textSize="28sp"
             tools:text="@string/default_title" />
 
         <LinearLayout

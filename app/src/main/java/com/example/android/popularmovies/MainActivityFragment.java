@@ -19,14 +19,10 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.android.popularmovies.sync.MovieSyncAdapter;
 import com.example.android.popularmovies.adapters.MovieDetailAdapter;
 import com.example.android.popularmovies.database.MovieContract;
-import com.example.android.popularmovies.sync.MovieSyncAdapter;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MOVIES_LOADER = 0;
