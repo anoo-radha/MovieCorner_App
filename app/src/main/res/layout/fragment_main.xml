@@ -8,11 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:horizontalSpacing="2dp"
+        android:horizontalSpacing="5dp"
         android:numColumns="auto_fit"
         android:columnWidth="150dp"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="2dp"
+        android:verticalSpacing="5dp"
         tools:context="com.example.android.popularmovies.MainActivityFragment"
         tools:showIn="@layout/activity_main"/>
 
