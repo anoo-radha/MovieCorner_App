@@ -48,4 +48,8 @@
     <string name="most_popular_sort_order">most_popular</string>
     <string name="highly_rated_sort_order">highly_rated</string>
     <string name="favorite_text">FAVORITE</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
