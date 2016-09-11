@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,10 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.android.popularmovies.sync.MovieSyncAdapter;
+
 import com.example.android.popularmovies.adapters.MovieDetailAdapter;
 import com.example.android.popularmovies.database.MovieContract;
+import com.example.android.popularmovies.sync.MovieSyncAdapter;
 
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -86,7 +88,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     /* Get the list of movies according to sort order every time this activity starts */
     void onOptionChanged() {
         String sortOrder = sharedPref.getString(getString(R.string.pref_sort_key), getString(R.string.default_sort));
-        if (sortOrder.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[2])) {
+        if (sortOrder.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
             mNoNetworkView.setVisibility(View.GONE);
         } else {
             updateMovieList();
@@ -98,6 +100,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
      * then synchronous call for API is called
      */
     private void updateMovieList() {
+        Log.i("MainActivityFragment","in updateMovieList");
         ConnectivityManager connMgr = (ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -116,14 +119,24 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String sortBy = Utility.getPreferredSortOption(getActivity());
         String sortOrder;
         Uri uri;
-        if (sortBy.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[2])) {
+        if (sortBy.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
             uri = MovieContract.MoviesEntry.buildFavoritesUri();
         } else {
-            if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {
-                sortOrder = getContext().getResources().getString(R.string.most_popular_sort_order);
-            } else {
-                sortOrder = getContext().getResources().getString(R.string.highly_rated_sort_order);
+            if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1];
+            } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[2])){
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
+            } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])){
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
+            }else {
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
             }
+//            if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {
+//                sortOrder = getContext().getResources().getString(R.string.most_popular_sort_order);
+//            } else {
+//                sortOrder = getContext().getResources().getString(R.string.highly_rated_sort_order);
+//            }
+
             uri = MovieContract.MoviesEntry.buildMoviesWithSortorder(sortOrder);
         }
         return new CursorLoader(getActivity(),
@@ -137,7 +150,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (Utility.getPreferredSortOption(getActivity())
-                .equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[2])) {
+                .equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
             boolean isEmpty = data.getCount() < 1;
             if (isEmpty) {
                 Toast.makeText(getActivity(), "No Favourites found", Toast.LENGTH_LONG).show();

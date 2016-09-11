@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,7 +25,8 @@ import com.example.android.popularmovies.sync.MovieSyncAdapter;
  * It displays the posters for the movies according to the selected sort order
  */
 public class MainActivity extends AppCompatActivity implements
-        MainActivityFragment.Callback, NavigationView.OnNavigationItemSelectedListener {
+        MainActivityFragment.Callback, NavigationView.OnNavigationItemSelectedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private static String mcurrentSortBy;
@@ -36,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.registerOnSharedPreferenceChangeListener(this);
+
         if (findViewById(R.id.movie_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
             // (res/layout-sw600dp). If this view is present, then the activity should be
@@ -58,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -85,13 +90,25 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+//    @Override
+//    public void onPause() {
+//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+//        sp.unregisterOnSharedPreferenceChangeListener(this);
+//        super.onPause();
+//    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        uploadMovies();
+    }
+
+    private void uploadMovies(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String sortBy = Utility.getPreferredSortOption(this);
         MainActivityFragment mainFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         DetailActivityFragment detailFragment = (DetailActivityFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+        Log.i("MainActivity", "    sortBy "+sortBy+"    mCurrentSortBy "+ mcurrentSortBy);
         if (!sortBy.equals(mcurrentSortBy)) {
             sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
                     getString(R.string.details_reset)).apply();
@@ -115,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             mNetAvailability = false;
             //if favorites are selected, even when no network the list of favorite movies are loaded
-            if (sortBy.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[2])) {
+            if (sortBy.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
                 if (null != mainFragment) {
                     mainFragment.onOptionChanged();
                 }
@@ -125,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements
         }
         mcurrentSortBy = sortBy;
     }
-
     /*
      * Called when a poster in the grid is selected
      */
@@ -163,19 +179,27 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_now_playing) {
-
+            sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                    getResources().getStringArray(R.array.sort_values)[1]).apply();
         }else if (id == R.id.nav_upcoming) {
-
+            sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                    getResources().getStringArray(R.array.sort_values)[2]).apply();
         }else if (id == R.id.nav_top_rated) {
+            sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                    getResources().getStringArray(R.array.sort_values)[3]).apply();
 
         }else if (id == R.id.nav_popular) {
+            sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                    getResources().getStringArray(R.array.sort_values)[4]).apply();
 
         }else if (id == R.id.nav_favorite) {
-
+//            sharedPref.edit().putString(getString(R.string.pref_sort_key),
+//                    getResources().getStringArray(R.array.sort_values)[0]).apply();
         }
         else if (id == R.id.nav_share) {
 
@@ -184,5 +208,14 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.i("MainACtivity", "onSharedPreferenceChanged called");
+        if (key.equals(getString(R.string.pref_sort_key))) {
+            Log.i("MainACtivity", "Calling upload Movies");
+            uploadMovies();
+        }
     }
 }

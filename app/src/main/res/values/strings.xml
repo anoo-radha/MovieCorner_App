@@ -12,7 +12,7 @@
     <!-- for storing values in bundle during orientation changes -->
     <string name="reviews_data">reviews_data</string>
     <string name="selected_position">selected_position</string>
-    <string name="default_sort">popular</string>
+    <string name="default_sort">now_playing</string>
     <string name="details_reset">yes</string>
     <string name="no_details_reset">no</string>
     <string name="default_title">Title</string>
@@ -36,17 +36,31 @@
     <string name="title_activity_detail">MovieDetail</string>
     <string name="delimiter">-</string>
     <string-array name="sort_entries">
-        <item>By Most Popular</item>
-        <item>By Highest-Rated</item>
         <item>Favorites</item>
+        <item>By Now Playing</item>
+        <item>By Upcoming</item>
+        <item>By Top Rated</item>
+        <item>By Most Popular</item>
     </string-array>
     <string-array name="sort_values">
-        <item>popular</item>
-        <item>top_rated</item>
         <item>favorites</item>
+        <item>now_playing</item>
+        <item>upcoming</item>
+        <item>top_rated</item>
+        <item>popular</item>
     </string-array>
-    <string name="most_popular_sort_order">most_popular</string>
-    <string name="highly_rated_sort_order">highly_rated</string>
+    <!--<string-array name="sort_entries">-->
+        <!--<item>By Most Popular</item>-->
+        <!--<item>By Highest-Rated</item>-->
+        <!--<item>Favorites</item>-->
+    <!--</string-array>-->
+    <!--<string-array name="sort_values">-->
+        <!--<item>popular</item>-->
+        <!--<item>top_rated</item>-->
+        <!--<item>favorites</item>-->
+    <!--</string-array>-->
+    <string name="most_popular_sort_order">popular</string>
+    <string name="highly_rated_sort_order">top_rated</string>
     <string name="favorite_text">FAVORITE</string>
 
 

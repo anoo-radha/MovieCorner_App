@@ -143,7 +143,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         BufferedReader reader = null;
         final String MOVIES_BASE_URL = getContext().getString(R.string.base_url);
         final String APPID_PARAM = getContext().getString(R.string.api_key);
-        if (!sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[2])) {
+        if (!sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {
             try {
 
                 Uri uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
@@ -229,10 +229,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 String releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
                 String posterPath = movieToAdd.getString(JSON_POSTER_PATH);
                 float userRating = (float) movieToAdd.getDouble(JSON_VOTE_AVERAGE);
-                if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {
-                    sortOrder = getContext().getResources().getString(R.string.most_popular_sort_order);
-                } else {
-                    sortOrder = getContext().getResources().getString(R.string.highly_rated_sort_order);
+                if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
+                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1];
+                } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[2])){
+                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
+                }else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])){
+                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
+                }else {
+                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
                 }
                 Cursor movieCursor = getContext().getContentResolver().query(
                         MovieContract.MoviesEntry.buildMovieUri(id),
