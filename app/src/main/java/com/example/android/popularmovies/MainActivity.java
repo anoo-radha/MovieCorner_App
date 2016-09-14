@@ -182,7 +182,10 @@ public class MainActivity extends AppCompatActivity implements
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_now_playing) {
+        if (id == R.id.nav_favorite) {
+            sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                    getResources().getStringArray(R.array.sort_values)[0]).apply();
+        } else if (id == R.id.nav_now_playing) {
             sharedPref.edit().putString(getString(R.string.pref_sort_key),
                     getResources().getStringArray(R.array.sort_values)[1]).apply();
         }else if (id == R.id.nav_upcoming) {
@@ -196,11 +199,7 @@ public class MainActivity extends AppCompatActivity implements
             sharedPref.edit().putString(getString(R.string.pref_sort_key),
                     getResources().getStringArray(R.array.sort_values)[4]).apply();
 
-        }else if (id == R.id.nav_favorite) {
-//            sharedPref.edit().putString(getString(R.string.pref_sort_key),
-//                    getResources().getStringArray(R.array.sort_values)[0]).apply();
-        }
-        else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
 
         }
 

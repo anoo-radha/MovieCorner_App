@@ -43,12 +43,9 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AboutFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    public static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    public static final String LOG_TAG = AboutFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
     // These indices are tied to DETAIL_COLUMNS.
@@ -98,7 +95,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private TextView mReviewView;
     private ImageView mHeaderImage;
 
-    public DetailActivityFragment() {
+    public AboutFragment() {
         setHasOptionsMenu(true);
     }
 
@@ -106,7 +103,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle arguments = getArguments();
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.about_detail, container, false);
         mContainer = (LinearLayout) rootView.findViewById(R.id.details_container);
         mSynopsisView = (TextView) rootView.findViewById(R.id.synopsis_view);
         mTitleView = (TextView) rootView.findViewById(R.id.title_view);
@@ -121,11 +118,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mReviewsList = (NonScrollableListView) rootView.findViewById(R.id.reviews_scroll);
         mHeaderImage = (ImageView) getActivity().findViewById(R.id.header_image);
 
-        // if a poster is clicked in the main fragment, the detail fragment becomes visible
-        if ((arguments != null) &&
+        mUri = DetailActivity.uri;
+        Log.i("AboutFragment", "uri got  "+mUri);
+
+        // if a poster is clicked in the main fragment, the about fragment becomes visible
+        if ((mUri != null) &&
                 (Utility.getFragmentResetOption(getActivity()).equals(getString(R.string.no_details_reset)))) {
             mContainer.setVisibility(View.VISIBLE);
-            mUri = arguments.getParcelable(DetailActivityFragment.DETAIL_URI);
+//            mUri = arguments.getParcelable(DetailActivityFragment.DETAIL_URI);
+
             if (null != mUri) {
                 movieId = MovieContract.MoviesEntry.getIdFromUri(mUri);
                 // Getting the trailers using Retrofit Service
@@ -163,16 +164,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         }
         return rootView;
     }
-
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        if(title!=null){
-//            Log.i("onAttach", "in onAttach() with title "+title);
-//            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(title);
-//        }
-//    }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -308,7 +299,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             float rating = data.getFloat(COLUMN_RATING);
             int fav = data.getInt(COLUMN_FAVORITE_INDICATION);
             String posterPath = data.getString(COLUMN_POSTER_PATH);
-            Log.i("DetailFragment","posterpathis "+posterPath);
+            Log.i("AboutFragment","poster path is "+posterPath);
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + posterPath)
                     .error(R.drawable.unavailable_poster_black)
                     .into(mHeaderImage);
