@@ -212,6 +212,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String JSON_OVERVIEW = "overview";
         final String JSON_RELEASE_DATE = "release_date";
         final String JSON_POSTER_PATH = "poster_path";
+        final String JSON_BACKDROP_PATH = "backdrop_path";
         final String JSON_VOTE_AVERAGE = "vote_average";
         int favorited;
         String sortOrder;
@@ -228,6 +229,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 String synopsis = movieToAdd.getString(JSON_OVERVIEW);
                 String releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
                 String posterPath = movieToAdd.getString(JSON_POSTER_PATH);
+                String backdropPath = movieToAdd.getString(JSON_BACKDROP_PATH);
                 float userRating = (float) movieToAdd.getDouble(JSON_VOTE_AVERAGE);
                 if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
                     sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1];
@@ -259,6 +261,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_SYNOPSIS, synopsis);
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, releaseDate);
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_POSTER_PATH, posterPath);
+                movieValues.put(MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH, backdropPath);
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_RATING, userRating);
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, favorited);
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_SORT_ORDER, sortOrder);

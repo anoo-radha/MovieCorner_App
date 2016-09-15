@@ -16,7 +16,7 @@
     <string name="details_reset">yes</string>
     <string name="no_details_reset">no</string>
     <string name="default_title">Title</string>
-    <string name="default_rating">%1$s/10</string>
+    <string name="default_rating"><b>%1$s</b>/10</string>
     <string name="default_release_date">2016</string>
     <string name="trailers_header">Trailers:</string>
     <string name="reviews_header">Read Reviews</string>
@@ -25,8 +25,8 @@
     <string name="network_not_available">NO NETWORK</string>
     <string name="empty_list">   Network unavailable. \n Please check your network connection and try again. </string>
     <string name="watch_trailer"> Watch the trailer http://youtube.com/watch?v=%1$s  for the movie  \"%2$s\" </string>
-    <string name="trailers_empty">No trailers </string>
-    <string name="reviews_empty">No reviews for this movie</string>
+    <string name="trailers_empty">Trailer not Available </string>
+    <string name="reviews_empty"> Review not Available </string>
     <string name="favorite_movie">Saved as favorite</string>
     <string name="not_favorite_movie">"Not favorite anymore"</string>
     <string name="base_url">"http://api.themoviedb.org/3/movie/"</string>

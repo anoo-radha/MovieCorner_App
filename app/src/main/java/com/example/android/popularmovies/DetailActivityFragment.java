@@ -57,8 +57,9 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public static final int COLUMN_TITLE = 3;
     public static final int COLUMN_RELEASE_DATE = 4;
     public static final int COLUMN_POSTER_PATH = 5;
-    public static final int COLUMN_RATING = 6;
-    public static final int COLUMN_FAVORITE_INDICATION = 7;
+    public static final int COLUMN_BACKDROP_PATH = 6;
+    public static final int COLUMN_RATING = 7;
+    public static final int COLUMN_FAVORITE_INDICATION = 8;
     static final String DETAIL_URI = "URI";
     private static final int DETAIL_LOADER = 0;
     //Columns needed from the database
@@ -69,6 +70,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             MovieContract.MoviesEntry.COLUMN_TITLE,
             MovieContract.MoviesEntry.COLUMN_RELEASE_DATE,
             MovieContract.MoviesEntry.COLUMN_POSTER_PATH,
+            MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH,
             MovieContract.MoviesEntry.COLUMN_RATING,
             MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION,
     };
@@ -119,7 +121,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mReviewsBtn = (Button) rootView.findViewById(R.id.reviews_btn);
         mReviewView = (TextView) rootView.findViewById(R.id.review_unavailable_view);
         mReviewsList = (NonScrollableListView) rootView.findViewById(R.id.reviews_scroll);
-        mHeaderImage = (ImageView) getActivity().findViewById(R.id.header_image);
+        mHeaderImage = (ImageView) getActivity().findViewById(R.id.backdrop_view);
 
         // if a poster is clicked in the main fragment, the detail fragment becomes visible
         if ((arguments != null) &&

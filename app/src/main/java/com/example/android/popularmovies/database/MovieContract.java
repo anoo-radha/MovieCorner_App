@@ -40,7 +40,12 @@ public class MovieContract {
         public static final String COLUMN_SYNOPSIS = "synopsis";
         public static final String COLUMN_RELEASE_DATE = "release_date";
         public static final String COLUMN_POSTER_PATH = "poster_path";
+        public static final String COLUMN_BACKDROP_PATH = "backdrop_path";
         public static final String COLUMN_RATING = "rating";
+//        public static final String COLUMN_RUNTIME = "runtime";
+//        public static final String COLUMN_GENRE = "genre";
+//        public static final String COLUMN_DIRECTOR = "director";
+//        public static final String COLUMN_CAST = "cast";
         public static final String COLUMN_FAVORITE_INDICATION = "favorite";
         public static final String COLUMN_SORT_ORDER = "sort_order";
 
@@ -72,7 +77,7 @@ public class MovieContract {
     public static class MovieDbHelper extends SQLiteOpenHelper {
         static final String DATABASE_NAME = "movies.db";
         // If you change the database schema, you must increment the database version.
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
 
         public MovieDbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -88,6 +93,7 @@ public class MovieContract {
                     MoviesEntry.COLUMN_SYNOPSIS + " TEXT, " +
                     MoviesEntry.COLUMN_RELEASE_DATE + " TEXT, " +
                     MoviesEntry.COLUMN_POSTER_PATH + " TEXT, " +
+                    MoviesEntry.COLUMN_BACKDROP_PATH + " TEXT, " +
                     MoviesEntry.COLUMN_RATING + " REAL, " +
                     MoviesEntry.COLUMN_FAVORITE_INDICATION + " INTEGER, " +
                     MoviesEntry.COLUMN_SORT_ORDER + " TEXT " +

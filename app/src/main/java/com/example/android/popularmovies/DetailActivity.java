@@ -30,8 +30,6 @@ public class DetailActivity extends AppCompatActivity {
             //TRYING
             uri = getIntent().getData();
 
-
-
 //            passing1 = new Intent();
 //            Uri uri = getIntent().getData();
 //            passing1.setData(uri);
