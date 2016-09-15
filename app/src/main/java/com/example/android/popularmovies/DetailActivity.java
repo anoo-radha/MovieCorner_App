@@ -1,6 +1,5 @@
 package com.example.android.popularmovies;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -17,37 +16,13 @@ import java.util.List;
 
 /* This Activity displays the details of the movie that is clicked in the Main page */
 public class DetailActivity extends AppCompatActivity {
-    Intent passing1;
     public static Uri uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
-                // Create the detail fragment and add it to the activity using a fragment transaction.
-
-
-            //TRYING
             uri = getIntent().getData();
-
-//            passing1 = new Intent();
-//            Uri uri = getIntent().getData();
-//            passing1.setData(uri);
-//            passing1.setClass(this, AboutFragment.class);
-//            TabHost tabHost;
-//            tabHost.addTab(host.newTabSpec("one").setIndicator("About")
-//                    .setContent(passing1));
-
-
-//            Bundle arguments = new Bundle();
-//            arguments.putParcelable(DetailActivityFragment.DETAIL_URI, getIntent().getData());
-//
-//            DetailActivityFragment fragment = new DetailActivityFragment();
-//            fragment.setArguments(arguments);
-//
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.movie_detail_container, fragment)
-//                    .commit();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

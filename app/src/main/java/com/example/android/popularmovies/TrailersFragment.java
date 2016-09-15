@@ -38,7 +38,7 @@ public class TrailersFragment extends Fragment {
     RetrofitService service;
     ShareActionProvider mShareActionProvider;
     int movieId = 0;
-    String mTitle;
+    String mTitle;   //to be  implemented
     private TrailerAdapter mTrailerAdapter;
     //variables for UI views
     private TextView mTrailerHeader;
@@ -51,38 +51,32 @@ public class TrailersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Bundle arguments = getArguments();
         View rootView = inflater.inflate(R.layout.trailers_tab_detail, container, false);
 
         mTrailerHeader = (TextView) rootView.findViewById(R.id.trailer_header);
         mTrailerList = (NonScrollableListView) rootView.findViewById(R.id.trailers_scroll);
         Uri mUri = DetailActivity.uri;
-        Log.i(LOG_TAG, "uri got  " + mUri);
-        if(arguments !=null){
-            mTitle = getArguments().getString("title");
-            Log.i(LOG_TAG,"title got "+mTitle);
-        }
+//        Log.i(LOG_TAG, "uri got in trailers is  " + mUri);
+
         // if a poster is clicked in the detail activity, the trailer fragment becomes visible
-        if (mUri != null) {
-            if (null != mUri) {
-                movieId = MovieContract.MoviesEntry.getIdFromUri(mUri);
-                // Getting the trailers using Retrofit Service
-                RestAdapter adapter = new RestAdapter.Builder()
-                        .setEndpoint(ENDPOINT)
-                        .setLogLevel(RestAdapter.LogLevel.FULL)
-                        .build();
-                service = adapter.create(RetrofitService.class);
-                DisplayTrailers();
-            }
-            else{
-                mTrailerHeader.setText(R.string.trailers_empty);
-            }
+
+        if (null != mUri) {
+            movieId = MovieContract.MoviesEntry.getIdFromUri(mUri);
+            // Getting the trailers using Retrofit Service
+            RestAdapter adapter = new RestAdapter.Builder()
+                    .setEndpoint(ENDPOINT)
+                    .setLogLevel(RestAdapter.LogLevel.FULL)
+                    .build();
+            service = adapter.create(RetrofitService.class);
+            DisplayTrailers();
+        } else {
+            mTrailerHeader.setText(R.string.trailers_empty);
         }
         return rootView;
     }
 
-    private void DisplayTrailers(){
-        if(movieId != 0) {
+    private void DisplayTrailers() {
+        if (movieId != 0) {
             service.listTrailers(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
                     new Callback<TrailerPOJO>() {
                         @Override
@@ -109,6 +103,7 @@ public class TrailersFragment extends Fragment {
                     });
         }
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         mTrailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,9 +141,8 @@ public class TrailersFragment extends Fragment {
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
         String shareMsg = " ";
-        if (mTitle != null) {
-            shareMsg = String.format(getString(R.string.watch_trailer), trailers.get(0).getKey(), mTitle);
-        }
+//        if (mTitle != null) {
+        shareMsg = String.format(getString(R.string.watch_trailer), trailers.get(0).getKey());
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareMsg);
         return shareIntent;
     }

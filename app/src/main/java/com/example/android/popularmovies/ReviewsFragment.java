@@ -51,8 +51,8 @@ public class ReviewsFragment extends Fragment {
         Log.i(LOG_TAG, "uri got  "+mUri);
 
         // if a poster is clicked in the detail activity, the about fragment becomes visible
-        if ((mUri != null) &&
-                (Utility.getFragmentResetOption(getActivity()).equals(getString(R.string.no_details_reset)))) {
+//        if ((mUri != null) &&
+//                (Utility.getFragmentResetOption(getActivity()).equals(getString(R.string.no_details_reset)))) {
 
             if (null != mUri) {
                 movieId = MovieContract.MoviesEntry.getIdFromUri(mUri);
@@ -64,7 +64,7 @@ public class ReviewsFragment extends Fragment {
                 service = adapter.create(RetrofitService.class);
                 DisplayReviews();
             }
-        } else {
+         else {
             mReviewView.setText(R.string.trailers_empty);
         }
         return rootView;

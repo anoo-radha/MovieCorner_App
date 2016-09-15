@@ -22,6 +22,17 @@ public class Utility {
                 context.getString(R.string.details_reset));
     }
 
+    public static String getDuration(String inMinutes){
+        int t = Integer.valueOf(inMinutes);
+        if(t>0) {
+            int hours = t / 60;
+            int minutes = t % 60;
+            return (hours + "h " + minutes + "m");
+        }
+        else{
+            return "";
+        }
+    }
     // Error handling for Retrofit calls
     public static String ReportError(RetrofitError error) {
         String err;

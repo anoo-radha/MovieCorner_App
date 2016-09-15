@@ -15,16 +15,21 @@
     <string name="default_sort">now_playing</string>
     <string name="details_reset">yes</string>
     <string name="no_details_reset">no</string>
+    <string name="genre">GENRE</string>
+    <string name="runtime">RUNTIME</string>
+    <string name="director">DIRECTOR</string>
+    <string name="cast">CAST</string>
     <string name="default_title">Title</string>
     <string name="default_rating"><b>%1$s</b>/10</string>
     <string name="default_release_date">2016</string>
     <string name="trailers_header">Trailers:</string>
     <string name="reviews_header">Read Reviews</string>
     <string name="review_author">Review by %1$s</string>
+    <string name="not_available">not available</string>
     <string name="default_synopsis">Movie Overview not available</string>
     <string name="network_not_available">NO NETWORK</string>
     <string name="empty_list">   Network unavailable. \n Please check your network connection and try again. </string>
-    <string name="watch_trailer"> Watch the trailer http://youtube.com/watch?v=%1$s  for the movie  \"%2$s\" </string>
+    <string name="watch_trailer"> Watch the trailer http://youtube.com/watch?v=%1$s </string>
     <string name="trailers_empty">Trailer not Available </string>
     <string name="reviews_empty"> Review not Available </string>
     <string name="favorite_movie">Saved as favorite</string>
@@ -49,21 +54,9 @@
         <item>top_rated</item>
         <item>popular</item>
     </string-array>
-    <!--<string-array name="sort_entries">-->
-        <!--<item>By Most Popular</item>-->
-        <!--<item>By Highest-Rated</item>-->
-        <!--<item>Favorites</item>-->
-    <!--</string-array>-->
-    <!--<string-array name="sort_values">-->
-        <!--<item>popular</item>-->
-        <!--<item>top_rated</item>-->
-        <!--<item>favorites</item>-->
-    <!--</string-array>-->
     <string name="most_popular_sort_order">popular</string>
     <string name="highly_rated_sort_order">top_rated</string>
     <string name="favorite_text">FAVORITE</string>
-
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

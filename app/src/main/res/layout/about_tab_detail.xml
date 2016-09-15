@@ -51,42 +51,40 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/activity_horizontal_margin"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="@string/default_rating" />
 
                 <TextView
                     android:id="@+id/genre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:textColor="@color/primary_text"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:text="GENRE" />
+                    android:text="@string/genre" />
                 <TextView
                     android:id="@+id/genre_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/activity_horizontal_margin"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="@string/default_rating" />
 
                 <TextView
                     android:id="@+id/runtime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:text="RUNTIME" />
+                    android:text="@string/runtime" />
                 <TextView
                     android:id="@+id/runtime_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="@string/default_rating" />
             </LinearLayout>
         </LinearLayout>
@@ -95,35 +93,34 @@
             android:id="@+id/synopsis_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/primary_text"
             tools:text="@string/default_synopsis" />
         <TextView
             android:id="@+id/director"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/fab_margin"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
-            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_margin = "@dimen/fab_margin"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:textStyle="bold"
             android:background="@color/accent"
-            android:text="DIRECTOR" />
+            android:text="@string/director" />
 
         <TextView
             android:id="@+id/director_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
             android:textColor="@color/primary_text"
-            android:textSize="12sp"
+            android:textSize="14sp"
             tools:text="@string/default_rating" />
 
         <TextView
@@ -135,15 +132,19 @@
             android:textSize="12sp"
             android:textStyle="bold"
             android:background="@color/accent"
-            android:text="CAST" />
+            android:text="@string/cast" />
 
         <TextView
             android:id="@+id/cast_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:textColor="@color/primary_text"
-            android:textSize="12sp"
+            android:textSize="14sp"
             tools:text="@string/default_rating" />
 
     </LinearLayout>
