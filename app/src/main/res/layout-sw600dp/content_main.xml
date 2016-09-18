@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.example.android.popularmovies.MainActivityFragment"
+        android:name="com.anuradha.moviewatch.MainActivityFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"

@@ -12,15 +12,11 @@
             android:id="@+id/trailer_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginLeft="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_margin ="@dimen/fab_margin"
             android:text="@string/trailers_header"
             android:textSize="20sp" />
 
-        <com.example.android.popularmovies.NonScrollableListView
+        <com.anuradha.moviewatch.NonScrollableListView
             android:id="@+id/trailers_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

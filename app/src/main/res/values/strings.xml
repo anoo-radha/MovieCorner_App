@@ -1,62 +1,76 @@
 <resources>
-    <string name="app_name">Pop Movies</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_share">Share</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="content_authority">com.example.android.popularmovies</string>
-    <string name="account_type">popularmovies.example.com</string>
+    <string name="app_name" translatable="false">MovieWatch</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="action_share" translatable="false">Share</string>
+    <string name="menu_favorites" translatable="false">My Favorites</string>
+    <string name="menu_sort_by" translatable="false">Sort By</string>
+    <string name="menu_now_playing" translatable="false">Now Playing</string>
+    <string name="menu_upcoming" translatable="false">Upcoming</string>
+    <string name="menu_top_rated" translatable="false">Top Rated</string>
+    <string name="menu_most_popular" translatable="false">Most Popular</string>
+    <string name="menu_communicate" translatable="false">Communicate</string>
+    <string name="menu_comment" translatable="false">Comment</string>
+    <string name="title_activity_settings" translatable="false">Settings</string>
+    <string name="content_authority" translatable="false">com.anuradha.moviewatch</string>
+    <string name="account_type" translatable="false">moviewatch.anuradha.com</string>
     <!-- for storing values in shared preferences -->
-    <string name="pref_sort_label">Sort By</string>
-    <string name="pref_sort_key">sort_by</string>
-    <string name="pref_fragment_reset_key">orientation</string>
+    <string name="pref_sort_label" translatable="false">Sort By</string>
+    <string name="pref_sort_key" translatable="false">sort_by</string>
+    <string name="pref_fragment_reset_key" translatable="false">orientation</string>
     <!-- for storing values in bundle during orientation changes -->
-    <string name="reviews_data">reviews_data</string>
-    <string name="selected_position">selected_position</string>
-    <string name="default_sort">now_playing</string>
-    <string name="details_reset">yes</string>
-    <string name="no_details_reset">no</string>
-    <string name="genre">GENRE</string>
-    <string name="runtime">RUNTIME</string>
-    <string name="director">DIRECTOR</string>
-    <string name="cast">CAST</string>
-    <string name="default_title">Title</string>
-    <string name="default_rating"><b>%1$s</b>/10</string>
-    <string name="default_release_date">2016</string>
-    <string name="trailers_header">Trailers:</string>
-    <string name="reviews_header">Read Reviews</string>
-    <string name="review_author">Review by %1$s</string>
-    <string name="not_available">not available</string>
-    <string name="default_synopsis">Movie Overview not available</string>
-    <string name="network_not_available">NO NETWORK</string>
-    <string name="empty_list">   Network unavailable. \n Please check your network connection and try again. </string>
-    <string name="watch_trailer"> Watch the trailer http://youtube.com/watch?v=%1$s </string>
-    <string name="trailers_empty">Trailer not Available </string>
-    <string name="reviews_empty"> Review not Available </string>
-    <string name="favorite_movie">Saved as favorite</string>
-    <string name="not_favorite_movie">"Not favorite anymore"</string>
-    <string name="base_url">"http://api.themoviedb.org/3/movie/"</string>
-    <string name="base_poster_path">"http://image.tmdb.org/t/p/w185//"</string>
-    <string name="query_param">sort_by</string>
-    <string name="api_key">api_key</string>
-    <string name="title_activity_detail">MovieDetail</string>
-    <string name="delimiter">-</string>
-    <string-array name="sort_entries">
-        <item>Favorites</item>
-        <item>By Now Playing</item>
-        <item>By Upcoming</item>
-        <item>By Top Rated</item>
-        <item>By Most Popular</item>
+    <string name="reviews_data" translatable="false">reviews_data</string>
+    <string name="selected_position" translatable="false">selected_position</string>
+    <string name="default_sort" translatable="false">now_playing</string>
+    <string name="details_reset" translatable="false">yes</string>
+    <string name="no_details_reset" translatable="false">no</string>
+    <string name="genre" translatable="false">GENRE</string>
+    <string name="runtime" translatable="false">RUNTIME</string>
+    <string name="director" translatable="false">DIRECTOR</string>
+    <string name="cast" translatable="false">CAST</string>
+    <string name="default_title" translatable="false">Title</string>
+    <string name="default_rating" translatable="false"><b>%1$s</b>/10</string>
+    <string name="default_release_date" translatable="false">2016</string>
+    <string name="trailers_header" translatable="false">Trailers:</string>
+    <string name="reviews_header" translatable="false">Read Reviews</string>
+    <string name="review_author" translatable="false">Review by %1$s</string>
+    <string name="not_available" translatable="false">not available</string>
+    <string name="not_available_sign" translatable="false">-</string>
+    <string name="default_synopsis" translatable="false">Movie Overview not available</string>
+    <string name="network_not_available" translatable="false">NO NETWORK</string>
+    <string name="empty_list" translatable="false">   Network unavailable. \nPlease check your network connection and try again. </string>
+    <string name="watch_trailer" translatable="false"> Watch the trailer http://youtube.com/watch?v=%1$s  for the movie  \"%2$s\" </string>
+    <string name="trailers_empty" translatable="false">Trailer not Available </string>
+    <string name="reviews_empty" translatable="false"> Review not Available </string>
+    <string name="favorite_movie" translatable="false">Saved as favorite</string>
+    <string name="not_favorite_movie" translatable="false">"Not favorite anymore"</string>
+    <string name="base_url" translatable="false">"http://api.themoviedb.org/3/movie/"</string>
+    <string name="base_poster_path" translatable="false">"http://image.tmdb.org/t/p/w185//"</string>
+    <string name="query_param" translatable="false">sort_by</string>
+    <string name="api_key" translatable="false">api_key</string>
+    <string name="title_activity_detail" translatable="false">MovieDetail</string>
+    <string name="delimiter" translatable="false">-</string>
+    <string-array name="sort_entries" translatable="false">
+        <item>My Favorites</item>
+        <item>Now Playing</item>
+        <item>Upcoming</item>
+        <item>Top Rated</item>
+        <item>Most Popular</item>
     </string-array>
-    <string-array name="sort_values">
+    <string-array name="sort_values" translatable="false">
         <item>favorites</item>
         <item>now_playing</item>
         <item>upcoming</item>
         <item>top_rated</item>
         <item>popular</item>
     </string-array>
-    <string name="most_popular_sort_order">popular</string>
-    <string name="highly_rated_sort_order">top_rated</string>
-    <string name="favorite_text">FAVORITE</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="most_popular_sort_order" translatable="false">popular</string>
+    <string name="highly_rated_sort_order" translatable="false">top_rated</string>
+    <string name="favorite_text" translatable="false">FAVORITE</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="share_body" translatable="false"> Let me recommend you the MovieWatch application. https://play.google.com/store/apps/details?id=com.anuradha.moviewatch \n</string>
+    <string name="email_body" translatable="false"> &lt;Please send us your comments or any suggestions for improvement.\nThanks&gt;</string>
+    <string name="email_id" translatable="false">anoo_radha@outlook.com</string>
+    <string name="choose_one" translatable="false"> choose one </string>
+    <string name="no_mail_apps" translatable="false">No applications to support email!</string>
 </resources>

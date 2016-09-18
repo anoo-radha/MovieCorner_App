@@ -18,7 +18,7 @@
             android:textSize="20sp"
             android:visibility="gone" />
 
-        <com.example.android.popularmovies.NonScrollableListView
+        <com.anuradha.moviewatch.NonScrollableListView
             android:id="@+id/reviews_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

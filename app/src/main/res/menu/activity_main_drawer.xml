@@ -4,34 +4,38 @@
     <item
         android:id="@+id/nav_favorite"
         android:icon="@drawable/favorite_black"
-        android:title="My Favorites" />
+        android:title="@string/menu_favorites" />
 
-    <item android:title="Sort By">
-    <group android:checkableBehavior="single">
+    <item android:title="@string/menu_sort_by">
+
         <menu>
             <item
                 android:id="@+id/nav_now_playing"
-                android:title="Now Playing" />
+                android:title="@string/menu_now_playing" />
             <item
                 android:id="@+id/nav_upcoming"
-                android:title="Upcoming" />
+                android:title="@string/menu_upcoming" />
             <item
                 android:id="@+id/nav_top_rated"
-                android:title="Top Rated" />
+                android:title="@string/menu_top_rated" />
             <item
                 android:id="@+id/nav_popular"
-                android:title="Most Popular" />
+                android:title="@string/menu_most_popular" />
 
         </menu>
-    </group>
+
     </item>
 
-    <item android:title="Communicate">
+    <item android:title="@string/menu_communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
-                android:title="Share" />
+                android:icon="@drawable/ic_share"
+                android:title="@string/action_share"/>
+            <item
+                android:id="@+id/nav_comment"
+                android:icon="@drawable/ic_mail"
+                android:title="@string/menu_comment"/>
         </menu>
     </item>
 

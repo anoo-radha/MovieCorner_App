@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.popularmovies.DetailActivityFragment"
+    tools:context="com.anuradha.moviewatch.DetailActivityFragment"
     tools:showIn="@layout/activity_detail">
 
     <LinearLayout
@@ -104,7 +104,7 @@
             android:text="@string/trailers_header"
             android:textSize="20sp" />
 
-        <com.example.android.popularmovies.NonScrollableListView
+        <com.anuradha.moviewatch.NonScrollableListView
             android:id="@+id/trailers_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -136,7 +136,7 @@
             android:textSize="20sp"
             android:visibility="gone" />
 
-        <com.example.android.popularmovies.NonScrollableListView
+        <com.anuradha.moviewatch.NonScrollableListView
             android:id="@+id/reviews_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
