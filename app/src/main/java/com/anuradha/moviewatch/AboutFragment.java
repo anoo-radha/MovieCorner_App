@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,13 +162,14 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                     if (runtime.equals("")) {
                                         runtime = getResources().getString(R.string.not_available_sign);
                                     } else {
-                                        runtime = getResources().getString(R.string.not_available_sign);
+//                                        runtime = getResources().getString(R.string.not_available_sign);
                                     }
                                 } else {
                                     runtime = getResources().getString(R.string.not_available_sign);
                                 }
                             }
                             //enter the data in database
+                            Log.i(LOG_TAG,"runtime  "+runtime);
                             ContentValues cValues = new ContentValues();
                             cValues.put(MovieContract.MoviesEntry.COLUMN_GENRE, genreList);
                             cValues.put(MovieContract.MoviesEntry.COLUMN_RUNTIME, runtime);

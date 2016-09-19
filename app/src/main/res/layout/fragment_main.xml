@@ -13,7 +13,7 @@
         android:columnWidth="150dp"
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp"
-        tools:context="com.example.android.popularmovies.MainActivityFragment"
+        tools:context="com.anuradha.moviewatch.MainActivityFragment"
         tools:showIn="@layout/activity_main"/>
 
     <TextView

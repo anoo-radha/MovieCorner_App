@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -294,16 +293,16 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             id = data.getInt(COLUMN_MOVIE_ID);
             String synopsis = data.getString(COLUMN_SYNOPSIS);
             title = data.getString(COLUMN_TITLE);
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(title);
+//            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(title);
             String date = data.getString(COLUMN_RELEASE_DATE);
             String[] releaseDate = date.split(getString(R.string.delimiter));
             float rating = data.getFloat(COLUMN_RATING);
             int fav = data.getInt(COLUMN_FAVORITE_INDICATION);
             String posterPath = data.getString(COLUMN_POSTER_PATH);
             String backdropPath = data.getString(COLUMN_BACKDROP_PATH);
-            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + backdropPath)
-                    .error(R.drawable.unavailable_poster_black)
-                    .into(mHeaderImage);
+//            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + backdropPath)
+//                    .error(R.drawable.unavailable_poster_black)
+//                    .into(mHeaderImage);
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + posterPath)
                     .error(R.drawable.unavailable_poster_black)
                     .into(mPosterView);

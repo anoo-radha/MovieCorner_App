@@ -207,7 +207,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         // Names of the JSON objects that need to be extracted.
         final String JSON_RESULTS = "results";
         final String JSON_ID = "id";
-        final String JSON_ORIGINAL_TITLE = "original_title";
+        final String JSON_ORIGINAL_TITLE = "title";
         final String JSON_OVERVIEW = "overview";
         final String JSON_RELEASE_DATE = "release_date";
         final String JSON_POSTER_PATH = "poster_path";

@@ -34,6 +34,7 @@
                 android:layout_height="200dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/app_name"
+                android:adjustViewBounds="true"
                 android:paddingBottom="@dimen/fab_margin"
                 android:paddingLeft="@dimen/fab_margin"
                 android:paddingRight="@dimen/fab_margin"
