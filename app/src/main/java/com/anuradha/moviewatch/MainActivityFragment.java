@@ -81,6 +81,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
+        ((Callback) getActivity()).onItemSelected(MovieContract.MoviesEntry.buildDetailsWithId(
+                300669));
     }
 
     /* Get the list of movies according to sort order every time this activity starts */
@@ -92,6 +94,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             updateMovieList();
         }
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
+
     }
 
     /* If connection is available and if the sort option is not favorite,

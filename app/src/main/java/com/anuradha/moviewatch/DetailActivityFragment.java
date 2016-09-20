@@ -1,5 +1,6 @@
 package com.anuradha.moviewatch;
 
+import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,6 +28,8 @@ import android.widget.Toast;
 
 import com.anuradha.moviewatch.adapters.ReviewAdapter;
 import com.anuradha.moviewatch.adapters.TrailerAdapter;
+import com.anuradha.moviewatch.async.CastAndDirectorPOJO;
+import com.anuradha.moviewatch.async.GenreRuntimePOJO;
 import com.anuradha.moviewatch.async.RetrofitService;
 import com.anuradha.moviewatch.async.Reviews;
 import com.anuradha.moviewatch.async.ReviewsPOJO;
@@ -50,16 +53,23 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
+
+    static final String DETAIL_URI = "URI";
+    //Chosen length for the list of cast members
+    private static int CAST_LENGTH = 7;
     // These indices are tied to DETAIL_COLUMNS.
     public static final int COLUMN_MOVIE_ID = 1;
     public static final int COLUMN_SYNOPSIS = 2;
     public static final int COLUMN_TITLE = 3;
     public static final int COLUMN_RELEASE_DATE = 4;
     public static final int COLUMN_POSTER_PATH = 5;
-    public static final int COLUMN_BACKDROP_PATH = 6;
-    public static final int COLUMN_RATING = 7;
-    public static final int COLUMN_FAVORITE_INDICATION = 8;
-    static final String DETAIL_URI = "URI";
+//    public static final int COLUMN_BACKDROP_PATH = 6;
+    public static final int COLUMN_GENRE = 6;
+    public static final int COLUMN_RUNTIME = 7;
+    public static final int COLUMN_CAST = 8;
+    public static final int COLUMN_DIRECTOR = 9;
+    public static final int COLUMN_RATING = 10;
+    public static final int COLUMN_FAVORITE_INDICATION = 11;
     private static final int DETAIL_LOADER = 0;
     //Columns needed from the database
     private static final String[] DETAIL_COLUMNS = {
@@ -69,16 +79,20 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             MovieContract.MoviesEntry.COLUMN_TITLE,
             MovieContract.MoviesEntry.COLUMN_RELEASE_DATE,
             MovieContract.MoviesEntry.COLUMN_POSTER_PATH,
-            MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH,
+//            MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH,
+            MovieContract.MoviesEntry.COLUMN_GENRE,
+            MovieContract.MoviesEntry.COLUMN_RUNTIME,
+            MovieContract.MoviesEntry.COLUMN_CAST,
+            MovieContract.MoviesEntry.COLUMN_DIRECTOR,
             MovieContract.MoviesEntry.COLUMN_RATING,
-            MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION,
+            MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION
     };
     List<Trailer> trailers;
     List<Reviews> reviews;
     RetrofitService service;
     ShareActionProvider mShareActionProvider;
     int id, movieId = 0;
-    String title;
+    String title, genreList, castList, director, runtime;
     private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
     private boolean bFavorited = false;
@@ -97,7 +111,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private Button mReviewsBtn;
     private NonScrollableListView mReviewsList;
     private TextView mReviewView;
-    private ImageView mHeaderImage;
+    private TextView mGenreView;
+    private TextView mRuntimeView;
+    private TextView mCastView;
+    private TextView mDirectorView;
 
     public DetailActivityFragment() {
         setHasOptionsMenu(true);
@@ -114,13 +131,16 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mDateView = (TextView) rootView.findViewById(R.id.releasedt_view);
         mPosterView = (ImageView) rootView.findViewById(R.id.poster_imgview);
         mRatingView = (TextView) rootView.findViewById(R.id.rating_view);
+        mGenreView = (TextView) rootView.findViewById(R.id.genre_view);
+        mRuntimeView = (TextView) rootView.findViewById(R.id.runtime_view);
+        mCastView = (TextView) rootView.findViewById(R.id.cast_view);
+        mDirectorView = (TextView) rootView.findViewById(R.id.director_view);
         mFavIndicationBtn = (Button) rootView.findViewById(R.id.favorite_button);
         mTrailerHeader = (TextView) rootView.findViewById(R.id.trailer_header);
         mTrailerList = (NonScrollableListView) rootView.findViewById(R.id.trailers_scroll);
         mReviewsBtn = (Button) rootView.findViewById(R.id.reviews_btn);
         mReviewView = (TextView) rootView.findViewById(R.id.review_unavailable_view);
         mReviewsList = (NonScrollableListView) rootView.findViewById(R.id.reviews_scroll);
-        mHeaderImage = (ImageView) getActivity().findViewById(R.id.backdrop_view);
 
         // if a poster is clicked in the main fragment, the detail fragment becomes visible
         if ((arguments != null) &&
@@ -135,29 +155,32 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                         .setLogLevel(RestAdapter.LogLevel.FULL)
                         .build();
                 service = adapter.create(RetrofitService.class);
-                service.listTrailers(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
-                        new Callback<TrailerPOJO>() {
-                            @Override
-                            public void success(TrailerPOJO trailerPOJO, Response response) {
-                                if ((trailerPOJO != null)) {
-                                    if ((trailerPOJO.getTrailers() != null) && (!trailerPOJO.getTrailers().isEmpty())) {
-                                        trailers = trailerPOJO.getTrailers();
-                                        mTrailerAdapter = new TrailerAdapter(getActivity(), trailers);
-                                        mTrailerList.setAdapter(mTrailerAdapter);
-                                        if (mShareActionProvider != null) {
-                                            mShareActionProvider.setShareIntent(createShareForecastIntent());
-                                        }
-                                    } else {
-                                        mTrailerHeader.setText(R.string.trailers_empty);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.e(LOG_TAG, Utility.ReportError(error));
-                            }
-                        });
+                DisplayGenreRuntime();
+                DisplayCastDirector();
+                DisplayTrailers();
+//                service.listTrailers(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
+//                        new Callback<TrailerPOJO>() {
+//                            @Override
+//                            public void success(TrailerPOJO trailerPOJO, Response response) {
+//                                if ((trailerPOJO != null)) {
+//                                    if ((trailerPOJO.getTrailers() != null) && (!trailerPOJO.getTrailers().isEmpty())) {
+//                                        trailers = trailerPOJO.getTrailers();
+//                                        mTrailerAdapter = new TrailerAdapter(getActivity(), trailers);
+//                                        mTrailerList.setAdapter(mTrailerAdapter);
+//                                        if (mShareActionProvider != null) {
+//                                            mShareActionProvider.setShareIntent(createShareForecastIntent());
+//                                        }
+//                                    } else {
+//                                        mTrailerHeader.setText(R.string.trailers_empty);
+//                                    }
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void failure(RetrofitError error) {
+//                                Log.e(LOG_TAG, Utility.ReportError(error));
+//                            }
+//                        });
             }
         } else {
             mContainer.setVisibility(View.GONE);
@@ -222,7 +245,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         shareIntent.setType("text/plain");
         String shareMsg = " ";
         if (title != null) {
-//            shareMsg = String.format(getString(R.string.watch_trailer), trailers.get(0).getKey(), title);
+            shareMsg = String.format(getString(R.string.watch_trailer), trailers.get(0).getKey(), title);
         }
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareMsg);
         return shareIntent;
@@ -235,6 +258,170 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mContainer.setVisibility(View.GONE);
     }
 
+
+    private void DisplayGenreRuntime() {
+        if (movieId != 0) {
+            service.listGenreRuntime(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
+                    new Callback<GenreRuntimePOJO>() {
+                        @Override
+                        public void success(GenreRuntimePOJO genreRuntimePOJO, Response response) {
+                            if ((genreRuntimePOJO != null)) {
+                                if (genreRuntimePOJO.getGenres() != null) {
+                                    if (genreRuntimePOJO.getGenres().length == 0) {
+                                        genreList = getResources().getString(R.string.not_available_sign);
+                                    } else {
+                                        String[] genre = new String[genreRuntimePOJO.getGenres().length];
+                                        genreList = "";
+                                        for (int i = 0; i < genreRuntimePOJO.getGenres().length; i++) {
+                                            genre[i] = (genreRuntimePOJO.getGenres())[i].getName();
+                                            genreList += genre[i] + ", ";
+
+                                        }
+                                        genreList = genreList.substring(0, genreList.length() - 2);
+                                    }
+                                } else {
+                                    genreList = getResources().getString(R.string.not_available_sign);
+                                }
+                                if (genreRuntimePOJO.getRuntime() != null) {
+                                    runtime = Utility.getDuration(genreRuntimePOJO.getRuntime());
+                                    if (runtime.equals("")) {
+                                        runtime = getResources().getString(R.string.not_available_sign);
+                                    }
+                                } else {
+                                    runtime = getResources().getString(R.string.not_available_sign);
+                                }
+                            }
+                            //enter the data in database
+                            Log.i(LOG_TAG,"runtime  "+runtime);
+                            ContentValues cValues = new ContentValues();
+                            cValues.put(MovieContract.MoviesEntry.COLUMN_GENRE, genreList);
+                            cValues.put(MovieContract.MoviesEntry.COLUMN_RUNTIME, runtime);
+
+                            // Using AsyncQueryHandler object for querying content provider in the background,
+                            // instead of from the UI thread
+                            AsyncQueryHandler queryHandler = new AsyncQueryHandler(getActivity().getContentResolver()) {
+                                @Override
+                                protected void onUpdateComplete(int token, Object cookie, int result) {
+                                    super.onUpdateComplete(token, cookie, result);
+                                }
+                            };
+                            // Construct query and execute
+                            queryHandler.startUpdate(
+                                    1, null,
+                                    MovieContract.MoviesEntry.CONTENT_URI,
+                                    cValues,
+                                    MovieContract.MoviesEntry.COLUMN_ID + " = ?",
+                                    new String[]{Integer.toString(id)}
+                            );
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+//                            Log.e(LOG_TAG, Utility.ReportError(error));
+                        }
+                    });
+        }
+    }
+
+    private void DisplayCastDirector() {
+        if (movieId != 0) {
+            service.listCastAndDirector(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
+                    new Callback<CastAndDirectorPOJO>() {
+                        @Override
+                        public void success(CastAndDirectorPOJO castAndDirectorPOJO, Response response) {
+                            if ((castAndDirectorPOJO != null)) {
+                                if (castAndDirectorPOJO.getCast() != null) {
+                                    if (castAndDirectorPOJO.getCast().length <= 0) {
+                                        castList = getResources().getString(R.string.not_available);
+                                    } else {
+                                        int length = CAST_LENGTH;
+                                        if (castAndDirectorPOJO.getCast().length < CAST_LENGTH) {
+                                            length = castAndDirectorPOJO.getCast().length;
+                                        }
+                                        String[] castMembers = new String[length];
+                                        castList = "";
+                                        for (int i = 0; i < length; i++) {
+                                            castMembers[i] = (castAndDirectorPOJO.getCast())[i].getName();
+                                            castList += castMembers[i] + ", ";
+                                        }
+                                        castList = castList.substring(0, castList.length() - 2);
+                                    }
+                                } else {
+                                    castList = getResources().getString(R.string.not_available);
+                                }
+                            }
+                            if ((castAndDirectorPOJO != null)) {
+                                if (castAndDirectorPOJO.getCrew() != null) {
+                                    for (int i = 0; i < castAndDirectorPOJO.getCrew().length; i++) {
+                                        if (((castAndDirectorPOJO.getCrew())[i].getJob()).equals("Director")) {
+                                            director = (castAndDirectorPOJO.getCrew())[i].getName();
+                                        }
+                                    }
+                                    if (director == null) {
+                                        director = getResources().getString(R.string.not_available);
+                                    }
+                                } else {
+                                    director = getResources().getString(R.string.not_available);
+                                }
+                            }
+                            //enter the data in database
+                            ContentValues cValues = new ContentValues();
+                            cValues.put(MovieContract.MoviesEntry.COLUMN_CAST, castList);
+                            cValues.put(MovieContract.MoviesEntry.COLUMN_DIRECTOR, director);
+                            // Using AsyncQueryHandler object for querying content provider in the background,
+                            // instead of from the UI thread
+                            AsyncQueryHandler queryHandler = new AsyncQueryHandler(getActivity().getContentResolver()) {
+                                @Override
+                                protected void onUpdateComplete(int token, Object cookie, int result) {
+                                    super.onUpdateComplete(token, cookie, result);
+                                }
+                            };
+                            // Construct query and execute
+                            queryHandler.startUpdate(
+                                    1, null,
+                                    MovieContract.MoviesEntry.CONTENT_URI,
+                                    cValues,
+                                    MovieContract.MoviesEntry.COLUMN_ID + " = ?",
+                                    new String[]{Integer.toString(id)}
+                            );
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+//                            Log.e(LOG_TAG, Utility.ReportError(error));
+                        }
+                    });
+        }
+    }
+
+    private void DisplayTrailers() {
+        if (movieId != 0) {
+            service.listTrailers(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
+                    new Callback<TrailerPOJO>() {
+                        @Override
+                        public void success(TrailerPOJO trailerPOJO, Response response) {
+                            if ((trailerPOJO != null)) {
+                                if ((trailerPOJO.getTrailers() != null) && (!trailerPOJO.getTrailers().isEmpty())) {
+                                    trailers = trailerPOJO.getTrailers();
+                                    mTrailerAdapter = new TrailerAdapter(getActivity(), trailers);
+                                    mTrailerList.setAdapter(mTrailerAdapter);
+                                    if (mShareActionProvider != null) {
+                                        mShareActionProvider.setShareIntent(createShareForecastIntent());
+                                    }
+                                    mTrailerHeader.setVisibility(View.GONE);
+                                } else {
+                                    mTrailerHeader.setText(R.string.trailers_empty);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+//                            Log.e(LOG_TAG, Utility.ReportError(error));
+                        }
+                    });
+        }
+    }
     /**
      * Obtaining the reviews for the selected poster using retrofit service
      */
@@ -299,7 +486,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             float rating = data.getFloat(COLUMN_RATING);
             int fav = data.getInt(COLUMN_FAVORITE_INDICATION);
             String posterPath = data.getString(COLUMN_POSTER_PATH);
-            String backdropPath = data.getString(COLUMN_BACKDROP_PATH);
+            String genre = data.getString(COLUMN_GENRE);
+            String runtime = data.getString(COLUMN_RUNTIME);
+            String cast = data.getString(COLUMN_CAST);
+            String director = data.getString(COLUMN_DIRECTOR);
+            mGenreView.setText(genre);
+            mRuntimeView.setText(runtime);
+            mCastView.setText(cast);
+            mDirectorView.setText(director);
+//            String backdropPath = data.getString(COLUMN_BACKDROP_PATH);
 //            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + backdropPath)
 //                    .error(R.drawable.unavailable_poster_black)
 //                    .into(mHeaderImage);

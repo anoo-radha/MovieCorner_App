@@ -38,7 +38,7 @@
     <string name="default_synopsis" translatable="false">Movie Overview not available</string>
     <string name="network_not_available" translatable="false">NO NETWORK</string>
     <string name="empty_list" translatable="false">   Network unavailable. \nPlease check your network connection and try again. </string>
-    <string name="watch_trailer" translatable="false"> Watch the trailer http://youtube.com/watch?v=%1$s  for the movie  \"%2$s\" </string>
+    <string name="watch_trailer" translatable="false"> Hey! Watch the trailer http://youtube.com/watch?v=%1$s  for the movie  \"%2$s\" </string>
     <string name="trailers_empty" translatable="false">Trailer not Available </string>
     <string name="reviews_empty" translatable="false"> Review not Available </string>
     <string name="favorite_movie" translatable="false">Saved as favorite</string>

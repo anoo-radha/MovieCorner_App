@@ -161,8 +161,6 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                     runtime = Utility.getDuration(genreRuntimePOJO.getRuntime());
                                     if (runtime.equals("")) {
                                         runtime = getResources().getString(R.string.not_available_sign);
-                                    } else {
-//                                        runtime = getResources().getString(R.string.not_available_sign);
                                     }
                                 } else {
                                     runtime = getResources().getString(R.string.not_available_sign);
