@@ -8,12 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:horizontalSpacing="2dp"
+        android:horizontalSpacing="5dp"
         android:numColumns="auto_fit"
         android:columnWidth="150dp"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="2dp"
-        tools:context="com.example.android.popularmovies.MainActivityFragment"
+        android:verticalSpacing="5dp"
+        tools:context="com.anuradha.moviewatch.MainActivityFragment"
         tools:showIn="@layout/activity_main"/>
 
     <TextView
@@ -21,7 +21,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@color/background_tint"
+        android:backgroundTint="@color/background_tint"
+        android:gravity="center"
+        android:textSize="14sp"
         android:visibility="gone"
         android:text="@string/empty_list" />
 </FrameLayout>
