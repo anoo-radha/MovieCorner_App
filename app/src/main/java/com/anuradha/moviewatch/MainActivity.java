@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.anuradha.moviewatch.sync.MovieSyncAdapter;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 /* This Activity is the main page of the Pop Movies application
  * It displays the posters for the movies according to the selected sort order
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements
     //    public static String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private static String mcurrentSortBy;
-    private ProgressWheel progressView;
     private boolean mTwoPane, mNetAvailability = true;
 
     @Override
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        progressView = (ProgressWheel) findViewById(R.id.progress_wheel);
+
         setSupportActionBar(toolbar);
 
         if (findViewById(R.id.movie_detail_container) != null) {
@@ -81,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        progressView.setVisibility(View.VISIBLE);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(this);
         uploadMovies();
@@ -95,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements
         if (!sortBy.equals(mcurrentSortBy)) {
             sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
                     getString(R.string.details_reset)).apply();
+            if (mTwoPane){
+                (findViewById(R.id.empty_movie_view)).setVisibility(View.VISIBLE);
+            }
             if (null != mainFragment) {
                 mainFragment.onOptionChanged();
             }
@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements
                     mainFragment.onOptionChanged();
                 }
             }
-            progressView.setVisibility(View.GONE);
             mNetAvailability = true;
         } else {
             mNetAvailability = false;
@@ -124,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements
 
                 Toast.makeText(this, R.string.network_not_available, Toast.LENGTH_LONG).show();
             }
-            progressView.setVisibility(View.GONE);
         }
         mcurrentSortBy = sortBy;
     }
@@ -136,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onItemSelected(Uri contentUri) {
 
         if (mTwoPane) {
+            (findViewById(R.id.empty_movie_view)).setVisibility(View.GONE);
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a fragment transaction.
             Bundle args = new Bundle();

@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name" translatable="false">MovieWatch</string>
+    <string name="app_name" translatable="false">Movie Watch</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="action_share" translatable="false">Share</string>
+    <string name="tab_about" translatable="false">About</string>
+    <string name="tab_trailers" translatable="false">Trailers</string>
+    <string name="tab_reviews" translatable="false">Reviews</string>
     <string name="menu_favorites" translatable="false">My Favorites</string>
     <string name="menu_sort_by" translatable="false">Sort By</string>
     <string name="menu_now_playing" translatable="false">Now Playing</string>
@@ -26,6 +29,7 @@
     <string name="genre" translatable="false">GENRE</string>
     <string name="runtime" translatable="false">RUNTIME</string>
     <string name="director" translatable="false">DIRECTOR</string>
+    <string name="backdrop" translatable="false">Backdrop Image</string>
     <string name="cast" translatable="false">CAST</string>
     <string name="default_title" translatable="false">Title</string>
     <string name="default_rating" translatable="false"><b>%1$s</b>/10</string>
@@ -33,20 +37,22 @@
     <string name="trailers_header" translatable="false">Trailers:</string>
     <string name="reviews_header" translatable="false">Read Reviews</string>
     <string name="review_author" translatable="false">Review by %1$s</string>
-    <string name="not_available" translatable="false">not available</string>
     <string name="not_available_sign" translatable="false">-</string>
     <string name="default_synopsis" translatable="false">Movie Overview not available</string>
     <string name="network_not_available" translatable="false">NO NETWORK</string>
+    <string name="empty_movie" translatable="false">Please, Click on a movie to see the details :)</string>
     <string name="empty_list" translatable="false">   Network unavailable. \nPlease check your network connection and try again. </string>
     <string name="watch_trailer" translatable="false"> Hey! Watch the trailer http://youtube.com/watch?v=%1$s  for the movie  \"%2$s\" </string>
     <string name="trailers_empty" translatable="false">Trailer not Available </string>
     <string name="reviews_empty" translatable="false"> Review not Available </string>
+    <string name="no_favorites" translatable="false">No Favourites found</string>
     <string name="favorite_movie" translatable="false">Saved as favorite</string>
     <string name="not_favorite_movie" translatable="false">"Not favorite anymore"</string>
     <string name="base_url" translatable="false">"http://api.themoviedb.org/3/movie/"</string>
     <string name="base_poster_path" translatable="false">"http://image.tmdb.org/t/p/w185//"</string>
     <string name="query_param" translatable="false">sort_by</string>
     <string name="api_key" translatable="false">api_key</string>
+    <string name="page" translatable="false">page</string>
     <string name="title_activity_detail" translatable="false">MovieDetail</string>
     <string name="delimiter" translatable="false">-</string>
     <string-array name="sort_entries" translatable="false">

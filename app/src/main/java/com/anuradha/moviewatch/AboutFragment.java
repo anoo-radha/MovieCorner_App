@@ -11,7 +11,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ import retrofit.client.Response;
 
 public class AboutFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String LOG_TAG = AboutFragment.class.getSimpleName();
+//    public static final String LOG_TAG = AboutFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
     //Chosen length for the list of cast members
@@ -74,14 +73,18 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     private boolean bFavorited = false;
     private Uri mUri;
     //variables for UI views
-    private LinearLayout mContainer;
+//    private LinearLayout mContainer;
     private TextView mSynopsisView;
     private TextView mDateView;
     private ImageView mPosterView;
     private TextView mRatingView;
+    private TextView mGenreHeader;
     private TextView mGenreView;
+    private TextView mRuntimeHeader;
     private TextView mRuntimeView;
+    private TextView mCastHeader;
     private TextView mCastView;
+    private TextView mDirectorHeader;
     private TextView mDirectorView;
     private FloatingActionButton mFavIndicationBtn;
     private ImageView mHeaderImage;
@@ -94,7 +97,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.about_tab_detail, container, false);
-        mContainer = (LinearLayout) rootView.findViewById(R.id.details_container);
+        LinearLayout mContainer = (LinearLayout) rootView.findViewById(R.id.details_container);
         mSynopsisView = (TextView) rootView.findViewById(R.id.synopsis_view);
         mDateView = (TextView) rootView.findViewById(R.id.releasedt_view);
         mPosterView = (ImageView) rootView.findViewById(R.id.poster_imgview);
@@ -103,6 +106,10 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
         mRuntimeView = (TextView) rootView.findViewById(R.id.runtime_view);
         mCastView = (TextView) rootView.findViewById(R.id.cast_view);
         mDirectorView = (TextView) rootView.findViewById(R.id.director_view);
+        mGenreHeader = (TextView) rootView.findViewById(R.id.genre);
+        mRuntimeHeader = (TextView) rootView.findViewById(R.id.runtime);
+        mCastHeader = (TextView) rootView.findViewById(R.id.cast);
+        mDirectorHeader = (TextView) rootView.findViewById(R.id.director);
         mFavIndicationBtn = (FloatingActionButton) getActivity().findViewById(R.id.favorite_button);
         mHeaderImage = (ImageView) getActivity().findViewById(R.id.backdrop_view);
 
@@ -167,7 +174,6 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                 }
                             }
                             //enter the data in database
-                            Log.i(LOG_TAG,"runtime  "+runtime);
                             ContentValues cValues = new ContentValues();
                             cValues.put(MovieContract.MoviesEntry.COLUMN_GENRE, genreList);
                             cValues.put(MovieContract.MoviesEntry.COLUMN_RUNTIME, runtime);
@@ -207,7 +213,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                             if ((castAndDirectorPOJO != null)) {
                                 if (castAndDirectorPOJO.getCast() != null) {
                                     if (castAndDirectorPOJO.getCast().length <= 0) {
-                                        castList = getResources().getString(R.string.not_available);
+                                        castList = getResources().getString(R.string.not_available_sign);
                                     } else {
                                         int length = CAST_LENGTH;
                                         if (castAndDirectorPOJO.getCast().length < CAST_LENGTH) {
@@ -222,7 +228,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                         castList = castList.substring(0, castList.length() - 2);
                                     }
                                 } else {
-                                    castList = getResources().getString(R.string.not_available);
+                                    castList = getResources().getString(R.string.not_available_sign);
                                 }
                             }
                             if ((castAndDirectorPOJO != null)) {
@@ -233,10 +239,10 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                         }
                                     }
                                     if (director == null) {
-                                        director = getResources().getString(R.string.not_available);
+                                        director = getResources().getString(R.string.not_available_sign);
                                     }
                                 } else {
-                                    director = getResources().getString(R.string.not_available);
+                                    director = getResources().getString(R.string.not_available_sign);
                                 }
                             }
                             //enter the data in database
@@ -304,10 +310,30 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
             String runtime = data.getString(COLUMN_RUNTIME);
             String cast = data.getString(COLUMN_CAST);
             String director = data.getString(COLUMN_DIRECTOR);
-            mGenreView.setText(genre);
-            mRuntimeView.setText(runtime);
-            mCastView.setText(cast);
-            mDirectorView.setText(director);
+            if( (genre!=null) && (genre.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mGenreHeader.setVisibility(View.GONE);
+                mGenreView.setVisibility(View.GONE);
+            } else {
+                mGenreView.setText(genre);
+            }
+            if( (runtime!=null) && (runtime.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mRuntimeHeader.setVisibility(View.GONE);
+                mRatingView.setVisibility(View.GONE);
+            } else {
+                mRuntimeView.setText(runtime);
+            }
+            if( (cast!=null) && (cast.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mCastHeader.setVisibility(View.GONE);
+                mCastView.setVisibility(View.GONE);
+            } else {
+                mCastView.setText(cast);
+            }
+            if( (director!=null) && (director.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mDirectorHeader.setVisibility(View.GONE);
+                mDirectorView.setVisibility(View.GONE);
+            } else {
+                mDirectorView.setText(director);
+            }
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + posterPath)
                     .error(R.drawable.unavailable_poster_black)
                     .into(mPosterView);
@@ -329,29 +355,36 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
         mFavIndicationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ContentValues favoritesValues = new ContentValues();
                 if (bFavorited) {
                     // update movie as not favorite
-                    ContentValues favoritesValues = new ContentValues();
                     favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.NOT_FAVORITE_INDICATOR);
-                    getContext().getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
-                            favoritesValues,
-                            MovieContract.MoviesEntry.COLUMN_ID + " = ?",
-                            new String[]{Integer.toString(id)});
                     bFavorited = false;
                     mFavIndicationBtn.setImageResource(R.drawable.favorite_black_border);
                     Toast.makeText(getActivity(), getString(R.string.not_favorite_movie), Toast.LENGTH_SHORT).show();
                 } else {
                     // update movie as favorite
-                    ContentValues favoritesValues = new ContentValues();
                     favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.FAVORITE_INDICATOR);
-                    getContext().getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
-                            favoritesValues,
-                            MovieContract.MoviesEntry.COLUMN_ID + " = ?",
-                            new String[]{Integer.toString(id)});
                     bFavorited = true;
                     mFavIndicationBtn.setImageResource(R.drawable.favorite_black);
                     Toast.makeText(getActivity(), getString(R.string.favorite_movie), Toast.LENGTH_SHORT).show();
                 }
+                // Using AsyncQueryHandler object for querying content provider in the background,
+                // instead of from the UI thread
+                AsyncQueryHandler queryHandler = new AsyncQueryHandler(getActivity().getContentResolver()) {
+                    @Override
+                    protected void onUpdateComplete(int token, Object cookie, int result) {
+                        super.onUpdateComplete(token, cookie, result);
+                    }
+                };
+                // Construct query and execute
+                queryHandler.startUpdate(
+                        1, null,
+                        MovieContract.MoviesEntry.CONTENT_URI,
+                        favoritesValues,
+                        MovieContract.MoviesEntry.COLUMN_ID + " = ?",
+                        new String[]{Integer.toString(id)}
+                );
             }
         });
         ((CallbackForData) getActivity()).onDataPass(title, bFavorited, backdropPath);

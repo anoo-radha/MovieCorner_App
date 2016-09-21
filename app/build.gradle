@@ -21,7 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         buildTypes.each {
-            it.buildConfigField 'String', 'MOVIEDB_KEY', '<api_key>'
+            it.buildConfigField 'String', 'MOVIEDB_KEY', '"e7c3bd5e4b0f39897bb04ddb998b0f6d"'
         }
     }
 }
@@ -35,7 +35,6 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.facebook.stetho:stetho:1.1.1'
     compile 'com.pnikosis:materialish-progress:1.7'
 }
 

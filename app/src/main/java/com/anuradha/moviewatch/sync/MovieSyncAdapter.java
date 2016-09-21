@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.anuradha.moviewatch.BuildConfig;
 import com.anuradha.moviewatch.R;
@@ -40,7 +41,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     // Interval at which to sync with the movie data, in seconds (6 hours)
     public static final int SYNC_INTERVAL = 60 * 360;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
-//    public final String LOG_TAG = MovieSyncAdapter.class.getSimpleName();
+    private Vector<ContentValues> cVVector;
+    public final String LOG_TAG = MovieSyncAdapter.class.getSimpleName();
 
     private final Context mContext;
 
@@ -136,12 +138,11 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
         String sortOrder = Utility.getPreferredSortOption(getContext());
-        // Will contain the raw JSON response as a string.
-        String moviesJsonResult;
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
+
+        cVVector = null;
         final String MOVIES_BASE_URL = getContext().getString(R.string.base_url);
         final String APPID_PARAM = getContext().getString(R.string.api_key);
+        final String PAGE_PARAM = getContext().getString(R.string.page);
         if (!sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {
             try {
 
@@ -149,51 +150,73 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         .appendPath(sortOrder)
                         .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                         .build();
+                callAPI(uri);
 
-                URL url = new URL(uri.toString());
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setDoInput(true);
-                // Starts the query
-                urlConnection.connect();
+                //Get second page of movies for the sort order
+                uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                        .appendPath(sortOrder)
+                        .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
+                        .appendQueryParameter(PAGE_PARAM, "2")
+                        .build();
+                callAPI(uri);
 
-                InputStream inputStream = urlConnection.getInputStream();
-                if (inputStream == null) {
-                    return;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                StringBuilder buffer = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging easier
-                    buffer.append(line);
-                    buffer.append("\n");
-                }
-                if (buffer.length() == 0) {
-                    return;
-                }
-                moviesJsonResult = buffer.toString();
-                getMovieDataFromJson(moviesJsonResult);
-            } catch (IOException e) {
+                insertData(cVVector);
+
+            } catch (Exception e) {
 //                Log.e(LOG_TAG, "Error ", e);
-            } catch (JSONException e) {
-//                Log.e(LOG_TAG, e.getMessage(), e);
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-//                        Log.e(LOG_TAG, "Error closing stream", e);
-                    }
-                }
             }
         }
 
+    }
+
+    private void callAPI(Uri uri) {
+        // Will contain the raw JSON response as a string.
+        String moviesJsonResult;
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(uri.toString());
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoInput(true);
+            // Starts the query
+            urlConnection.connect();
+
+            InputStream inputStream = urlConnection.getInputStream();
+            if (inputStream == null) {
+                return;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder buffer = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging easier
+                buffer.append(line);
+                buffer.append("\n");
+            }
+            if (buffer.length() == 0) {
+                return;
+            }
+            moviesJsonResult = buffer.toString();
+            getMovieDataFromJson(moviesJsonResult);
+        } catch (IOException e) {
+//            Log.e(LOG_TAG, "Error ", e);
+        } catch (JSONException e) {
+//            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (final IOException e) {
+//                    Log.e(LOG_TAG, "Error closing stream", e);
+                }
+            }
+        }
     }
 
     /**
@@ -220,7 +243,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             JSONObject movieJson = new JSONObject(moviesJsonResult);
             JSONArray movieArray = movieJson.getJSONArray(JSON_RESULTS);
             // Insert the new movies information into the database
-            Vector<ContentValues> cVVector = new Vector<>(movieArray.length());
+            if(cVVector == null) {
+//                Log.i(LOG_TAG, "initializing vector");
+                cVVector = new Vector<>(movieArray.length() * 2);
+            }
             for (int i = 0; i < movieArray.length(); i++) {
                 JSONObject movieToAdd = movieArray.getJSONObject(i);
                 int id = movieToAdd.getInt(JSON_ID);
@@ -266,21 +292,25 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_SORT_ORDER, sortOrder);
                 cVVector.add(movieValues);
             }
+
             // delete old data so we don't build up an endless history
             getContext().getContentResolver().delete(MovieContract.MoviesEntry.CONTENT_URI,
                     MovieContract.sFavoritesNotSelection,
                     new String[]{Integer.toString(MovieContract.NOT_FAVORITE_INDICATOR)});
 
-            if (cVVector.size() > 0) {
-                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                cVVector.toArray(cvArray);
-                getContext().getContentResolver().bulkInsert(MovieContract.MoviesEntry.CONTENT_URI, cvArray);
-            }
-//            Log.i(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
-
         } catch (JSONException e) {
 //            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
+    }
+
+    private void insertData(Vector<ContentValues> cVVector){
+
+        if (cVVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+            cVVector.toArray(cvArray);
+            getContext().getContentResolver().bulkInsert(MovieContract.MoviesEntry.CONTENT_URI, cvArray);
+        }
+//            Log.i(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
     }
 }

@@ -6,13 +6,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +51,7 @@ import retrofit.client.Response;
  */
 public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+//    public static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
 
@@ -63,13 +64,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public static final int COLUMN_TITLE = 3;
     public static final int COLUMN_RELEASE_DATE = 4;
     public static final int COLUMN_POSTER_PATH = 5;
-//    public static final int COLUMN_BACKDROP_PATH = 6;
-    public static final int COLUMN_GENRE = 6;
-    public static final int COLUMN_RUNTIME = 7;
-    public static final int COLUMN_CAST = 8;
-    public static final int COLUMN_DIRECTOR = 9;
-    public static final int COLUMN_RATING = 10;
-    public static final int COLUMN_FAVORITE_INDICATION = 11;
+    public static final int COLUMN_BACKDROP_PATH = 6;
+    public static final int COLUMN_GENRE = 7;
+    public static final int COLUMN_RUNTIME = 8;
+    public static final int COLUMN_CAST = 9;
+    public static final int COLUMN_DIRECTOR = 10;
+    public static final int COLUMN_RATING = 11;
+    public static final int COLUMN_FAVORITE_INDICATION = 12;
     private static final int DETAIL_LOADER = 0;
     //Columns needed from the database
     private static final String[] DETAIL_COLUMNS = {
@@ -79,7 +80,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             MovieContract.MoviesEntry.COLUMN_TITLE,
             MovieContract.MoviesEntry.COLUMN_RELEASE_DATE,
             MovieContract.MoviesEntry.COLUMN_POSTER_PATH,
-//            MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH,
+            MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH,
             MovieContract.MoviesEntry.COLUMN_GENRE,
             MovieContract.MoviesEntry.COLUMN_RUNTIME,
             MovieContract.MoviesEntry.COLUMN_CAST,
@@ -99,22 +100,29 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private boolean bReviewsFetched = false;
     private Uri mUri;
     //variables for UI views
-    private LinearLayout mContainer;
+    private CoordinatorLayout mContainer;
+    private RelativeLayout mPosterContainer;
     private TextView mSynopsisView;
     private TextView mTitleView;
     private TextView mDateView;
-    private ImageView mPosterView;
+    private ImageView mPosterView, mPosterPlayView;
     private TextView mRatingView;
     private TextView mTrailerHeader;
-    private Button mFavIndicationBtn;
+    private FloatingActionButton mFavIndicationBtn;
     private NonScrollableListView mTrailerList;
     private Button mReviewsBtn;
     private NonScrollableListView mReviewsList;
     private TextView mReviewView;
+    private TextView mGenreHeader;
     private TextView mGenreView;
+    private TextView mRuntimeHeader;
     private TextView mRuntimeView;
+    private TextView mCastHeader;
     private TextView mCastView;
+    private TextView mDirectorHeader;
     private TextView mDirectorView;
+    private ImageView mHeaderImage;
+    private MenuItem menuItem;
 
     public DetailActivityFragment() {
         setHasOptionsMenu(true);
@@ -125,8 +133,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                              Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        mContainer = (LinearLayout) rootView.findViewById(R.id.details_container);
+        mContainer = (CoordinatorLayout) rootView.findViewById(R.id.details_container);
+        mPosterContainer = (RelativeLayout) rootView.findViewById(R.id.poster_container);
         mSynopsisView = (TextView) rootView.findViewById(R.id.synopsis_view);
+        mPosterPlayView = (ImageView) rootView.findViewById(R.id.movie_poster_play);
         mTitleView = (TextView) rootView.findViewById(R.id.title_view);
         mDateView = (TextView) rootView.findViewById(R.id.releasedt_view);
         mPosterView = (ImageView) rootView.findViewById(R.id.poster_imgview);
@@ -135,12 +145,17 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mRuntimeView = (TextView) rootView.findViewById(R.id.runtime_view);
         mCastView = (TextView) rootView.findViewById(R.id.cast_view);
         mDirectorView = (TextView) rootView.findViewById(R.id.director_view);
-        mFavIndicationBtn = (Button) rootView.findViewById(R.id.favorite_button);
+        mGenreHeader = (TextView) rootView.findViewById(R.id.genre);
+        mRuntimeHeader = (TextView) rootView.findViewById(R.id.runtime);
+        mCastHeader = (TextView) rootView.findViewById(R.id.cast);
+        mDirectorHeader = (TextView) rootView.findViewById(R.id.director);
+        mFavIndicationBtn = (FloatingActionButton) rootView.findViewById(R.id.favorite_button);
         mTrailerHeader = (TextView) rootView.findViewById(R.id.trailer_header);
         mTrailerList = (NonScrollableListView) rootView.findViewById(R.id.trailers_scroll);
         mReviewsBtn = (Button) rootView.findViewById(R.id.reviews_btn);
         mReviewView = (TextView) rootView.findViewById(R.id.review_unavailable_view);
         mReviewsList = (NonScrollableListView) rootView.findViewById(R.id.reviews_scroll);
+        mHeaderImage = (ImageView) rootView.findViewById(R.id.backdrop_view);
 
         // if a poster is clicked in the main fragment, the detail fragment becomes visible
         if ((arguments != null) &&
@@ -158,29 +173,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 DisplayGenreRuntime();
                 DisplayCastDirector();
                 DisplayTrailers();
-//                service.listTrailers(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
-//                        new Callback<TrailerPOJO>() {
-//                            @Override
-//                            public void success(TrailerPOJO trailerPOJO, Response response) {
-//                                if ((trailerPOJO != null)) {
-//                                    if ((trailerPOJO.getTrailers() != null) && (!trailerPOJO.getTrailers().isEmpty())) {
-//                                        trailers = trailerPOJO.getTrailers();
-//                                        mTrailerAdapter = new TrailerAdapter(getActivity(), trailers);
-//                                        mTrailerList.setAdapter(mTrailerAdapter);
-//                                        if (mShareActionProvider != null) {
-//                                            mShareActionProvider.setShareIntent(createShareForecastIntent());
-//                                        }
-//                                    } else {
-//                                        mTrailerHeader.setText(R.string.trailers_empty);
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void failure(RetrofitError error) {
-//                                Log.e(LOG_TAG, Utility.ReportError(error));
-//                            }
-//                        });
             }
         } else {
             mContainer.setVisibility(View.GONE);
@@ -200,6 +192,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 DisplayReviews();
             }
         }
+        mPosterContainer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (trailers != null) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(0).getKey())));
+                }
+            }
+            });
         mTrailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -225,15 +226,18 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_detail_fragment, menu);
         // Retrieve the share menu item
-        MenuItem menuItem = menu.findItem(R.id.action_share);
+        menuItem = menu.findItem(R.id.action_share);
+        menuItem.setVisible(true);
         // Get the provider to set/change the share intent.
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         if (mShareActionProvider != null) {
-            if (trailers != null)
+            if (trailers != null) {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());
-        } else {
-            Log.d(LOG_TAG, "ShareActionProvider null");
+            }
         }
+//        else {
+//            Log.d(LOG_TAG, "ShareActionProvider null");
+//        }
     }
 
     /**
@@ -292,7 +296,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                 }
                             }
                             //enter the data in database
-                            Log.i(LOG_TAG,"runtime  "+runtime);
                             ContentValues cValues = new ContentValues();
                             cValues.put(MovieContract.MoviesEntry.COLUMN_GENRE, genreList);
                             cValues.put(MovieContract.MoviesEntry.COLUMN_RUNTIME, runtime);
@@ -332,7 +335,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                             if ((castAndDirectorPOJO != null)) {
                                 if (castAndDirectorPOJO.getCast() != null) {
                                     if (castAndDirectorPOJO.getCast().length <= 0) {
-                                        castList = getResources().getString(R.string.not_available);
+                                        castList = getResources().getString(R.string.not_available_sign);
                                     } else {
                                         int length = CAST_LENGTH;
                                         if (castAndDirectorPOJO.getCast().length < CAST_LENGTH) {
@@ -347,7 +350,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                         castList = castList.substring(0, castList.length() - 2);
                                     }
                                 } else {
-                                    castList = getResources().getString(R.string.not_available);
+                                    castList = getResources().getString(R.string.not_available_sign);
                                 }
                             }
                             if ((castAndDirectorPOJO != null)) {
@@ -358,10 +361,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                         }
                                     }
                                     if (director == null) {
-                                        director = getResources().getString(R.string.not_available);
+                                        director = getResources().getString(R.string.not_available_sign);
                                     }
                                 } else {
-                                    director = getResources().getString(R.string.not_available);
+                                    director = getResources().getString(R.string.not_available_sign);
                                 }
                             }
                             //enter the data in database
@@ -395,6 +398,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     private void DisplayTrailers() {
+        trailers = null;
         if (movieId != 0) {
             service.listTrailers(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
                     new Callback<TrailerPOJO>() {
@@ -409,8 +413,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                         mShareActionProvider.setShareIntent(createShareForecastIntent());
                                     }
                                     mTrailerHeader.setVisibility(View.GONE);
+                                    mPosterPlayView.setVisibility(View.VISIBLE);
+
                                 } else {
+                                    trailers = null;
                                     mTrailerHeader.setText(R.string.trailers_empty);
+                                    menuItem.setVisible(false);
+                                    mPosterContainer.setClickable(false);
                                 }
                             }
                         }
@@ -447,7 +456,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
                         @Override
                         public void failure(RetrofitError error) {
-                            Log.e(LOG_TAG, Utility.ReportError(error));
+//                            Log.e(LOG_TAG, Utility.ReportError(error));
                         }
                     });
         }
@@ -490,16 +499,36 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             String runtime = data.getString(COLUMN_RUNTIME);
             String cast = data.getString(COLUMN_CAST);
             String director = data.getString(COLUMN_DIRECTOR);
-            mGenreView.setText(genre);
-            mRuntimeView.setText(runtime);
-            mCastView.setText(cast);
-            mDirectorView.setText(director);
-//            String backdropPath = data.getString(COLUMN_BACKDROP_PATH);
-//            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + backdropPath)
-//                    .error(R.drawable.unavailable_poster_black)
-//                    .into(mHeaderImage);
+            if( (genre!=null) && (genre.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mGenreHeader.setVisibility(View.GONE);
+                mGenreView.setVisibility(View.GONE);
+            } else {
+                mGenreView.setText(genre);
+            }
+            if( (runtime!=null) && (runtime.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mRuntimeHeader.setVisibility(View.GONE);
+                mRatingView.setVisibility(View.GONE);
+            } else {
+                mRuntimeView.setText(runtime);
+            }
+            if( (cast!=null) && (cast.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mCastHeader.setVisibility(View.GONE);
+                mCastView.setVisibility(View.GONE);
+            } else {
+                mCastView.setText(cast);
+            }
+            if( (director!=null) && (director.equals(getResources().getString(R.string.not_available_sign))) ) {
+                mDirectorHeader.setVisibility(View.GONE);
+                mDirectorView.setVisibility(View.GONE);
+            } else {
+                mDirectorView.setText(director);
+            }
+            String backdropPath = data.getString(COLUMN_BACKDROP_PATH);
+            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + backdropPath)
+                    .error(R.drawable.unavailable_backdrop)
+                    .into(mHeaderImage);
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + posterPath)
-                    .error(R.drawable.unavailable_poster_black)
+                    .error(R.drawable.unavailable_poster_tablet)
                     .into(mPosterView);
             mSynopsisView.setText(synopsis);
             mTitleView.setText(title);
@@ -512,29 +541,36 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mFavIndicationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ContentValues favoritesValues = new ContentValues();
                 if (bFavorited) {
                     // update movie as not favorite
-                    ContentValues favoritesValues = new ContentValues();
                     favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.NOT_FAVORITE_INDICATOR);
-                    getContext().getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
-                            favoritesValues,
-                            MovieContract.MoviesEntry.COLUMN_ID + " = ?",
-                            new String[]{Integer.toString(id)});
                     bFavorited = false;
-                    mFavIndicationBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_black_border, 0, 0, 0);
+                    mFavIndicationBtn.setImageResource(R.drawable.favorite_black_border);
                     Toast.makeText(getActivity(), getString(R.string.not_favorite_movie), Toast.LENGTH_SHORT).show();
                 } else {
                     // update movie as favorite
-                    ContentValues favoritesValues = new ContentValues();
                     favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.FAVORITE_INDICATOR);
-                    getContext().getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
-                            favoritesValues,
-                            MovieContract.MoviesEntry.COLUMN_ID + " = ?",
-                            new String[]{Integer.toString(id)});
                     bFavorited = true;
-                    mFavIndicationBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_black, 0, 0, 0);
+                    mFavIndicationBtn.setImageResource(R.drawable.favorite_black);
                     Toast.makeText(getActivity(), getString(R.string.favorite_movie), Toast.LENGTH_SHORT).show();
                 }
+                // Using AsyncQueryHandler object for querying content provider in the background,
+                // instead of from the UI thread
+                AsyncQueryHandler queryHandler = new AsyncQueryHandler(getActivity().getContentResolver()) {
+                    @Override
+                    protected void onUpdateComplete(int token, Object cookie, int result) {
+                        super.onUpdateComplete(token, cookie, result);
+                    }
+                };
+                // Construct query and execute
+                queryHandler.startUpdate(
+                        1, null,
+                        MovieContract.MoviesEntry.CONTENT_URI,
+                        favoritesValues,
+                        MovieContract.MoviesEntry.COLUMN_ID + " = ?",
+                        new String[]{Integer.toString(id)}
+                );
             }
         });
     }
@@ -544,13 +580,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    private void setFavoritesButton(Button favoritesButton, int favorited) {
+    private void setFavoritesButton(FloatingActionButton favoritesButton, int favorited) {
         if (favorited == MovieContract.FAVORITE_INDICATOR) {
             bFavorited = true;
-            favoritesButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_black, 0, 0, 0);
+            favoritesButton.setImageResource(R.drawable.favorite_black);
         } else {
             bFavorited = false;
-            favoritesButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_black_border, 0, 0, 0);
+            favoritesButton.setImageResource(R.drawable.favorite_black_border);
         }
     }
 

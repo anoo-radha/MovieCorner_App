@@ -58,9 +58,9 @@ public class DetailActivity extends AppCompatActivity implements AboutFragment.C
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new AboutFragment(), "About");
-        adapter.addFrag(new TrailersFragment(), "Trailers");
-        adapter.addFrag(new ReviewsFragment(), "Reviews");
+        adapter.addFrag(new AboutFragment(), getString(R.string.tab_about));
+        adapter.addFrag(new TrailersFragment(), getString(R.string.tab_trailers));
+        adapter.addFrag(new ReviewsFragment(), getString(R.string.tab_reviews));
         viewPager.setAdapter(adapter);
     }
 
@@ -104,10 +104,8 @@ public class DetailActivity extends AppCompatActivity implements AboutFragment.C
         getSupportActionBar().setTitle(title);
         if (bfavorited) {
             mFavoriteButton.setImageResource(R.drawable.favorite_black);
-//            Log.i(LOG_TAG,"set Favorite button in Detail Activity !!");
         } else {
             mFavoriteButton.setImageResource(R.drawable.favorite_black_border);
-//            Log.i(LOG_TAG,"UNset Favorite button in Detail Activity !!");
         }
         Picasso.with(this).load("http://image.tmdb.org/t/p/w185//" + backdropUrl)
                 .error(R.drawable.unavailable_backdrop)

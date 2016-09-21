@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.anuradha.moviewatch.adapters.MovieDetailAdapter;
 import com.anuradha.moviewatch.database.MovieContract;
 import com.anuradha.moviewatch.sync.MovieSyncAdapter;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -38,6 +39,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     GridView gView;
     SharedPreferences sharedPref;
     private TextView mNoNetworkView;
+    private ProgressWheel progressView;
     private MovieDetailAdapter mMovieAdapter = null;
     private int mPosition = GridView.INVALID_POSITION;
 
@@ -53,7 +55,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         gView = (GridView) rootView.findViewById(R.id.posters_grid);
         mNoNetworkView = (TextView) rootView.findViewById(R.id.network_msg_view);
+        progressView = (ProgressWheel) rootView.findViewById(R.id.progress_wheel);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        progressView.setVisibility(View.VISIBLE);
 
         gView.setAdapter(mMovieAdapter);
         gView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -79,10 +84,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        if(getActivity().findViewById(R.id.empty_movie_view)!=null) {
+            (getActivity().findViewById(R.id.empty_movie_view)).setVisibility(View.GONE);
+        }
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
-        ((Callback) getActivity()).onItemSelected(MovieContract.MoviesEntry.buildDetailsWithId(
-                300669));
     }
 
     /* Get the list of movies according to sort order every time this activity starts */
@@ -143,11 +149,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        progressView.setVisibility(View.GONE);
         if (Utility.getPreferredSortOption(getActivity())
                 .equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
             boolean isEmpty = data.getCount() < 1;
             if (isEmpty) {
-                Toast.makeText(getActivity(), "No Favourites found", Toast.LENGTH_LONG).show();
+                if(getActivity().findViewById(R.id.empty_movie_view)!=null) {
+                    getActivity().findViewById(R.id.empty_movie_view).setVisibility(View.GONE);
+                }
+                Toast.makeText(getActivity(), getContext().getResources().getString(R.string.no_favorites), Toast.LENGTH_LONG).show();
             }
         }
         mMovieAdapter.swapCursor(data);
