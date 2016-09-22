@@ -1,7 +1,7 @@
 # PopularMovies
 
 **[IMPORTANT: for the Application to work, Please enter the APIkey in the gradle file in the app folder in the place of 
-the string '<api_key>'.Add api key within double quotes'.]**
+the string '&lt;api_key&gt;'. Add api key within double quotes.]**
 
 Searching for Movies? This Android app makes it easy to discover, search movies and mark them to your favorites. 
 This Application opens a grid arrangement of the movieposters according to the selected sort-order (from Settings menu).
