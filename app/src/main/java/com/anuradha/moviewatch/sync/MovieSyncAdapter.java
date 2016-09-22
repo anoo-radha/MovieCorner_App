@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.anuradha.moviewatch.BuildConfig;
 import com.anuradha.moviewatch.R;
@@ -133,6 +132,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     /*
      * Handles all the actions for syncing between server and local databse. The entire
      * sync adapter runs in a background thread
+     * http://api.themoviedb.org/3/movie/upcoming?api_key=e7c3bd5e4b0f39897bb04ddb998b0f6d
+     * http://api.themoviedb.org/3/movie/upcoming?api_key=e7c3bd5e4b0f39897bb04ddb998b0f6d&page=2
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {

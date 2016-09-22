@@ -94,7 +94,6 @@
                         android:id="@+id/genre_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/activity_horizontal_margin"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         tools:text="@string/default_rating" />

@@ -15,8 +15,8 @@
         android:stretchMode="columnWidth"
         android:verticalSpacing="3dp"
         tools:context="com.anuradha.moviewatch.MainActivityFragment"
-        tools:showIn="@layout/activity_main"/>
-    <!--android:columnWidth="150dp"-->
+        tools:showIn="@layout/activity_main" />
+
     <TextView
         android:id="@+id/network_msg_view"
         android:layout_width="wrap_content"

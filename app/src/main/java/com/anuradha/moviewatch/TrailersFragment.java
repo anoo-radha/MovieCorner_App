@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anuradha.moviewatch.adapters.TrailerAdapter;
@@ -30,7 +31,7 @@ import retrofit.client.Response;
 
 public class TrailersFragment extends Fragment {
 
-//   public static final String LOG_TAG = TrailersFragment.class.getSimpleName();
+   public static final String LOG_TAG = TrailersFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
     List<Trailer> trailers;
@@ -40,6 +41,8 @@ public class TrailersFragment extends Fragment {
     String mTitle;
     private TrailerAdapter mTrailerAdapter;
     //variables for UI views
+//    private RelativeLayout mPosterContainer;
+    private ImageView mPosterPlayView, mBackdropView;
     private TextView mTrailerHeader;
     private NonScrollableListView mTrailerList;
 
@@ -53,6 +56,8 @@ public class TrailersFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.trailers_tab_detail, container, false);
         mTrailerHeader = (TextView) rootView.findViewById(R.id.trailer_header);
         mTrailerList = (NonScrollableListView) rootView.findViewById(R.id.trailers_scroll);
+        mPosterPlayView = (ImageView) getActivity().findViewById(R.id.movie_poster_play);
+        mBackdropView = (ImageView) getActivity().findViewById(R.id.backdrop_view);
         Uri mUri = DetailActivity.uri;
 
         if (null != mUri) {
@@ -85,8 +90,10 @@ public class TrailersFragment extends Fragment {
                                         mShareActionProvider.setShareIntent(createShareForecastIntent());
                                     }
                                     mTrailerHeader.setVisibility(View.GONE);
+                                    mPosterPlayView.setVisibility(View.VISIBLE);
                                 } else {
                                     mTrailerHeader.setText(R.string.trailers_empty);
+                                    mBackdropView.setClickable(false);
                                 }
                             }
                         }
@@ -108,6 +115,15 @@ public class TrailersFragment extends Fragment {
                         Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(position).getKey())));
             }
         });
+        mBackdropView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (trailers != null) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(0).getKey())));
+                }
+            }
+        });
         super.onActivityCreated(savedInstanceState);
 
     }
@@ -121,8 +137,13 @@ public class TrailersFragment extends Fragment {
         // Get the provider to set/change the share intent.
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         if (mShareActionProvider != null) {
-            if (trailers != null)
+            if (trailers != null) {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());
+            }
+            else{
+                menuItem.setVisible(false);
+//                Log.i(LOG_TAG,"No trailers here to share");
+            }
         }
 //        else {
 //            Log.d(LOG_TAG, "ShareActionProvider null");
