@@ -21,7 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         buildTypes.each {
-            it.buildConfigField 'String', 'MOVIEDB_KEY', '"<api_key>"'
+            it.buildConfigField 'String', 'MOVIEDB_KEY', '<api_key>'
         }
     }
 }
@@ -36,5 +36,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.pnikosis:materialish-progress:1.7'
+    compile 'com.facebook.stetho:stetho:1.4.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
 }
 

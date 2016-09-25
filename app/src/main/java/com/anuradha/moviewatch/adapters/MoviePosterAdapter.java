@@ -3,10 +3,12 @@ package com.anuradha.moviewatch.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.anuradha.moviewatch.MainActivityFragment;
 import com.anuradha.moviewatch.R;
@@ -17,9 +19,9 @@ import com.squareup.picasso.Picasso;
 /* For loading the grid view with the result of Movies API calls
  * according to sort order
  */
-public class MovieDetailAdapter extends CursorAdapter {
+public class MoviePosterAdapter extends CursorAdapter {
 
-    public MovieDetailAdapter(Context context, Cursor c, int flags) {
+    public MoviePosterAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
@@ -31,9 +33,13 @@ public class MovieDetailAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ImageView imageView = (ImageView) view.findViewById(R.id.poster_imgview);
+        TextView textView = (TextView) view.findViewById(R.id.poster_year);
         //Calls the Picasso API for loading the imageView from the given path
         Picasso.with(context).load(Utility.getActualPosterPath(cursor.getString(MainActivityFragment.COLUMN_POSTER_PATH)))
                 .error(R.drawable.unavailable_poster_black)
                 .into(imageView);
+        textView.setText(cursor.getString(MainActivityFragment.COLUMN_MOVIE_RELEASEDATE));
+        Log.i("MOVIEADAPTER", "posterpath is  "+cursor.getString(MainActivityFragment.COLUMN_POSTER_PATH));
+        Log.i("MOVIEADAPTER", "title is  "+cursor.getString(MainActivityFragment.COLUMN_MOVIE_RELEASEDATE));
     }
 }

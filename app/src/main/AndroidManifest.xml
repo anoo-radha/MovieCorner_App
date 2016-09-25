@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
     <application
+        android:name=".MyDebugApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:logo="@mipmap/ic_launcher"

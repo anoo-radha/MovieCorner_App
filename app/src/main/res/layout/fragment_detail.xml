@@ -201,6 +201,7 @@
                 android:layout_marginTop="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:text="@string/trailers_header"
+                android:textAllCaps="true"
                 android:textSize="20sp" />
 
             <com.anuradha.moviewatch.NonScrollableListView
@@ -263,7 +264,9 @@
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
             app:layout_anchor="@id/backdrop_view"
-            app:layout_anchorGravity="bottom|left|start" />
+            app:layout_anchorGravity="bottom|left|start"
+            android:layout_marginTop="215dp"/>
+        <!--trying android:layout_marginTop="215dp".. if not working remove-->
     </android.support.design.widget.CoordinatorLayout>
 
 </android.support.v4.widget.NestedScrollView>

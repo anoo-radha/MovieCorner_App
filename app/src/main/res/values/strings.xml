@@ -34,7 +34,7 @@
     <string name="default_title" translatable="false">Title</string>
     <string name="default_rating" translatable="false"><b>%1$s</b>/10</string>
     <string name="default_release_date" translatable="false">2016</string>
-    <string name="trailers_header" translatable="false">Trailers:</string>
+    <string name="trailers_header" translatable="false">TRAILERS:</string>
     <string name="reviews_header" translatable="false">Read Reviews</string>
     <string name="review_author" translatable="false">Review by %1$s</string>
     <string name="not_available_sign" translatable="false">-</string>

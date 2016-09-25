@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anuradha.moviewatch.adapters.MovieDetailAdapter;
+import com.anuradha.moviewatch.adapters.MoviePosterAdapter;
 import com.anuradha.moviewatch.database.MovieContract;
 import com.anuradha.moviewatch.sync.MovieSyncAdapter;
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -29,18 +30,21 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public static final int COLUMN_MOVIE_ID = 1;
     public static final int COLUMN_POSTER_PATH = 2;
+    public static final int COLUMN_MOVIE_RELEASEDATE = 3;
     private static final int MOVIES_LOADER = 0;
     // Specify the columns we need from the database.
     private static final String[] MOVIES_COLUMNS = {
             MovieContract.TABLE_NAME + "." + MovieContract.MoviesEntry._ID,
             MovieContract.MoviesEntry.COLUMN_ID,
             MovieContract.MoviesEntry.COLUMN_POSTER_PATH,
+            MovieContract.MoviesEntry.COLUMN_RELEASE_DATE
     };
     GridView gView;
     SharedPreferences sharedPref;
     private TextView mNoNetworkView;
     private ProgressWheel progressView;
-    private MovieDetailAdapter mMovieAdapter = null;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private MoviePosterAdapter mMovieAdapter = null;
     private int mPosition = GridView.INVALID_POSITION;
 
     public MainActivityFragment() {
@@ -51,11 +55,19 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mMovieAdapter = new MovieDetailAdapter(getActivity(), null, 0);
+        mMovieAdapter = new MoviePosterAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         gView = (GridView) rootView.findViewById(R.id.posters_grid);
         mNoNetworkView = (TextView) rootView.findViewById(R.id.network_msg_view);
         progressView = (ProgressWheel) rootView.findViewById(R.id.progress_wheel);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.main_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onOptionChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         progressView.setVisibility(View.VISIBLE);
