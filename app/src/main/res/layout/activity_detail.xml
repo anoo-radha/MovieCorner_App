@@ -78,6 +78,8 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/favorite_black_border"
         app:layout_anchor="@id/main_content"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        android:tint="@color/accent"
+        app:backgroundTint="@color/colorPrimary"/>
 
 </android.support.design.widget.CoordinatorLayout>

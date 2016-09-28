@@ -7,20 +7,14 @@ import retrofit.http.Query;
 
 public interface RetrofitService {
 
-    //Async call for requesting Genre and Runtime
-    //    http://api.themoviedb.org/3/movie/<movie_id>?api_key=<api_key>
+    //Async call for requesting Genre, Runtime, Cast and Director
+    // http://api.themoviedb.org/3/movie/<movie_id>?api_key=<api_key>&append_to_response=credits
     //<movie_id> for eg - 300669
     @GET("/3/movie/{id}")
-    void listGenreRuntime(@Path("id") String id,
-                             @Query("api_key") String apiKey,
-                             Callback<GenreRuntimePOJO> cb);
-
-    //Async call for requesting Cast and Director
-    //    http://api.themoviedb.org/3/movie/<movie_id>/credits?api_key=<api_key>
-    @GET("/3/movie/{id}/credits")
-    void listCastAndDirector(@Path("id") String id,
-                      @Query("api_key") String apiKey,
-                      Callback<CastAndDirectorPOJO> cb);
+    void listExtras(@Path("id") String id,
+                    @Query("api_key") String apiKey,
+                    @Query("append_to_response") String appendParam,
+                    Callback<MovieExtrasPOJO> cb);
 
     //Async call for requesting Trailers
     //    http://api.themoviedb.org/3/movie/<movie_id>/videos?api_key=<api_key>

@@ -107,9 +107,10 @@ public class DetailActivity extends AppCompatActivity implements AboutFragment.C
         } else {
             mFavoriteButton.setImageResource(R.drawable.favorite_black_border);
         }
-        Picasso.with(this).load("http://image.tmdb.org/t/p/w185//" + backdropUrl)
+        Picasso.with(this).load("http://image.tmdb.org/t/p/w500//" + backdropUrl)
                 .error(R.drawable.unavailable_backdrop)
                 .into(mHeaderImage);
+
     }
     /* Callback from ReviewsFragment */
     public void onDataSet(){

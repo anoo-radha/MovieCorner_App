@@ -31,13 +31,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public static final int COLUMN_MOVIE_ID = 1;
     public static final int COLUMN_POSTER_PATH = 2;
     public static final int COLUMN_MOVIE_RELEASEDATE = 3;
+    public static final int COLUMN_MOVIE_VOTE = 4;
     private static final int MOVIES_LOADER = 0;
     // Specify the columns we need from the database.
     private static final String[] MOVIES_COLUMNS = {
             MovieContract.TABLE_NAME + "." + MovieContract.MoviesEntry._ID,
             MovieContract.MoviesEntry.COLUMN_ID,
             MovieContract.MoviesEntry.COLUMN_POSTER_PATH,
-            MovieContract.MoviesEntry.COLUMN_RELEASE_DATE
+            MovieContract.MoviesEntry.COLUMN_RELEASE_DATE,
+            MovieContract.MoviesEntry.COLUMN_RATING
     };
     GridView gView;
     SharedPreferences sharedPref;

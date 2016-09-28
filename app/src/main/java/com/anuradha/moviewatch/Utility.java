@@ -27,7 +27,7 @@ public class Utility {
         if(t>0) {
             int hours = t / 60;
             int minutes = t % 60;
-            return (hours + "h " + minutes + "m");
+            return (hours + "hrs " + minutes + "m");
         }
         else{
             return "";
@@ -53,5 +53,49 @@ public class Utility {
     public static String getActualPosterPath(String mPosterPath) {
         final String BasePath = "http://image.tmdb.org/t/p/w185//";
         return BasePath + mPosterPath;
+    }
+
+    //get month name
+    public static String getMonthName(String month_num){
+        int month = Integer.parseInt(month_num);
+        switch(month){
+            case 1:
+                return "Jan";
+
+            case 2:
+                return "Feb";
+
+            case 3:
+                return "Mar";
+
+            case 4:
+                return "Apr";
+
+            case 5:
+                return "May";
+
+            case 6:
+                return "Jun";
+
+            case 7:
+                return "Jul";
+
+            case 8:
+                return "Aug";
+
+            case 9:
+                return "Sep";
+
+            case 10:
+                return "Oct";
+
+            case 11:
+                return "Nov";
+
+            case 12:
+                return "Dec";
+        }
+
+        return "";
     }
 }

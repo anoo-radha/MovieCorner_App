@@ -132,8 +132,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     /*
      * Handles all the actions for syncing between server and local databse. The entire
      * sync adapter runs in a background thread
-     * http://api.themoviedb.org/3/movie/upcoming?api_key=e7c3bd5e4b0f39897bb04ddb998b0f6d
-     * http://api.themoviedb.org/3/movie/upcoming?api_key=e7c3bd5e4b0f39897bb04ddb998b0f6d&page=2
+     * http://api.themoviedb.org/3/movie/upcoming?api_key=<api_key>
+     * http://api.themoviedb.org/3/movie/upcoming?api_key=<api_key>&page=2
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
@@ -154,12 +154,15 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 callAPI(uri);
 
                 //Get second page of movies for the sort order
-                uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                        .appendPath(sortOrder)
-                        .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
-                        .appendQueryParameter(PAGE_PARAM, "2")
-                        .build();
-                callAPI(uri);
+                for(int i=2;i<=10;i++) {
+                    uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                            .appendPath(sortOrder)
+                            .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
+                            .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
+                            .build();
+//                    Log.i(LOG_TAG,"uri "+ uri);
+                    callAPI(uri);
+                }
 
                 insertData(cVVector);
 
