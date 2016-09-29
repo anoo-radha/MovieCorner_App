@@ -3,10 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingEnd="@dimen/small_margin"
-    android:paddingLeft="@dimen/small_margin"
-    android:paddingRight="@dimen/small_margin"
-    android:paddingStart="@dimen/small_margin"
     app:cardCornerRadius="4dp"
     app:cardElevation="3dp"
     app:cardUseCompatPadding="true">
@@ -21,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/darker_gray"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
             android:text="@string/review_author" />
 
         <TextView

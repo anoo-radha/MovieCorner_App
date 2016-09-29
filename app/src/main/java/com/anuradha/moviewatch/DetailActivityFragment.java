@@ -282,7 +282,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                         genreList = "";
                                         for (int i = 0; i < movieExtrasPOJO.getGenres().length; i++) {
                                             genre[i] = (movieExtrasPOJO.getGenres())[i].getName();
-                                            genreList += genre[i] + ", ";
+                                            genreList += genre[i] + " - ";
 
                                         }
                                         genreList = genreList.substring(0, genreList.length() - 2);
@@ -393,7 +393,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                     if (mShareActionProvider != null) {
                                         mShareActionProvider.setShareIntent(createShareForecastIntent());
                                     }
-                                    mTrailerHeader.setVisibility(View.GONE);
+//                                    mTrailerHeader.setVisibility(View.GONE);
                                     mPosterPlayView.setVisibility(View.VISIBLE);
 
                                 } else {
@@ -514,7 +514,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 mHomepageView.setText(String.format(getResources().getString(R.string.homepage_tab),homepage));
             }
             String backdropPath = data.getString(COLUMN_BACKDROP_PATH);
-            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + backdropPath)
+            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w500//" + backdropPath)
                     .error(R.drawable.unavailable_backdrop)
                     .into(mHeaderImage);
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + posterPath)

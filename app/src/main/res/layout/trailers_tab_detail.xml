@@ -13,13 +13,14 @@
             android:id="@+id/trailer_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin ="@dimen/fab_margin"
+            android:layout_margin ="@dimen/activity_horizontal_margin"
             android:text="@string/trailers_header"
             android:textSize="20sp" />
 
         <com.anuradha.moviewatch.NonScrollableListView
             android:id="@+id/trailers_scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

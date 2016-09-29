@@ -16,6 +16,7 @@
         android:numColumns="auto_fit"
         android:columnWidth="110dp"
         android:stretchMode="columnWidth"
+        android:background="@color/divider"
         tools:context="com.anuradha.moviewatch.MainActivityFragment"
         tools:showIn="@layout/activity_main" />
     </android.support.v4.widget.SwipeRefreshLayout>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin">
+    android:padding="@dimen/activity_horizontal_margin">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/fab_margin">
+                android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
                     android:id="@+id/poster_imgview"
@@ -100,10 +100,10 @@
                 android:id="@+id/synopsis_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginLeft="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 android:text="@string/default_synopsis" />
@@ -111,11 +111,7 @@
                 android:id="@+id/homepage_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginLeft="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:layout_marginStart="@dimen/fab_margin"
-                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_margin ="@dimen/fab_margin"
                 android:textColorLink="@color/colorPrimaryDark"
                 android:textSize="14sp"
                 android:autoLink="web"/>
@@ -123,7 +119,10 @@
                 android:id="@+id/director"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:background="@color/accent"
                 android:text="@string/director"
                 android:textColor="@android:color/black"
@@ -134,10 +133,7 @@
                 android:id="@+id/director_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginLeft="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_margin ="@dimen/activity_horizontal_margin"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 tools:text="@string/default_rating" />
@@ -146,7 +142,10 @@
                 android:id="@+id/cast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:background="@color/accent"
                 android:text="@string/cast"
                 android:textColor="@android:color/black"
@@ -157,11 +156,7 @@
                 android:id="@+id/cast_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginLeft="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_margin ="@dimen/activity_horizontal_margin"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 tools:text="@string/default_rating" />

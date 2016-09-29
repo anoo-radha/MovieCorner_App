@@ -161,7 +161,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                         genreList = "";
                                         for (int i = 0; i < movieExtrasPOJO.getGenres().length; i++) {
                                             genre[i] = (movieExtrasPOJO.getGenres())[i].getName();
-                                            genreList += genre[i] + ", ";
+                                            genreList += genre[i] + " - ";
 
                                         }
                                         genreList = genreList.substring(0, genreList.length() - 2);
