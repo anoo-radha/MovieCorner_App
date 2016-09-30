@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:padding="@dimen/small_margin">
 
@@ -13,14 +13,15 @@
             android:id="@+id/trailer_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin ="@dimen/activity_horizontal_margin"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:text="@string/trailers_header"
             android:textSize="20sp" />
 
-        <com.anuradha.moviewatch.NonScrollableListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/trailers_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@android:color/transparent" />
+            android:layout_width="@dimen/recyclerview_width"
+            android:layout_height="520dp"
+            android:layout_margin="@dimen/fab_margin" />
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

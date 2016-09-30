@@ -318,7 +318,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                 mDirectorView.setText(director);
             }
             if ((homepage != null) && (homepage.equals(getResources().getString(R.string.not_available_sign)))) {
-                mHomepageView.setVisibility(View.GONE);
+                mHomepageView.setVisibility(View.INVISIBLE);
             } else {
                 mHomepageView.setText(String.format(getResources().getString(R.string.homepage),homepage));
             }

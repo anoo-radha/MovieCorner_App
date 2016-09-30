@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,11 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.anuradha.moviewatch.adapters.TrailerAdapter;
+import com.anuradha.moviewatch.adapters.TrailerRecyclerAdapter;
 import com.anuradha.moviewatch.async.RetrofitService;
 import com.anuradha.moviewatch.async.Trailer;
 import com.anuradha.moviewatch.async.TrailerPOJO;
@@ -39,12 +41,12 @@ public class TrailersFragment extends Fragment {
     ShareActionProvider mShareActionProvider;
     int movieId = 0;
     String mTitle;
-    private TrailerAdapter mTrailerAdapter;
+    private TrailerRecyclerAdapter mTrailerAdapter;
     //variables for UI views
 //    private RelativeLayout mPosterContainer;
     private ImageView mPosterPlayView, mBackdropView;
     private TextView mTrailerHeader;
-    private NonScrollableListView mTrailerList;
+    private RecyclerView mTrailerList;
 
     public TrailersFragment() {
         setHasOptionsMenu(true);
@@ -55,11 +57,13 @@ public class TrailersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.trailers_tab_detail, container, false);
         mTrailerHeader = (TextView) rootView.findViewById(R.id.trailer_header);
-        mTrailerList = (NonScrollableListView) rootView.findViewById(R.id.trailers_scroll);
+        mTrailerList = (RecyclerView) rootView.findViewById(R.id.trailers_scroll);
         mPosterPlayView = (ImageView) getActivity().findViewById(R.id.movie_poster_play);
         mBackdropView = (ImageView) getActivity().findViewById(R.id.backdrop_view);
-        Uri mUri = DetailActivity.uri;
+        mTrailerList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTrailerList.setItemAnimator(new DefaultItemAnimator());
 
+        Uri mUri = DetailActivity.uri;
         if (null != mUri) {
             movieId = MovieContract.MoviesEntry.getIdFromUri(mUri);
             // Getting the trailers using Retrofit Service
@@ -84,7 +88,7 @@ public class TrailersFragment extends Fragment {
                             if ((trailerPOJO != null)) {
                                 if ((trailerPOJO.getTrailers() != null) && (!trailerPOJO.getTrailers().isEmpty())) {
                                     trailers = trailerPOJO.getTrailers();
-                                    mTrailerAdapter = new TrailerAdapter(getActivity(), trailers);
+                                    mTrailerAdapter = new TrailerRecyclerAdapter(getActivity(), trailers);
                                     mTrailerList.setAdapter(mTrailerAdapter);
                                     if (mShareActionProvider != null) {
                                         mShareActionProvider.setShareIntent(createShareForecastIntent());
@@ -108,19 +112,13 @@ public class TrailersFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        mTrailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(position).getKey())));
-            }
-        });
+
         mBackdropView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if (trailers != null) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(0).getKey())));
+                            Uri.parse("http://www.youtube.com/watch?v=" + trailers.get(0).getKey())));
                 }
             }
         });

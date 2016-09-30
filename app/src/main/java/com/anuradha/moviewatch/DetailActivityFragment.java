@@ -13,6 +13,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -21,7 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anuradha.moviewatch.adapters.ReviewAdapter;
-import com.anuradha.moviewatch.adapters.TrailerAdapter;
+import com.anuradha.moviewatch.adapters.TrailerRecyclerAdapter;
 import com.anuradha.moviewatch.async.MovieExtrasPOJO;
 import com.anuradha.moviewatch.async.RetrofitService;
 import com.anuradha.moviewatch.async.Reviews;
@@ -96,7 +98,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     ShareActionProvider mShareActionProvider;
     int id, movieId = 0;
     String title, genreList, castList, mDirector, mRuntime, mHomepage;
-    private TrailerAdapter mTrailerAdapter;
+    private TrailerRecyclerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
     private boolean bFavorited = false;
     private boolean bReviewsFetched = false;
@@ -111,11 +113,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private TextView mRatingView;
     private TextView mTrailerHeader;
     private FloatingActionButton mFavIndicationBtn;
-    private NonScrollableListView mTrailerList;
+    private RecyclerView mTrailerList;
     private Button mReviewsBtn;
     private NonScrollableListView mReviewsList;
     private TextView mReviewView;
-//    private TextView mGenreHeader;
     private TextView mGenreView;
     private TextView mRuntimeHeader;
     private TextView mRuntimeView;
@@ -148,19 +149,20 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mRuntimeView = (TextView) rootView.findViewById(R.id.runtime_view);
         mCastView = (TextView) rootView.findViewById(R.id.cast_view);
         mDirectorView = (TextView) rootView.findViewById(R.id.director_view);
-//        mGenreHeader = (TextView) rootView.findViewById(R.id.genre);
         mRuntimeHeader = (TextView) rootView.findViewById(R.id.runtime);
         mCastHeader = (TextView) rootView.findViewById(R.id.cast);
         mDirectorHeader = (TextView) rootView.findViewById(R.id.director);
         mHomepageView = (TextView) rootView.findViewById(R.id.homepage_view);
         mFavIndicationBtn = (FloatingActionButton) rootView.findViewById(R.id.favorite_button);
         mTrailerHeader = (TextView) rootView.findViewById(R.id.trailer_header);
-        mTrailerList = (NonScrollableListView) rootView.findViewById(R.id.trailers_scroll);
+        mTrailerList = (RecyclerView) rootView.findViewById(R.id.trailers_scroll);
         mReviewsBtn = (Button) rootView.findViewById(R.id.reviews_btn);
         mReviewView = (TextView) rootView.findViewById(R.id.review_unavailable_view);
         mReviewsList = (NonScrollableListView) rootView.findViewById(R.id.reviews_scroll);
         mHeaderImage = (ImageView) rootView.findViewById(R.id.backdrop_view);
 
+        mTrailerList.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        mTrailerList.setItemAnimator(new DefaultItemAnimator());
         // if a poster is clicked in the main fragment, the detail fragment becomes visible
         if ((arguments != null) &&
                 (Utility.getFragmentResetOption(getActivity()).equals(getString(R.string.no_details_reset)))) {
@@ -200,17 +202,17 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             public void onClick(View v) {
                 if (trailers != null) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(0).getKey())));
+                            Uri.parse("http://www.youtube.com/watch?v=" + trailers.get(0).getKey())));
                 }
             }
             });
-        mTrailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(position).getKey())));
-            }
-        });
+//        mTrailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                startActivity(new Intent(Intent.ACTION_VIEW,
+//                        Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(position).getKey())));
+//            }
+//        });
         mReviewsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -388,17 +390,18 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                             if ((trailerPOJO != null)) {
                                 if ((trailerPOJO.getTrailers() != null) && (!trailerPOJO.getTrailers().isEmpty())) {
                                     trailers = trailerPOJO.getTrailers();
-                                    mTrailerAdapter = new TrailerAdapter(getActivity(), trailers);
+                                    mTrailerAdapter = new TrailerRecyclerAdapter(getActivity(), trailers);
                                     mTrailerList.setAdapter(mTrailerAdapter);
                                     if (mShareActionProvider != null) {
                                         mShareActionProvider.setShareIntent(createShareForecastIntent());
                                     }
-//                                    mTrailerHeader.setVisibility(View.GONE);
+//                                    Log.i(LOG_TAG,"in trailer success  "+trailers.size());
                                     mPosterPlayView.setVisibility(View.VISIBLE);
 
                                 } else {
                                     trailers = null;
                                     mTrailerHeader.setText(R.string.trailers_empty);
+                                    mTrailerList.setVisibility(View.GONE);
                                     menuItem.setVisible(false);
                                     mPosterContainer.setClickable(false);
                                 }

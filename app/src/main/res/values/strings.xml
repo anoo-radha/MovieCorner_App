@@ -8,8 +8,8 @@
     <string name="tab_reviews" translatable="false">Reviews</string>
     <string name="menu_favorites" translatable="false">My Favorites</string>
     <string name="menu_sort_by" translatable="false">Sort By</string>
-    <string name="menu_now_playing" translatable="false">Now Playing</string>
-    <string name="menu_upcoming" translatable="false">Upcoming</string>
+    <string name="menu_now_playing" translatable="false">In Theatres</string>
+    <string name="menu_upcoming" translatable="false">Releasing Soon</string>
     <string name="menu_top_rated" translatable="false">Top Rated</string>
     <string name="menu_most_popular" translatable="false">Most Popular</string>
     <string name="menu_communicate" translatable="false">Communicate</string>
@@ -32,14 +32,14 @@
     <string name="runtime" translatable="false">RUNTIME</string>
     <string name="runtime_tab" translatable="false">RUNTIME\t\t\t%1$s</string>
     <string name="director" translatable="false">DIRECTOR</string>
-    <string name="homepage" translatable="false">HOMEPAGE:\n%1$s</string>
+    <string name="homepage" translatable="false">HOMEPAGE\n%1$s</string>
     <string name="homepage_tab" translatable="false">HOMEPAGE\t\t%1$s</string>
     <string name="backdrop" translatable="false">Backdrop Image</string>
     <string name="cast" translatable="false">CAST</string>
     <string name="default_title" translatable="false">Title</string>
     <string name="default_rating" translatable="false"><b>%1$s</b>/10</string>
     <string name="default_release_date" translatable="false">2016</string>
-    <string name="trailers_header" translatable="false">TRAILERS:</string>
+    <string name="trailers_header" translatable="false">TRAILERS</string>
     <string name="reviews_header" translatable="false">Read Reviews</string>
     <string name="review_author" translatable="false">Review by %1$s</string>
     <string name="not_available_sign" translatable="false">-</string>

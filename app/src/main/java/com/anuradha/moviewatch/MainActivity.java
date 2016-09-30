@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements
         if (!sortBy.equals(mcurrentSortBy)) {
             sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
                     getString(R.string.details_reset)).apply();
-            if (mTwoPane){
+            if (mTwoPane) {
                 (findViewById(R.id.empty_movie_view)).setVisibility(View.VISIBLE);
             }
             if (null != mainFragment) {

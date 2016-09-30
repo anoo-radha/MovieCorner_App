@@ -96,6 +96,7 @@
                 android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
                 android:text="@string/default_synopsis"
                 android:textSize="14sp" />
 
@@ -107,7 +108,6 @@
                 android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
-                android:layout_marginTop="@dimen/fab_margin"
                 android:autoLink="web"
                 android:textColor="@color/primary_text"
                 android:textColorLink="@color/colorPrimaryDark"
@@ -142,7 +142,11 @@
                 android:id="@+id/director"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginLeft="@dimen/fab_margin"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginTop="@dimen/fab_margin"
                 android:background="@color/accent"
                 android:text="@string/director"
                 android:textColor="@android:color/black"
@@ -157,6 +161,7 @@
                 android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 tools:text="@string/default_rating" />
@@ -165,7 +170,11 @@
                 android:id="@+id/cast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginLeft="@dimen/fab_margin"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginTop="@dimen/small_margin"
                 android:background="@color/accent"
                 android:text="@string/cast"
                 android:textColor="@android:color/black"
@@ -182,7 +191,7 @@
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
                 android:textColor="@color/primary_text"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 tools:text="@string/default_rating" />
 
             <View
@@ -205,12 +214,23 @@
                 android:textAllCaps="true"
                 android:textSize="14sp" />
 
-            <com.anuradha.moviewatch.NonScrollableListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/trailers_scroll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_vertical_margin"
-                android:divider="@android:color/transparent" />
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginLeft="@dimen/fab_margin"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:scrollbars="horizontal" />
+
+            <!--<com.anuradha.moviewatch.NonScrollableListView-->
+                <!--android:id="@+id/trailers_scroll"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="@dimen/activity_vertical_margin"-->
+                <!--android:divider="@android:color/transparent" />-->
 
             <View
                 android:layout_width="match_parent"
