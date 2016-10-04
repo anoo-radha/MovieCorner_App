@@ -9,7 +9,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -303,20 +302,22 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 }else {
                     sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
                 }
-                Cursor movieCursor = getContext().getContentResolver().query(
-                        MovieContract.MoviesEntry.buildMovieUri(id),
-                        new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
-                        null,
-                        null,
-                        null);
-                //set the favorites image if the movie is in the favorites database
-                if (movieCursor != null && movieCursor.moveToFirst()) {
-                    favorited = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION));
-                } else {
-                    favorited = 0;
-                }
-                if (movieCursor != null)
-                    movieCursor.close();
+//                Cursor movieCursor = getContext().getContentResolver().query(
+//                        MovieContract.MoviesEntry.buildMovieUri(id),
+//                        new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
+//                        null,
+//                        null,
+//                        null);
+//                //set the favorites to 1 if the movie is in the favorites database
+//                if (movieCursor != null && movieCursor.moveToFirst()) {
+//                    favorited = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION));
+//                } else {
+//                    favorited = 0;
+//                }
+
+                favorited = 0;
+//                if (movieCursor != null)
+//                    movieCursor.close();
                 ContentValues movieValues = new ContentValues();
 
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_ID, id);

@@ -178,13 +178,13 @@ public class MovieProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        int updated_count = db.update(MovieContract.TABLE_NAME, value, movieIdSelection,
-                                new String[]{(value.getAsInteger(MovieContract.MoviesEntry.COLUMN_ID)).toString()});
-                        if (updated_count == 0) {
+//                        int updated_count = db.update(MovieContract.TABLE_NAME, value, movieIdSelection,
+//                                new String[]{(value.getAsInteger(MovieContract.MoviesEntry.COLUMN_ID)).toString()});
+//                        if (updated_count == 0) {
                             long _id = db.insert(MovieContract.TABLE_NAME, null, value);
                             if (_id != -1) {
                                 returnCount++;
-                            }
+//                            }
                         }
                     }
                     db.setTransactionSuccessful();

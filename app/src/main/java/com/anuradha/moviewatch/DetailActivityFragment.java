@@ -96,7 +96,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     List<Reviews> reviews;
     RetrofitService service;
     ShareActionProvider mShareActionProvider;
-    int id, movieId = 0;
+    int id, column_id, movieId = 0;
     String title, genreList, castList, mDirector, mRuntime, mHomepage;
     private TrailerRecyclerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
@@ -469,7 +469,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         if (data != null && data.moveToFirst()) {
-
             id = data.getInt(COLUMN_MOVIE_ID);
             String synopsis = data.getString(COLUMN_SYNOPSIS);
             title = data.getString(COLUMN_TITLE);
@@ -477,7 +476,25 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             String date = data.getString(COLUMN_RELEASE_DATE);
             String[] releaseDate = date.split(getString(R.string.delimiter));
             float rating = data.getFloat(COLUMN_RATING);
-            int fav = data.getInt(COLUMN_FAVORITE_INDICATION);
+
+//            int fav = data.getInt(COLUMN_FAVORITE_INDICATION);
+            int fav;
+            Cursor movieCursor = getContext().getContentResolver().query(
+                    MovieContract.MoviesEntry.buildMovieUri(id),
+                    new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
+                    null,
+                    null,
+                    null);
+                //set the favorites to 1 if the movie is in the favorites database
+                if (movieCursor != null && movieCursor.moveToFirst()) {
+                    fav = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION));
+                } else {
+                    fav = 0;
+                }
+
+
+
+
             String posterPath = data.getString(COLUMN_POSTER_PATH);
             String genre = data.getString(COLUMN_GENRE);
             String runtime = data.getString(COLUMN_RUNTIME);
@@ -531,12 +548,26 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         }
         // if the favorite button is clicked, it is updated in the database and
         // the button is toggled accordingly
+
+//        TEST
         mFavIndicationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ContentValues favoritesValues = new ContentValues();
                 if (bFavorited) {
                     // update movie as not favorite
+
+                    Cursor movieCursor = getContext().getContentResolver().query(
+                            MovieContract.MoviesEntry.buildMovieUri(id),
+                            new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
+                            null,
+                            null,
+                            null);
+                    if (movieCursor != null && movieCursor.moveToFirst()) {
+                        column_id = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry._ID));
+                    }
+
+
                     favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.NOT_FAVORITE_INDICATOR);
                     bFavorited = false;
                     mFavIndicationBtn.setImageResource(R.drawable.favorite_black_border);
@@ -561,11 +592,48 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                         1, null,
                         MovieContract.MoviesEntry.CONTENT_URI,
                         favoritesValues,
-                        MovieContract.MoviesEntry.COLUMN_ID + " = ?",
-                        new String[]{Integer.toString(id)}
+                        MovieContract.MoviesEntry._ID + " = ?",
+                        new String[]{Integer.toString(column_id)}
                 );
             }
         });
+
+
+//        mFavIndicationBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ContentValues favoritesValues = new ContentValues();
+//                if (bFavorited) {
+//                    // update movie as not favorite
+//                    favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.NOT_FAVORITE_INDICATOR);
+//                    bFavorited = false;
+//                    mFavIndicationBtn.setImageResource(R.drawable.favorite_black_border);
+//                    Toast.makeText(getActivity(), getString(R.string.not_favorite_movie), Toast.LENGTH_SHORT).show();
+//                } else {
+//                    // update movie as favorite
+//                    favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.FAVORITE_INDICATOR);
+//                    bFavorited = true;
+//                    mFavIndicationBtn.setImageResource(R.drawable.favorite_black);
+//                    Toast.makeText(getActivity(), getString(R.string.favorite_movie), Toast.LENGTH_SHORT).show();
+//                }
+//                // Using AsyncQueryHandler object for querying content provider in the background,
+//                // instead of from the UI thread
+//                AsyncQueryHandler queryHandler = new AsyncQueryHandler(getActivity().getContentResolver()) {
+//                    @Override
+//                    protected void onUpdateComplete(int token, Object cookie, int result) {
+//                        super.onUpdateComplete(token, cookie, result);
+//                    }
+//                };
+//                // Construct query and execute
+//                queryHandler.startUpdate(
+//                        1, null,
+//                        MovieContract.MoviesEntry.CONTENT_URI,
+//                        favoritesValues,
+//                        MovieContract.MoviesEntry.COLUMN_ID + " = ?",
+//                        new String[]{Integer.toString(id)}
+//                );
+//            }
+//        });
     }
 
 
