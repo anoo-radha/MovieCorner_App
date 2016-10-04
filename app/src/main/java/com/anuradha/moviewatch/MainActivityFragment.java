@@ -13,21 +13,25 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anuradha.moviewatch.adapters.MoviePosterAdapter;
+import com.anuradha.moviewatch.adapters.MovieAdapter;
 import com.anuradha.moviewatch.database.MovieContract;
 import com.anuradha.moviewatch.sync.MovieSyncAdapter;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static String LOG_TAG = MainActivityFragment.class.getSimpleName();
     public static final int COLUMN_MOVIE_ID = 1;
     public static final int COLUMN_POSTER_PATH = 2;
     public static final int COLUMN_MOVIE_RELEASEDATE = 3;
@@ -41,12 +45,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             MovieContract.MoviesEntry.COLUMN_RELEASE_DATE,
             MovieContract.MoviesEntry.COLUMN_RATING
     };
-    GridView gView;
-    SharedPreferences sharedPref;
+    private RecyclerView gView;
     private TextView mNoNetworkView;
     private ProgressWheel progressView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private MoviePosterAdapter mMovieAdapter = null;
+    SharedPreferences sharedPref;
+    private MovieAdapter mMovieAdapter = null;
     private int mPosition = GridView.INVALID_POSITION;
 
     public MainActivityFragment() {
@@ -57,9 +61,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mMovieAdapter = new MoviePosterAdapter(getActivity(), null, 0);
+//        mMovieAdapter = new MovieAdapter(getActivity(), null);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        gView = (GridView) rootView.findViewById(R.id.posters_grid);
+        gView = (RecyclerView) rootView.findViewById(R.id.posters_grid);
+
         mNoNetworkView = (TextView) rootView.findViewById(R.id.network_msg_view);
         progressView = (ProgressWheel) rootView.findViewById(R.id.progress_wheel);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.main_swipe_refresh);
@@ -73,21 +78,23 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         progressView.setVisibility(View.VISIBLE);
-
-        gView.setAdapter(mMovieAdapter);
-        gView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if (cursor != null) {
-                    sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
-                            getString(R.string.no_details_reset)).apply();
-                    ((Callback) getActivity()).onItemSelected(MovieContract.MoviesEntry.buildDetailsWithId(
-                            cursor.getInt(COLUMN_MOVIE_ID)));
-                }
-                mPosition = position;
-            }
-        });
+        int mNoOfColumns = Utility.calculateNoOfColumns(getContext());
+        gView.setLayoutManager(new GridLayoutManager(getActivity(),mNoOfColumns));
+        gView.setItemAnimator(new DefaultItemAnimator());
+//        gView.setAdapter(mMovieAdapter);
+//        gView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+//                if (cursor != null) {
+//                    sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
+//                            getString(R.string.no_details_reset)).apply();
+//                    ((Callback) getActivity()).onItemSelected(MovieContract.MoviesEntry.buildDetailsWithId(
+//                            cursor.getInt(COLUMN_MOVIE_ID)));
+//                }
+//                mPosition = position;
+//            }
+//        });
         if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.selected_position))) {
             // The gridview probably hasn't even been populated yet.  Actually perform the
             // swapout in onLoadFinished.
@@ -148,8 +155,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
             } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])) {
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
-            } else {
+            } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])){
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
+            } else {
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
             }
             uri = MovieContract.MoviesEntry.buildMoviesWithSortorder(sortOrder);
         }
@@ -163,6 +172,21 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mMovieAdapter = new MovieAdapter(getActivity(), data, new MovieAdapter.MovieAdapterOnClickHandler() {
+            @Override
+            public void onClick(int movieId, MovieAdapter.MovieAdapterViewHolder vh) {
+//                ((Callback) getActivity())
+//                        .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+//                                locationSetting, date), vh);
+                sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
+                        getString(R.string.no_details_reset)).apply();
+                Log.i(LOG_TAG,"movieId "+movieId);
+                ((Callback) getActivity()).onItemSelected(MovieContract.MoviesEntry.buildDetailsWithId(
+                        movieId));
+                mPosition = vh.getAdapterPosition();
+            }
+        });
+        gView.setAdapter(mMovieAdapter);
         progressView.setVisibility(View.GONE);
         if (Utility.getPreferredSortOption(getActivity())
                 .equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {

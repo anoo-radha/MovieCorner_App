@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.anuradha.moviewatch.async.MovieExtrasPOJO;
 import com.anuradha.moviewatch.async.RetrofitService;
@@ -90,7 +89,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     private TextView mDirectorView;
     private TextView mHomepageView;
     private FloatingActionButton mFavIndicationBtn;
-    private ImageView mHeaderImage;
+//    private ImageView mHeaderImage;
 
     public AboutFragment() {
         setHasOptionsMenu(true);
@@ -115,7 +114,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
         mDirectorHeader = (TextView) rootView.findViewById(R.id.director);
         mHomepageView = (TextView) rootView.findViewById(R.id.homepage_view);
         mFavIndicationBtn = (FloatingActionButton) getActivity().findViewById(R.id.favorite_button);
-        mHeaderImage = (ImageView) getActivity().findViewById(R.id.backdrop_view);
+//        mHeaderImage = (ImageView) getActivity().findViewById(R.id.backdrop_view);
 
         mUri = DetailActivity.uri;
 
@@ -339,43 +338,6 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
             }
             setFavoritesButton(mFavIndicationBtn, fav);
         }
-        // if the favorite button is clicked, it is updated in the database and
-        // the button is toggled accordingly
-        mFavIndicationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ContentValues favoritesValues = new ContentValues();
-                if (bFavorited) {
-                    // update movie as not favorite
-                    favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.NOT_FAVORITE_INDICATOR);
-                    bFavorited = false;
-                    mFavIndicationBtn.setImageResource(R.drawable.favorite_black_border);
-                    Toast.makeText(getActivity(), getString(R.string.not_favorite_movie), Toast.LENGTH_SHORT).show();
-                } else {
-                    // update movie as favorite
-                    favoritesValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, MovieContract.FAVORITE_INDICATOR);
-                    bFavorited = true;
-                    mFavIndicationBtn.setImageResource(R.drawable.favorite_black);
-                    Toast.makeText(getActivity(), getString(R.string.favorite_movie), Toast.LENGTH_SHORT).show();
-                }
-                // Using AsyncQueryHandler object for querying content provider in the background,
-                // instead of from the UI thread
-                AsyncQueryHandler queryHandler = new AsyncQueryHandler(getActivity().getContentResolver()) {
-                    @Override
-                    protected void onUpdateComplete(int token, Object cookie, int result) {
-                        super.onUpdateComplete(token, cookie, result);
-                    }
-                };
-                // Construct query and execute
-                queryHandler.startUpdate(
-                        1, null,
-                        MovieContract.MoviesEntry.CONTENT_URI,
-                        favoritesValues,
-                        MovieContract.MoviesEntry.COLUMN_ID + " = ?",
-                        new String[]{Integer.toString(id)}
-                );
-            }
-        });
         ((CallbackForData) getActivity()).onDataPass(title, bFavorited, backdropPath);
     }
 

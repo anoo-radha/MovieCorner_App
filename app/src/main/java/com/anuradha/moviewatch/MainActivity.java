@@ -188,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements
             sharedPref.edit().putString(getString(R.string.pref_sort_key),
                     getResources().getStringArray(R.array.sort_values)[4]).apply();
 
+        } else if (id == R.id.nav_kids_movies) {
+            sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                    getResources().getStringArray(R.array.sort_values)[5]).apply();
         } else if (id == R.id.nav_share) {
             Intent intent_share = new Intent(Intent.ACTION_SEND);
             intent_share.setType("text/plain");

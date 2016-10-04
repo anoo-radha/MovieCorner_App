@@ -12,6 +12,7 @@
     <string name="menu_upcoming" translatable="false">Releasing Soon</string>
     <string name="menu_top_rated" translatable="false">Top Rated</string>
     <string name="menu_most_popular" translatable="false">Most Popular</string>
+    <string name="menu_kids_movies" translatable="false">Kids Movies</string>
     <string name="menu_communicate" translatable="false">Communicate</string>
     <string name="menu_comment" translatable="false">Comment</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
@@ -53,26 +54,20 @@
     <string name="no_favorites" translatable="false">No Favourites found</string>
     <string name="favorite_movie" translatable="false">Saved as favorite</string>
     <string name="not_favorite_movie" translatable="false">"Not favorite anymore"</string>
-    <string name="base_url" translatable="false">"http://api.themoviedb.org/3/movie/"</string>
+    <string name="base_url" translatable="false">"http://api.themoviedb.org/3/"</string>
     <string name="base_poster_path" translatable="false">"http://image.tmdb.org/t/p/w185//"</string>
     <string name="query_param" translatable="false">sort_by</string>
     <string name="api_key" translatable="false">api_key</string>
     <string name="page" translatable="false">page</string>
     <string name="title_activity_detail" translatable="false">MovieDetail</string>
     <string name="delimiter" translatable="false">-</string>
-    <string-array name="sort_entries" translatable="false">
-        <item>My Favorites</item>
-        <item>Now Playing</item>
-        <item>Upcoming</item>
-        <item>Top Rated</item>
-        <item>Most Popular</item>
-    </string-array>
     <string-array name="sort_values" translatable="false">
         <item>favorites</item>
         <item>now_playing</item>
         <item>upcoming</item>
         <item>top_rated</item>
         <item>popular</item>
+        <item>kids_movies</item>
     </string-array>
     <string name="most_popular_sort_order" translatable="false">popular</string>
     <string name="highly_rated_sort_order" translatable="false">top_rated</string>

@@ -3,6 +3,7 @@ package com.anuradha.moviewatch;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 
 import retrofit.RetrofitError;
 
@@ -54,7 +55,12 @@ public class Utility {
         final String BasePath = "http://image.tmdb.org/t/p/w185//";
         return BasePath + mPosterPath;
     }
-
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 110);
+        return noOfColumns;
+    }
     //get month name
     public static String getMonthName(String month_num){
         int month = Integer.parseInt(month_num);

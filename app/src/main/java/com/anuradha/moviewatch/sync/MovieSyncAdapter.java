@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.anuradha.moviewatch.BuildConfig;
 import com.anuradha.moviewatch.R;
@@ -134,6 +135,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
      * sync adapter runs in a background thread
      * http://api.themoviedb.org/3/movie/upcoming?api_key=<api_key>
      * http://api.themoviedb.org/3/movie/upcoming?api_key=<api_key>&page=2
+     * * for kids movie http://api.themoviedb.org/3/discover/movie?certification_country=US&certification.lte=PG&api_key=<api_key>
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
@@ -142,32 +144,62 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         cVVector = null;
         final String MOVIES_BASE_URL = getContext().getString(R.string.base_url);
+        final String KIDS_MOVIES_BASE_URL ="http://api.themoviedb.org/3/discover/movie?certification_country=US&certification.lte=PG";
+        final String MOVIE_PARAM = "movie";
         final String APPID_PARAM = getContext().getString(R.string.api_key);
         final String PAGE_PARAM = getContext().getString(R.string.page);
         if (!sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {
-            try {
+            if (sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[5])) {
+                try {
 
-                Uri uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                        .appendPath(sortOrder)
-                        .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
-                        .build();
-                callAPI(uri);
+                    Uri uri = Uri.parse(KIDS_MOVIES_BASE_URL).buildUpon()
+                            .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
+                            .build();
+                    Log.i(LOG_TAG,"uri "+ uri);
+                    callAPI(uri);
 
-                //Get second page of movies for the sort order
-                for(int i=2;i<=10;i++) {
-                    uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                    //Get second page of movies for the sort order
+                    for (int i = 2; i <= 10; i++) {
+                        uri = Uri.parse(KIDS_MOVIES_BASE_URL).buildUpon()
+                                .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
+                                .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
+                                .build();
+                        Log.i(LOG_TAG,"uri "+ uri);
+                        callAPI(uri);
+                    }
+
+                    insertData(cVVector);
+
+                } catch (Exception e) {
+//                Log.e(LOG_TAG, "Error ", e);
+                }
+            } else {
+                try {
+
+                    Uri uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                            .appendPath(MOVIE_PARAM)
                             .appendPath(sortOrder)
                             .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
-                            .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
                             .build();
-//                    Log.i(LOG_TAG,"uri "+ uri);
                     callAPI(uri);
-                }
 
-                insertData(cVVector);
+                    //Get second page of movies for the sort order
+                    for (int i = 2; i <= 10; i++) {
+                        uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                                .appendPath(MOVIE_PARAM)
+                                .appendPath(sortOrder)
+                                .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
+                                .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
+                                .build();
+                        Log.i(LOG_TAG, "uri " + uri);
+                        callAPI(uri);
+                    }
 
-            } catch (Exception e) {
+                    insertData(cVVector);
+
+                } catch (Exception e) {
 //                Log.e(LOG_TAG, "Error ", e);
+                }
             }
         }
 
@@ -266,8 +298,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
                 } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])) {
                     sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
-                } else {
+                } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])) {
                     sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
+                }else {
+                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
                 }
                 Cursor movieCursor = getContext().getContentResolver().query(
                         MovieContract.MoviesEntry.buildMovieUri(id),

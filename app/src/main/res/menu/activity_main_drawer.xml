@@ -21,7 +21,9 @@
             <item
                 android:id="@+id/nav_popular"
                 android:title="@string/menu_most_popular" />
-
+            <item
+                android:id="@+id/nav_kids_movies"
+                android:title="@string/menu_kids_movies" />
         </menu>
 
     </item>
