@@ -16,7 +16,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,24 +76,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         });
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        progressView.setVisibility(View.VISIBLE);
         int mNoOfColumns = Utility.calculateNoOfColumns(getContext());
         gView.setLayoutManager(new GridLayoutManager(getActivity(),mNoOfColumns));
         gView.setItemAnimator(new DefaultItemAnimator());
-//        gView.setAdapter(mMovieAdapter);
-//        gView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-//                if (cursor != null) {
-//                    sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
-//                            getString(R.string.no_details_reset)).apply();
-//                    ((Callback) getActivity()).onItemSelected(MovieContract.MoviesEntry.buildDetailsWithId(
-//                            cursor.getInt(COLUMN_MOVIE_ID)));
-//                }
-//                mPosition = position;
-//            }
-//        });
         if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.selected_position))) {
             // The gridview probably hasn't even been populated yet.  Actually perform the
             // swapout in onLoadFinished.
@@ -120,6 +104,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         } else {
             updateMovieList();
         }
+
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
 
     }
@@ -133,6 +118,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             mNoNetworkView.setVisibility(View.GONE);
+            progressView.setVisibility(View.GONE);
             MovieSyncAdapter.syncImmediately(getActivity());
         } else {
             mNoNetworkView.setVisibility(View.VISIBLE);
@@ -175,19 +161,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mMovieAdapter = new MovieAdapter(getActivity(), data, new MovieAdapter.MovieAdapterOnClickHandler() {
             @Override
             public void onClick(int movieId, MovieAdapter.MovieAdapterViewHolder vh) {
-//                ((Callback) getActivity())
-//                        .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-//                                locationSetting, date), vh);
                 sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
                         getString(R.string.no_details_reset)).apply();
-                Log.i(LOG_TAG,"movieId "+movieId);
+//                Log.i(LOG_TAG,"movieId "+movieId);
                 ((Callback) getActivity()).onItemSelected(MovieContract.MoviesEntry.buildDetailsWithId(
                         movieId));
                 mPosition = vh.getAdapterPosition();
             }
         });
         gView.setAdapter(mMovieAdapter);
-        progressView.setVisibility(View.GONE);
+        progressView.setVisibility(View.VISIBLE);
         if (Utility.getPreferredSortOption(getActivity())
                 .equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
             boolean isEmpty = data.getCount() < 1;
@@ -195,10 +178,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 if(getActivity().findViewById(R.id.empty_movie_view)!=null) {
                     getActivity().findViewById(R.id.empty_movie_view).setVisibility(View.GONE);
                 }
+                progressView.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), getContext().getResources().getString(R.string.no_favorites), Toast.LENGTH_LONG).show();
             }
         }
         mMovieAdapter.swapCursor(data);
+        progressView.setVisibility(View.GONE);
         if (mPosition != GridView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore
             // to, do so now.

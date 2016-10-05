@@ -4,7 +4,6 @@ package com.anuradha.moviewatch.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         @Override
         public void onClick(View v) {
-            Log.i(LOG_TAG,"in onclick");
+//            Log.i(LOG_TAG,"in onclick");
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
             int movieId = mCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_ID);

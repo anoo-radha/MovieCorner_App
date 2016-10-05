@@ -16,8 +16,10 @@
             android:layout_margin="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:text="@string/reviews_empty"
-            android:textSize="20sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColor="@color/primary_text"
+            android:textAllCaps="true"
+            android:textSize="14sp"/>
 
         <com.anuradha.moviewatch.NonScrollableListView
             android:id="@+id/reviews_scroll"

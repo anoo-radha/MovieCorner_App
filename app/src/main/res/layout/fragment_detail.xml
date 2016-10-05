@@ -222,7 +222,6 @@
                 android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
-                android:layout_marginBottom="@dimen/fab_margin"
                 android:scrollbars="horizontal" />
 
             <!--<com.anuradha.moviewatch.NonScrollableListView-->
@@ -258,7 +257,9 @@
                 android:layout_margin="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:text="@string/reviews_empty"
-                android:textSize="20sp"
+                android:textColor="@color/primary_text"
+                android:textAllCaps="true"
+                android:textSize="14sp"
                 android:visibility="gone" />
 
             <com.anuradha.moviewatch.NonScrollableListView

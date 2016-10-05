@@ -11,7 +11,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -216,7 +215,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                     if(mHomepage.equals("")){
                                         mHomepage = getResources().getString(R.string.not_available_sign);
                                     }
-                                    Log.i(LOG_TAG, "home page is  "+ mHomepage);
+//                                    Log.i(LOG_TAG, "home page is  "+ mHomepage);
                                 } else {
                                     mHomepage = getResources().getString(R.string.not_available_sign);
                                 }

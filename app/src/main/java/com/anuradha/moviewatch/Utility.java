@@ -56,11 +56,18 @@ public class Utility {
         return BasePath + mPosterPath;
     }
     public static int calculateNoOfColumns(Context context) {
+        int noOfColumns;
+        final int column_width = (int) context.getResources().getDimension(R.dimen.column_width);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int noOfColumns = (int) (dpWidth / 110);
+            noOfColumns = (int) (dpWidth / (column_width ));
+        if(noOfColumns == 0){
+//            Log.i("Utility", "no of columns  "+noOfColumns);
+            noOfColumns = 2;
+        }
         return noOfColumns;
     }
+
     //get month name
     public static String getMonthName(String month_num){
         int month = Integer.parseInt(month_num);

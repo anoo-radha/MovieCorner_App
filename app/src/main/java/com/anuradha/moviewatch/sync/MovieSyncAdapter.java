@@ -9,10 +9,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.anuradha.moviewatch.BuildConfig;
 import com.anuradha.moviewatch.R;
@@ -154,7 +154,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     Uri uri = Uri.parse(KIDS_MOVIES_BASE_URL).buildUpon()
                             .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                             .build();
-                    Log.i(LOG_TAG,"uri "+ uri);
+//                    Log.i(LOG_TAG,"uri "+ uri);
                     callAPI(uri);
 
                     //Get second page of movies for the sort order
@@ -163,7 +163,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                                 .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                                 .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
                                 .build();
-                        Log.i(LOG_TAG,"uri "+ uri);
+//                        Log.i(LOG_TAG,"uri "+ uri);
                         callAPI(uri);
                     }
 
@@ -190,7 +190,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                                 .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                                 .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
                                 .build();
-                        Log.i(LOG_TAG, "uri " + uri);
+//                        Log.i(LOG_TAG, "uri " + uri);
                         callAPI(uri);
                     }
 
@@ -302,22 +302,20 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 }else {
                     sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
                 }
-//                Cursor movieCursor = getContext().getContentResolver().query(
-//                        MovieContract.MoviesEntry.buildMovieUri(id),
-//                        new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
-//                        null,
-//                        null,
-//                        null);
-//                //set the favorites to 1 if the movie is in the favorites database
-//                if (movieCursor != null && movieCursor.moveToFirst()) {
-//                    favorited = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION));
-//                } else {
-//                    favorited = 0;
-//                }
-
-                favorited = 0;
-//                if (movieCursor != null)
-//                    movieCursor.close();
+                Cursor movieCursor = getContext().getContentResolver().query(
+                        MovieContract.MoviesEntry.buildMovieUri(id),
+                        new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
+                        null,
+                        null,
+                        null);
+                //set the favorites to 1 if the movie is in the favorites database
+                if (movieCursor != null && movieCursor.moveToFirst()) {
+                    favorited = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION));
+                } else {
+                    favorited = 0;
+                }
+                if (movieCursor != null)
+                    movieCursor.close();
                 ContentValues movieValues = new ContentValues();
 
                 movieValues.put(MovieContract.MoviesEntry.COLUMN_ID, id);
