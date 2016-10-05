@@ -79,4 +79,6 @@
     <string name="email_id" translatable="false">anoo_radha@outlook.com</string>
     <string name="choose_one" translatable="false"> choose one </string>
     <string name="no_mail_apps" translatable="false">No applications to support email!</string>
+    <!--Muzei-->
+    <string name="muzei_description">Today\'s poster</string>
 </resources>

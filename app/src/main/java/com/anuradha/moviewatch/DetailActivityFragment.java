@@ -2,9 +2,11 @@ package com.anuradha.moviewatch;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +41,8 @@ import com.anuradha.moviewatch.async.ReviewsPOJO;
 import com.anuradha.moviewatch.async.Trailer;
 import com.anuradha.moviewatch.async.TrailerPOJO;
 import com.anuradha.moviewatch.database.MovieContract;
+import com.anuradha.moviewatch.muzei.MovieMuzeiSource;
+import com.anuradha.moviewatch.sync.MovieSyncAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -566,6 +569,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                         MovieContract.MoviesEntry.COLUMN_ID + " = ?",
                         new String[]{Integer.toString(id)}
                 );
+                updateMuzei();
             }
         });
 
@@ -585,7 +589,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             favoritesButton.setImageResource(R.drawable.favorite_black_border);
         }
     }
-
+    private void updateMuzei() {
+        // Muzei is only compatible with Jelly Bean MR1+ devices, so there's no need to update the
+        // Muzei background on lower API level devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Context context = getContext();
+            context.startService(new Intent(MovieSyncAdapter.ACTION_DATA_UPDATED)
+                    .setClass(context, MovieMuzeiSource.class));
+        }
+    }
     @Override
     public void onSaveInstanceState(Bundle outState) {
         // When tablets rotate, the review button state have to be preserved.

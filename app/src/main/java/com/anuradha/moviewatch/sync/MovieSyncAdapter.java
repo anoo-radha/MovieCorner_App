@@ -7,6 +7,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import com.anuradha.moviewatch.BuildConfig;
 import com.anuradha.moviewatch.R;
 import com.anuradha.moviewatch.Utility;
 import com.anuradha.moviewatch.database.MovieContract;
+import com.anuradha.moviewatch.muzei.MovieMuzeiSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +38,8 @@ import java.util.Vector;
  * app, using the Android sync adapter framework.
  */
 public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
-
+    public static final String ACTION_DATA_UPDATED =
+            "com.anuradha.moviewatch.app.ACTION_DATA_UPDATED";
     // Interval at which to sync with the movie data, in seconds (6 hours)
     public static final int SYNC_INTERVAL = 60 * 360;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
@@ -349,5 +352,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             getContext().getContentResolver().bulkInsert(MovieContract.MoviesEntry.CONTENT_URI, cvArray);
         }
 //            Log.i(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
+//        updateMuzei();
     }
+
 }
