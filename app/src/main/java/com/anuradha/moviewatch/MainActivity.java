@@ -241,6 +241,10 @@ public class MainActivity extends AppCompatActivity implements
                 Intent intent1 = new Intent(this, AboutMenu.class);
                 startActivity(intent1);
                 break;
+            case R.id.action_settings: {
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
