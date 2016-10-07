@@ -80,15 +80,19 @@
     <string name="email_id" translatable="false">anoo_radha@outlook.com</string>
     <string name="choose_one" translatable="false"> choose one </string>
     <string name="no_mail_apps" translatable="false">No applications to support email!</string>
-    <!--Muzei-->
-    <string name="muzei_description">Today\'s poster</string>
+    <!-- Muzei -->
+    <string name="muzei_description" translatable="false">Today\'s poster</string>
     <!-- Notification Format -->
     <string name="format_notification">Opening Today: <xliff:g id="title">%1$s</xliff:g> Genre: <xliff:g id="genre">%2$s</xliff:g> </string>
     <!-- Strings related to Notification preference -->
-    <string name="pref_last_notification">last_notification</string>
+    <string name="pref_last_notification" translatable="false">last_notification</string>
     <string name="pref_enable_notifications_key" translatable="false">enable_notifications</string>
-    <string name="pref_enable_notifications_label">Movie Notifications</string>
-    <string name="pref_enable_notifications_true">Enabled</string>
-    <string name="pref_enable_notifications_false">Not Enabled</string>
+    <string name="pref_enable_notifications_label" translatable="false">Movie Notifications</string>
+    <string name="pref_enable_notifications_true" translatable="false">Enabled</string>
+    <string name="pref_enable_notifications_false" translatable="false">Not Enabled</string>
     <string name="pref_enable_notifications_default" translatable="false">true</string>
+    <!-- Widget -->
+    <string name="widget_title" translatable="false">BoxOffice Top Ten</string>
+    <string name="widget_name" translatable="false"> MovieWatch</string>
+    <string name="empty_widget" translatable="false">Oops! No movies for the selected genre </string>
 </resources>

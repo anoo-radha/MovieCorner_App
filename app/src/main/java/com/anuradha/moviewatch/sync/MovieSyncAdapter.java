@@ -50,15 +50,17 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             "com.anuradha.moviewatch.app.ACTION_DATA_UPDATED";
     // Interval at which to sync with the movie data, in seconds (6 hours)
 //    public static final int SYNC_INTERVAL = 60 * 360;
-    //TRYING EVERY 5 minutes
-    public static final int SYNC_INTERVAL = 60 * 5;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
+    //TRYING EVERY  1 hr
+    private static final int SYNC_INTERVAL = 60 * 60;
+    private static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private Vector<ContentValues> cVVector;
     private final Context mContext;
 
     //For Notification
-    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-    private static final int MOVIE_NOTIFICATION_ID = 3004;
+//    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+//    TRYING 30 min notification
+    private static final long DAY_IN_MILLIS = 1000 * 60 * 30;
+    private static final int MOVIE_NOTIFICATION_ID = 3007;
     private static final String[] NOTIFY_PROJECTION = new String[]{
             MovieContract.MoviesEntry.COLUMN_ID,
             MovieContract.MoviesEntry.COLUMN_TITLE,
@@ -173,9 +175,17 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String MOVIE_PARAM = "movie";
         final String APPID_PARAM = getContext().getString(R.string.api_key);
         final String PAGE_PARAM = getContext().getString(R.string.page);
-        getMoviesInTheaters();
-        insertData(cVVector);
-        cVVector = null;
+
+        String lastNotificationKey = getContext().getString(R.string.pref_last_notification);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        long lastSync = prefs.getLong(lastNotificationKey, 0);
+        //checking 2 minutes before, incase data takes some time
+        if (System.currentTimeMillis() - lastSync >= (DAY_IN_MILLIS-120000)) {
+            getMoviesInTheaters();
+            insertData(cVVector);
+            cVVector = null;
+        }
+
         if (!sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {
             if (sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[5])) {
                 try {
@@ -187,7 +197,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     callAPI(uri,"themoviedb");
 
                     //Get second page of movies for the sort order
-                    for (int i = 2; i <= 10; i++) {
+                    for (int i = 2; i <= 5; i++) {
                         uri = Uri.parse(KIDS_MOVIES_BASE_URL).buildUpon()
                                 .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                                 .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
@@ -212,7 +222,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     callAPI(uri,"themoviedb");
 
                     //Get second page of movies for the sort order
-                    for (int i = 2; i <= 10; i++) {
+                    for (int i = 2; i <= 5; i++) {
                         uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
                                 .appendPath(MOVIE_PARAM)
                                 .appendPath(sortOrder)
@@ -340,7 +350,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         int favorited = 2;
         int id = 0;
         String originalTitle = "", synopsis = "", releaseDate = "", posterPath = "", sortOrder="";
-        String runtime = "", backdropPath = "", genre = "", director = "", webPage ="";
+        String runtime = "", backdropPath = "-", genre = "", director = "", webPage ="";
         String cast = "-" ;
         float rating = 0;
         try {
@@ -359,7 +369,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     for (int m = 0; m < movieArray.length(); m++) {
                         JSONObject movieToAdd = movieArray.getJSONObject(m);
 //                        int id = movieToAdd.getInt(JSON_ID);
-                        id = 0;
+                        id = id+1;
                         originalTitle = movieToAdd.getString(JSON_TITLE);
                         synopsis = movieToAdd.getString(JSON_OVERVIEW);
                         releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
@@ -411,7 +421,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         JSONObject movieToAdd = movieArray.getJSONObject(m);
                         Log.i(LOG_TAG,"inTheatres json"+movieToAdd);
 //                        int id = movieToAdd.getInt(JSON_ID);
-                        id = 0;
+                        id = id+1;
                         originalTitle = movieToAdd.getString(JSON_TITLE);
                         synopsis = movieToAdd.getString(JSON_OVERVIEW);
                         releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
@@ -578,7 +588,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
 
         if (displayNotifications) {
-
             String lastNotificationKey = context.getString(R.string.pref_last_notification);
             long lastSync = prefs.getLong(lastNotificationKey, 0);
             String sort_order = getContext().getResources().getStringArray(R.array.sort_values)[6];
@@ -607,6 +616,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                             new NotificationCompat.Builder(getContext())
                                     .setColor(ContextCompat.getColor(context, R.color.primary_light))
                                     .setContentTitle(title)
+                                    .setSmallIcon(R.drawable.ic_launcher)
                                     .setContentText(contentText);
 
                     // Open the app when the user clicks on the notification.

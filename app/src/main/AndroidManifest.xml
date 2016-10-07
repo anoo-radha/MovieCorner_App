@@ -78,6 +78,7 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+
         <!-- Muzei Extension -->
         <service
             android:name=".muzei.MovieMuzeiSource"
@@ -91,6 +92,22 @@
                 android:name="color"
                 android:value="@color/colorPrimary" />
         </service>
+
+        <!--Widget-->
+        <receiver android:name=".widget.WidgetProvider"
+            android:label="@string/widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.anuradha.moviewatch.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+        <service
+            android:name=".widget.WidgetRemoteViewsService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     </application>
 
