@@ -49,17 +49,13 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String ACTION_DATA_UPDATED =
             "com.anuradha.moviewatch.app.ACTION_DATA_UPDATED";
     // Interval at which to sync with the movie data, in seconds (6 hours)
-//    public static final int SYNC_INTERVAL = 60 * 360;
-    //TRYING EVERY  1 hr
-    private static final int SYNC_INTERVAL = 60 * 60;
+    public static final int SYNC_INTERVAL = 60 * 360;
     private static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private Vector<ContentValues> cVVector;
     private final Context mContext;
 
     //For Notification
-//    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-//    TRYING 30 min notification
-    private static final long DAY_IN_MILLIS = 1000 * 60 * 30;
+    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int MOVIE_NOTIFICATION_ID = 3007;
     private static final String[] NOTIFY_PROJECTION = new String[]{
             MovieContract.MoviesEntry.COLUMN_ID,

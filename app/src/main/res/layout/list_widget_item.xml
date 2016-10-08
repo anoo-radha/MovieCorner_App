@@ -16,7 +16,7 @@
         android:gravity="start|center_vertical"
         android:textSize="18sp"
         tools:text="Finding Nemo"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:textColor="@color/primary_text"
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginBottom="@dimen/small_margin"/>
@@ -40,7 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="comedy, action, crime"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="3dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp" />
         <LinearLayout
             android:id="@+id/widget_horizontal_white_bar"
             android:layout_width="fill_parent"
