@@ -23,14 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/primary_light">
+        android:background="@color/white">
 
         <ListView
             android:id="@+id/widget_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/secondary_text"
-            android:dividerHeight="1dp"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             tools:listitem="@layout/list_widget_item"/>
         <TextView
             android:id="@+id/widget_empty"

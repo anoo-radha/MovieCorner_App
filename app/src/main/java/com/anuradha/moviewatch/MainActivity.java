@@ -1,5 +1,6 @@
 package com.anuradha.moviewatch;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +14,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements
         MainActivityFragment.Callback, NavigationView.OnNavigationItemSelectedListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    //    public static String LOG_TAG = MainActivity.class.getSimpleName();
+        public static String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private static String mcurrentSortBy;
     private boolean mTwoPane, mNetAvailability = true;
@@ -69,6 +72,14 @@ public class MainActivity extends AppCompatActivity implements
 
         //Create Sync Account.. a dummy account for sync adapter
         MovieSyncAdapter.initializeSyncAdapter(this);
+
+        // Get the intent, verify the action and get the query
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+            Log.i("Searching", query);
+        }
     }
 
     @Override
@@ -91,7 +102,8 @@ public class MainActivity extends AppCompatActivity implements
         String sortBy = Utility.getPreferredSortOption(this);
         MainActivityFragment mainFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         DetailActivityFragment detailFragment = (DetailActivityFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
-        if (!sortBy.equals(mcurrentSortBy)) {
+        if ( (!sortBy.equals(mcurrentSortBy) ||
+                (mcurrentSortBy.equals(getResources().getStringArray(R.array.sort_values)[8]))) ) {
             sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
                     getString(R.string.details_reset)).apply();
             if (mTwoPane) {
@@ -228,6 +240,15 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_main, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        // Assumes current activity is the searchable activity
+//        ComponentName componentName = new ComponentName(this, getComponentName() );
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -237,17 +258,45 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_about:
+//            case R.id.action_search: {
+//                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//                sharedPref.edit().putString(getString(R.string.pref_sort_key),
+//                        getResources().getStringArray(R.array.sort_values)[8]).apply();
+//                sharedPref.edit().putString(getString(R.string.pref_search_title),
+//                        getString(R.string.default_search_title)).apply();
+//
+//
+//                // Get the SearchView and set the searchable configuration
+//                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//                SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+//                // Assumes current activity is the searchable activity
+////        ComponentName componentName = new ComponentName(this, getComponentName() );
+//                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//                searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+//
+//                break;
+//            }
+            case R.id.action_about: {
                 Intent intent1 = new Intent(this, AboutMenu.class);
                 startActivity(intent1);
                 break;
+            }
             case R.id.action_settings: {
                 startActivity(new Intent(this, SettingsActivity.class));
-                return true;
+                break;
             }
             default:
                 return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doMySearch(String movie_title){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                        getResources().getStringArray(R.array.sort_values)[8]).apply();
+                sharedPref.edit().putString(getString(R.string.pref_search_title),
+                        movie_title).apply();
+        uploadMovies();
     }
 }

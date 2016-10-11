@@ -11,8 +11,7 @@
     android:widgetCategory="home_screen|keyguard"
     tools:ignore="UnusedAttribute"
     android:initialLayout="@layout/widget"
-    android:resizeMode="horizontal|vertical">
+    android:resizeMode="horizontal|vertical"
+    android:previewImage="@drawable/widget_preview">
 
 </appwidget-provider>
-
-    <!--android:previewImage="@drawable/widget_preview"-->

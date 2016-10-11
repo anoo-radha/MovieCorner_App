@@ -4,6 +4,7 @@
     <string name="action_about" translatable="false">About</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="action_share" translatable="false">Share</string>
+    <string name="action_search" translatable="false">Search</string>
     <string name="tab_about" translatable="false">About</string>
     <string name="tab_trailers" translatable="false">Trailers</string>
     <string name="tab_reviews" translatable="false">Reviews</string>
@@ -23,12 +24,15 @@
     <string name="pref_sort_label" translatable="false">Sort By</string>
     <string name="pref_sort_key" translatable="false">sort_by</string>
     <string name="pref_fragment_reset_key" translatable="false">orientation</string>
+    <string name="pref_search_title" translatable="false">search_title</string>
+    <string name="default_search_title" translatable="false">none</string>
     <!-- for storing values in bundle during orientation changes -->
     <string name="reviews_data" translatable="false">reviews_data</string>
     <string name="selected_position" translatable="false">selected_position</string>
     <string name="default_sort" translatable="false">now_playing</string>
     <string name="details_reset" translatable="false">yes</string>
     <string name="no_details_reset" translatable="false">no</string>
+    <string name="content_desc_poster" translatable="false">movie poster</string>
     <string name="genre" translatable="false">GENRE</string>
     <string name="genre_tab" translatable="false">GENRE\t\t\t\t%1$s</string>
     <string name="runtime" translatable="false">RUNTIME</string>
@@ -59,7 +63,9 @@
     <string name="base_poster_path" translatable="false">"http://image.tmdb.org/t/p/w185//"</string>
     <string name="query_param" translatable="false">sort_by</string>
     <string name="api_key" translatable="false">api_key</string>
-    <string name="page" translatable="false">page</string>
+    <string name="page_url_param" translatable="false">page</string>
+    <string name="movie_url_param" translatable="false">movie</string>
+    <string name="query_url_param" translatable="false">query</string>
     <string name="title_activity_detail" translatable="false">MovieDetail</string>
     <string name="delimiter" translatable="false">-</string>
     <string-array name="sort_values" translatable="false">
@@ -71,6 +77,7 @@
         <item>kids_movies</item>
         <item>opening_this_week</item>
         <item>in_theaters</item>
+        <item>search_title</item>
     </string-array>
     <string name="favorite_text" translatable="false">FAVORITE</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
@@ -83,7 +90,9 @@
     <!-- Muzei -->
     <string name="muzei_description" translatable="false">Today\'s poster</string>
     <!-- Notification Format -->
-    <string name="format_notification">Opening Today: <xliff:g id="title">%1$s</xliff:g> Genre: <xliff:g id="genre">%2$s</xliff:g> </string>
+    <string name="notification_subtitle" translatable="false"> - Week\'s Release:</string>
+    <string name="format_notification">\n<xliff:g id="title">%1$s</xliff:g> -- <xliff:g id="genre">%2$s</xliff:g> </string>
+    <string name="format_inbox_notification">\n<xliff:g id="title">%1$s</xliff:g> -- <xliff:g id="genre">%2$s</xliff:g> </string>
     <!-- Strings related to Notification preference -->
     <string name="pref_last_notification" translatable="false">last_notification</string>
     <string name="pref_enable_notifications_key" translatable="false">enable_notifications</string>

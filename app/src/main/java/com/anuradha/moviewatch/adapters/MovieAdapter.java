@@ -81,6 +81,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                 Picasso.with(context).load(Utility.getActualPosterPath(cursor.getString(MainActivityFragment.COLUMN_POSTER_PATH)))
                         .error(R.drawable.unavailable_poster_black)
                         .into(imageView);
+                if( (releaseDate[0] != null) && (releaseDate.length == 3) )
                 yearView.setText(Utility.getMonthName(releaseDate[1]) + releaseDate[2]+ ", " + releaseDate[0]);
 
                 String s = String.format(Locale.getDefault(),"%.1f", Float.parseFloat(cursor.getString(MainActivityFragment.COLUMN_MOVIE_VOTE)));

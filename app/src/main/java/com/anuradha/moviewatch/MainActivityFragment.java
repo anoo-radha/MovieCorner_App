@@ -74,6 +74,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+        progressView.setVisibility(View.VISIBLE);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         int mNoOfColumns = Utility.calculateNoOfColumns(getContext());
@@ -118,7 +119,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             mNoNetworkView.setVisibility(View.GONE);
-            progressView.setVisibility(View.GONE);
             MovieSyncAdapter.syncImmediately(getActivity());
         } else {
             mNoNetworkView.setVisibility(View.VISIBLE);
@@ -143,6 +143,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
             } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])){
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
+            } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[8])){
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[8];
             } else {
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
             }
@@ -170,7 +172,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             }
         });
         gView.setAdapter(mMovieAdapter);
-        progressView.setVisibility(View.VISIBLE);
         if (Utility.getPreferredSortOption(getActivity())
                 .equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
             boolean isEmpty = data.getCount() < 1;

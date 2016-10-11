@@ -3,10 +3,10 @@ package com.anuradha.moviewatch.widget;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
@@ -14,21 +14,27 @@ import android.widget.RemoteViewsService;
 
 import com.anuradha.moviewatch.R;
 import com.anuradha.moviewatch.database.MovieContract;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
+
+import java.util.concurrent.ExecutionException;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class WidgetRemoteViewsService extends RemoteViewsService{
+public class WidgetRemoteViewsService extends RemoteViewsService {
     public final String LOG_TAG = WidgetRemoteViewsService.class.getSimpleName();
     private static final String[] WIDGET_COLUMNS = {
             MovieContract.MoviesEntry.COLUMN_ID,
+            MovieContract.MoviesEntry.COLUMN_POSTER_PATH,
             MovieContract.MoviesEntry.COLUMN_TITLE,
             MovieContract.MoviesEntry.COLUMN_GENRE,
             MovieContract.MoviesEntry.COLUMN_RUNTIME
     };
     // these indices must match the projection
     static final int INDEX_ID = 0;
-    static final int INDEX_TITLE = 1;
-    static final int INDEX_GENRE = 2;
-    static final int INDEX_RUNTIME = 3;
+    static final int INDEX_POSTER_PATH = 1;
+    static final int INDEX_TITLE = 2;
+    static final int INDEX_GENRE = 3;
+    static final int INDEX_RUNTIME = 4;
 
 
     @Override
@@ -52,9 +58,9 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
                 // that calls use our process and permission
                 final long identityToken = Binder.clearCallingIdentity();
                 String sort_order = getResources().getStringArray(R.array.sort_values)[7];
-                Uri weatherUri = MovieContract.MoviesEntry.buildMoviesWithSortorder(sort_order);
-                Log.i(LOG_TAG, "uri "+weatherUri);
-                data = getContentResolver().query(weatherUri,
+                Uri movieUri = MovieContract.MoviesEntry.buildMoviesWithSortorder(sort_order);
+//                Log.i(LOG_TAG, "uri " + movieUri);
+                data = getContentResolver().query(movieUri,
                         WIDGET_COLUMNS,
                         null,
                         null,
@@ -83,20 +89,50 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
                 }
                 RemoteViews views = new RemoteViews(getPackageName(),
                         R.layout.list_widget_item);
-               String title = data.getString(INDEX_TITLE);
-                Log.i(LOG_TAG, "  "+data.getString(INDEX_TITLE)+"  "+data.getString(INDEX_GENRE)+"  "
-                        +data.getString(INDEX_RUNTIME) );
+                String title = data.getString(INDEX_TITLE);
+                views.setImageViewResource(R.id.widget_icon, R.drawable.ic_mail);
+                Bitmap poster = null;
+                String posterUrl = data.getString(INDEX_POSTER_PATH);
+//                Log.i(LOG_TAG, "  " + data.getString(INDEX_TITLE) + "  " + data.getString(INDEX_GENRE) + "  "
+//                        + data.getString(INDEX_RUNTIME)+"  "+posterUrl);
+                try {
+                    poster = Glide.with(WidgetRemoteViewsService.this)
+                            .load(posterUrl)
+                            .asBitmap()
+                            .error(R.drawable.widget_no_poster)
+                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+                } catch (InterruptedException |
+                        ExecutionException e
+                        )
+
+                {
+//                    Log.e(LOG_TAG, "Error retrieving poster from " + posterUrl, e);
+                }
+
+
+                if (poster != null)
+
+                {
+                    views.setImageViewBitmap(R.id.widget_icon, poster);
+                } else
+
+                {
+                    views.setImageViewResource(R.id.widget_icon, R.drawable.widget_no_poster);
+                }
+
                 views.setTextViewText(R.id.widget_movie_title, data.getString(INDEX_TITLE));
-                views.setTextViewText(R.id.widget_genre,data.getString(INDEX_GENRE));
+                views.setTextViewText(R.id.widget_genre, data.getString(INDEX_GENRE));
                 views.setTextViewText(R.id.widget_runtime, data.getString(INDEX_RUNTIME));
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+
+                {
                     setRemoteContentDescription(views, title);
                 }
 
-//                TO BE DONE
+                //                TO BE DONE
                 final Intent fillInIntent = new Intent();
-                Bundle extras = new Bundle();
+//                Bundle extras = new Bundle();
                 views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
 
                 return views;

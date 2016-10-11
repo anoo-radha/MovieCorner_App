@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.android.popularmovies.MainActivity">
     <item
+        android:id="@+id/action_search"
+        android:title="@string/action_search"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_search"/>
+    <item
         android:id="@+id/action_about"
         android:title="@string/action_about"
         app:showAsAction="never" />

@@ -21,8 +21,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         buildTypes.each {
-            it.buildConfigField 'String', 'MOVIEDB_KEY', '"e7c3bd5e4b0f39897bb04ddb998b0f6d"'
-            it.buildConfigField 'String', 'MYAPIFILMS_TOKEN', '"56cdcb64-c32b-4f62-8dac-296444e848e9"'
+            it.buildConfigField 'String', 'MOVIEDB_KEY', '""'
+            it.buildConfigField 'String', 'MYAPIFILMS_TOKEN', '""'
         }
     }
 }
@@ -33,6 +33,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:3.5.2'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'org.glassfish:javax.annotation:10.0-b28'
