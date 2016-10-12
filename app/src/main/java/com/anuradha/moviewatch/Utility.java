@@ -23,6 +23,12 @@ public class Utility {
                 context.getString(R.string.details_reset));
     }
 
+    public static String getSearchedTitle(Context context){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPref.getString(context.getString(R.string.pref_search_title),
+                context.getString(R.string.default_search_title));
+    }
+
     public static String getDuration(String inMinutes){
         int t = Integer.valueOf(inMinutes);
         if(t>0) {

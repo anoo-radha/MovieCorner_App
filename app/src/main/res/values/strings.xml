@@ -21,11 +21,11 @@
     <string name="content_authority" translatable="false">com.anuradha.moviewatch</string>
     <string name="account_type" translatable="false">moviewatch.anuradha.com</string>
     <!-- for storing values in shared preferences -->
-    <string name="pref_sort_label" translatable="false">Sort By</string>
     <string name="pref_sort_key" translatable="false">sort_by</string>
     <string name="pref_fragment_reset_key" translatable="false">orientation</string>
+    <string name="pref_search_title_result" translatable="false">search_title_result</string>
     <string name="pref_search_title" translatable="false">search_title</string>
-    <string name="default_search_title" translatable="false">none</string>
+    <string name="default_search_title" translatable="false">default_search_title</string>
     <!-- for storing values in bundle during orientation changes -->
     <string name="reviews_data" translatable="false">reviews_data</string>
     <string name="selected_position" translatable="false">selected_position</string>
@@ -87,6 +87,7 @@
     <string name="email_id" translatable="false">anoo_radha@outlook.com</string>
     <string name="choose_one" translatable="false"> choose one </string>
     <string name="no_mail_apps" translatable="false">No applications to support email!</string>
+    <string name="searched_movie_title_unavailable" translatable="false"> Please Search a Movie Title</string>
     <!-- Muzei -->
     <string name="muzei_description" translatable="false">Today\'s poster</string>
     <!-- Notification Format -->
@@ -104,4 +105,5 @@
     <string name="widget_title" translatable="false">BoxOffice Top Ten</string>
     <string name="widget_name" translatable="false"> MovieWatch</string>
     <string name="empty_widget" translatable="false">Oops! No movies for the selected genre </string>
+    <string name="loading" translatable="false">Loading...</string>
 </resources>

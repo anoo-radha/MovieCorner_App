@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.anuradha.moviewatch.adapters.MovieAdapter;
 import com.anuradha.moviewatch.database.MovieContract;
 import com.anuradha.moviewatch.sync.MovieSyncAdapter;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -46,7 +45,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     };
     private RecyclerView gView;
     private TextView mNoNetworkView;
-    private ProgressWheel progressView;
+    private TextView mLoadingMsgView;
     private SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences sharedPref;
     private MovieAdapter mMovieAdapter = null;
@@ -65,7 +64,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         gView = (RecyclerView) rootView.findViewById(R.id.posters_grid);
 
         mNoNetworkView = (TextView) rootView.findViewById(R.id.network_msg_view);
-        progressView = (ProgressWheel) rootView.findViewById(R.id.progress_wheel);
+        mLoadingMsgView = (TextView) rootView.findViewById(R.id.loading_msg_view);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.main_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -74,12 +73,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        progressView.setVisibility(View.VISIBLE);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         int mNoOfColumns = Utility.calculateNoOfColumns(getContext());
         gView.setLayoutManager(new GridLayoutManager(getActivity(),mNoOfColumns));
         gView.setItemAnimator(new DefaultItemAnimator());
+        mLoadingMsgView.setText(getString(R.string.loading));
+        mLoadingMsgView.setVisibility(View.VISIBLE);
         if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.selected_position))) {
             // The gridview probably hasn't even been populated yet.  Actually perform the
             // swapout in onLoadFinished.
@@ -101,6 +101,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     void onOptionChanged() {
         String sortOrder = sharedPref.getString(getString(R.string.pref_sort_key), getString(R.string.default_sort));
         if (sortOrder.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
+            mLoadingMsgView.setVisibility(View.GONE);
             mNoNetworkView.setVisibility(View.GONE);
         } else {
             updateMovieList();
@@ -118,10 +119,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
+//            mLoadingMsgView.setVisibility(View.GONE);
             mNoNetworkView.setVisibility(View.GONE);
             MovieSyncAdapter.syncImmediately(getActivity());
         } else {
             mNoNetworkView.setVisibility(View.VISIBLE);
+            mLoadingMsgView.setText(" ");
+            mLoadingMsgView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), R.string.network_not_available, Toast.LENGTH_LONG).show();
         }
     }
@@ -133,6 +137,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String sortOrder;
         Uri uri;
         if (sortBy.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
+            mLoadingMsgView.setText(" ");
+            mLoadingMsgView.setVisibility(View.GONE);
             uri = MovieContract.MoviesEntry.buildFavoritesUri();
         } else {
             if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
@@ -143,8 +149,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
             } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])){
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
-            } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[8])){
-                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[8];
+            } else if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[8])) {
+                mLoadingMsgView.setText(" ");
+                mLoadingMsgView.setVisibility(View.GONE);
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[8] +
+                        Utility.getSearchedTitle(getContext());
             } else {
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
             }
@@ -179,12 +188,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 if(getActivity().findViewById(R.id.empty_movie_view)!=null) {
                     getActivity().findViewById(R.id.empty_movie_view).setVisibility(View.GONE);
                 }
-                progressView.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), getContext().getResources().getString(R.string.no_favorites), Toast.LENGTH_LONG).show();
             }
         }
         mMovieAdapter.swapCursor(data);
-        progressView.setVisibility(View.GONE);
         if (mPosition != GridView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore
             // to, do so now.

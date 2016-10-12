@@ -204,17 +204,15 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 //                        Log.i(LOG_TAG,"uri "+ uri);
                         callAPI(uri,"themoviedb");
                     }
-
                     insertData(cVVector);
-
                 } catch (Exception e) {
 //                Log.e(LOG_TAG, "Error ", e);
                 }
-            } else if (sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[8])) {
+            } else if (sortOrder.contains(getContext().getResources().getStringArray(R.array.sort_values)[8])) {
                 try {
                     String title_to_search = prefs.getString(getContext().getString(R.string.pref_search_title),
                             getContext().getString(R.string.default_search_title));
-                    Log.i(LOG_TAG,"title_to_search "+ title_to_search);
+//                    Log.i(LOG_TAG,"title_to_search "+ title_to_search);
                     Uri uri = Uri.parse(SEARCH_BY_TITLE_BASE_URL).buildUpon()
                             .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                             .appendQueryParameter(QUERY_PARAM, title_to_search)
@@ -374,7 +372,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String JSON_DIRECTOR_NAME ="name";
         final String JSON_WEBPAGE = "urlIMDB";
         int favorited = 2;
-        int id = 0;
+        long id = 0;
         String title = "", synopsis = "", releaseDate = "", posterPath = "", sortOrder="";
         String runtime = "", backdropPath = "-", genre = "", director = "", webPage ="";
         String cast = "-" ;
@@ -395,7 +393,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     for (int m = 0; m < movieArray.length(); m++) {
                         JSONObject movieToAdd = movieArray.getJSONObject(m);
 //                        int id = movieToAdd.getInt(JSON_ID);
-                        id = id+1;
+                        id = id-1;
                         if(movieToAdd.has(JSON_TITLE)) {
                             title = movieToAdd.getString(JSON_TITLE);
                         }
@@ -463,7 +461,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         JSONObject movieToAdd = movieArray.getJSONObject(m);
 //                        Log.i(LOG_TAG,"inTheatres json"+movieToAdd);
 //                        int id = movieToAdd.getInt(JSON_ID);
-                        id = id+1;
+                        id = id-1;
                         if(movieToAdd.has(JSON_TITLE)) {
                             title = movieToAdd.getString(JSON_TITLE);
                         }
@@ -558,72 +556,82 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String JSON_POSTER_PATH = "poster_path";
         final String JSON_BACKDROP_PATH = "backdrop_path";
         final String JSON_VOTE_AVERAGE = "vote_average";
+        final String JSON_TOTAL_RESULTS = "total_results";
         int favorited;
         String sortOrder;
         String sortBy = Utility.getPreferredSortOption(mContext);
         try {
             JSONObject movieJson = new JSONObject(moviesJsonResult);
             JSONArray movieArray = movieJson.getJSONArray(JSON_RESULTS);
-            // Insert the new movies information into the database
-            if(cVVector == null) {
+            if( movieJson.getInt(JSON_TOTAL_RESULTS) != 0 ) {
+                // Insert the new movies information into the database
+                if (cVVector == null) {
 //                Log.i(LOG_TAG, "initializing vector");
-                cVVector = new Vector<>(movieArray.length() * 2);
-            }
-            for (int i = 0; i < movieArray.length(); i++) {
-                JSONObject movieToAdd = movieArray.getJSONObject(i);
-                int id = movieToAdd.getInt(JSON_ID);
-                String originalTitle = movieToAdd.getString(JSON_ORIGINAL_TITLE);
-                String synopsis = movieToAdd.getString(JSON_OVERVIEW);
-                String releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
-                String posterPath = movieToAdd.getString(JSON_POSTER_PATH);
-                String backdropPath = movieToAdd.getString(JSON_BACKDROP_PATH);
-                float userRating = (float) movieToAdd.getDouble(JSON_VOTE_AVERAGE);
-                if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
-                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1];
-                } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[2])) {
-                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
-                } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])) {
-                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
-                } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])) {
-                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
-                }else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[8])) {
-                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[8];
+                    cVVector = new Vector<>(movieArray.length() * 2);
                 }
-                else {
-                    sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
-                }
-                Cursor movieCursor = getContext().getContentResolver().query(
-                        MovieContract.MoviesEntry.buildMovieUri(id),
-                        new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
-                        null,
-                        null,
-                        null);
-                //set the favorites to 1 if the movie is in the favorites database
-                if (movieCursor != null && movieCursor.moveToFirst()) {
-                    favorited = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION));
-                } else {
-                    favorited = 0;
-                }
-                if (movieCursor != null)
-                    movieCursor.close();
-                ContentValues movieValues = new ContentValues();
+                for (int i = 0; i < movieArray.length(); i++) {
+                    JSONObject movieToAdd = movieArray.getJSONObject(i);
+                    int id = movieToAdd.getInt(JSON_ID);
+                    String originalTitle = movieToAdd.getString(JSON_ORIGINAL_TITLE);
+                    String synopsis = movieToAdd.getString(JSON_OVERVIEW);
+                    String releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
+                    String posterPath = movieToAdd.getString(JSON_POSTER_PATH);
+                    String backdropPath = movieToAdd.getString(JSON_BACKDROP_PATH);
+                    float userRating = (float) movieToAdd.getDouble(JSON_VOTE_AVERAGE);
+                    if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1];
+                    } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[2])) {
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
+                    } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])) {
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
+                    } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])) {
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
+                    } else if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[8])) {
+                        Log.i(LOG_TAG,"contains");
+                        String title_to_search = Utility.getSearchedTitle(getContext());
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[8] +
+                                title_to_search;
+                    }
+                    else {
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
+                    }
+                    Cursor movieCursor = getContext().getContentResolver().query(
+                            MovieContract.MoviesEntry.buildMovieUri(id),
+                            new String[]{MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION},
+                            null,
+                            null,
+                            null);
+                    //set the favorites to 1 if the movie is in the favorites database
+                    if (movieCursor != null && movieCursor.moveToFirst()) {
+                        favorited = movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION));
+                    } else {
+                        favorited = 0;
+                    }
+                    if (movieCursor != null)
+                        movieCursor.close();
+                    ContentValues movieValues = new ContentValues();
 
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_ID, id);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_TITLE, originalTitle);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_SYNOPSIS, synopsis);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, releaseDate);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_POSTER_PATH, posterPath);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH, backdropPath);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_RATING, userRating);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, favorited);
-                movieValues.put(MovieContract.MoviesEntry.COLUMN_SORT_ORDER, sortOrder);
-                cVVector.add(movieValues);
-            }
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_ID, id);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_TITLE, originalTitle);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_SYNOPSIS, synopsis);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, releaseDate);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_POSTER_PATH, posterPath);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH, backdropPath);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_RATING, userRating);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, favorited);
+                    movieValues.put(MovieContract.MoviesEntry.COLUMN_SORT_ORDER, sortOrder);
+                    cVVector.add(movieValues);
+                }
 
-            // delete old data so we don't build up an endless history
-            getContext().getContentResolver().delete(MovieContract.MoviesEntry.CONTENT_URI,
-                    MovieContract.sFavoritesNotSelection,
-                    new String[]{Integer.toString(MovieContract.NOT_FAVORITE_INDICATOR)});
+                // delete old data so we don't build up an endless history
+                getContext().getContentResolver().delete(MovieContract.MoviesEntry.CONTENT_URI,
+                        MovieContract.sFavoritesNotSelection,
+                        new String[]{Integer.toString(MovieContract.NOT_FAVORITE_INDICATOR)});
+            } else {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                sharedPref.edit().putString(getContext().getString(R.string.pref_search_title_result),
+                        getContext().getString(R.string.searched_movie_title_unavailable)).apply();
+            }
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements
         MainActivityFragment.Callback, NavigationView.OnNavigationItemSelectedListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-        public static String LOG_TAG = MainActivity.class.getSimpleName();
+    public static String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private static String mcurrentSortBy;
     private boolean mTwoPane, mNetAvailability = true;
@@ -77,8 +77,16 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
-            Log.i("Searching", query);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String sort_order = sharedPref.getString(getString(R.string.pref_sort_key),
+                    getString(R.string.default_sort));
+            if (sort_order.contains(getResources().getStringArray(R.array.sort_values)[8])) {
+                doMySearch(query);
+            } else {
+                sharedPref.edit().putString(getString(R.string.pref_search_title),
+                        getString(R.string.default_search_title)).apply();
+                Log.i("Searching", query);
+            }
         }
     }
 
@@ -102,8 +110,7 @@ public class MainActivity extends AppCompatActivity implements
         String sortBy = Utility.getPreferredSortOption(this);
         MainActivityFragment mainFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         DetailActivityFragment detailFragment = (DetailActivityFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
-        if ( (!sortBy.equals(mcurrentSortBy) ||
-                (mcurrentSortBy.equals(getResources().getStringArray(R.array.sort_values)[8]))) ) {
+        if (!sortBy.equals(mcurrentSortBy)) {
             sharedPref.edit().putString(getString(R.string.pref_fragment_reset_key),
                     getString(R.string.details_reset)).apply();
             if (mTwoPane) {
@@ -134,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements
                     mainFragment.onOptionChanged();
                 }
             } else {
-
                 Toast.makeText(this, R.string.network_not_available, Toast.LENGTH_LONG).show();
             }
         }
@@ -231,6 +237,13 @@ public class MainActivity extends AppCompatActivity implements
         if (key.equals(getString(R.string.pref_sort_key))) {
             uploadMovies();
         }
+        if (key.equals(getString(R.string.pref_search_title_result)) &&
+                sharedPreferences.getString(getString(R.string.pref_search_title_result),
+                        getString(R.string.delimiter)).equals(getString(R.string.searched_movie_title_unavailable))) {
+            Toast.makeText(this, R.string.searched_movie_title_unavailable, Toast.LENGTH_LONG).show();
+            sharedPreferences.edit().putString(getString(R.string.pref_search_title_result),
+                    getString(R.string.delimiter)).apply();
+        }
     }
 
     /**
@@ -245,7 +258,6 @@ public class MainActivity extends AppCompatActivity implements
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // Assumes current activity is the searchable activity
-//        ComponentName componentName = new ComponentName(this, getComponentName() );
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 
@@ -258,24 +270,12 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search: {
-//                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//                sharedPref.edit().putString(getString(R.string.pref_sort_key),
-//                        getResources().getStringArray(R.array.sort_values)[8]).apply();
-//                sharedPref.edit().putString(getString(R.string.pref_search_title),
-//                        getString(R.string.default_search_title)).apply();
-//
-//
-//                // Get the SearchView and set the searchable configuration
-//                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//                SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//                // Assumes current activity is the searchable activity
-////        ComponentName componentName = new ComponentName(this, getComponentName() );
-//                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//                searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-//
-//                break;
-//            }
+            case R.id.action_search: {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                        getResources().getStringArray(R.array.sort_values)[8]).apply();
+                break;
+            }
             case R.id.action_about: {
                 Intent intent1 = new Intent(this, AboutMenu.class);
                 startActivity(intent1);
@@ -291,12 +291,14 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    private void doMySearch(String movie_title){
+    private void doMySearch(String movie_title) {
+        Log.i(LOG_TAG, "in doMySearch");
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                sharedPref.edit().putString(getString(R.string.pref_sort_key),
-                        getResources().getStringArray(R.array.sort_values)[8]).apply();
-                sharedPref.edit().putString(getString(R.string.pref_search_title),
-                        movie_title).apply();
+        String sort_order_with_title = getResources().getStringArray(R.array.sort_values)[8] + movie_title;
+        sharedPref.edit().putString(getString(R.string.pref_sort_key),
+                sort_order_with_title).apply();
+        sharedPref.edit().putString(getString(R.string.pref_search_title),
+                movie_title).apply();
         uploadMovies();
     }
 }
