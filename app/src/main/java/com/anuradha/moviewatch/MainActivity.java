@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity implements
                     getString(R.string.default_sort));
             if (sort_order.contains(getResources().getStringArray(R.array.sort_values)[8])) {
                 doMySearch(query);
+                Log.i("Searching", query);
             } else {
                 sharedPref.edit().putString(getString(R.string.pref_search_title),
                         getString(R.string.default_search_title)).apply();
-                Log.i("Searching", query);
             }
         }
     }

@@ -173,7 +173,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String MOVIE_PARAM = getContext().getString(R.string.movie_url_param);
         final String APPID_PARAM = getContext().getString(R.string.api_key);
         final String PAGE_PARAM = getContext().getString(R.string.page_url_param);
-        final String QUERY_PARAM = getContext().getString(R.string.query_url_param);;
+        final String QUERY_PARAM = getContext().getString(R.string.query_url_param);
 
         String lastNotificationKey = getContext().getString(R.string.pref_last_notification);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -657,7 +657,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
         boolean displayNotifications = prefs.getBoolean(displayNotificationsKey,
                 Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
-        boolean bIsGenre = true;
+        boolean bIsGenre = false;
+        String contentText="";
 
         if (displayNotifications) {
             String lastNotificationKey = context.getString(R.string.pref_last_notification);
@@ -672,70 +673,84 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 Cursor cursor = context.getContentResolver().query(movieUri, NOTIFY_PROJECTION, null, null, null);
 
                 if ( (cursor!=null) && (cursor.moveToFirst()) ) {
-//                    int movieId = cursor.getInt(INDEX_ID);
-                    String movieTitle = cursor.getString(INDEX_TITLE);
-                    String genre = cursor.getString(INDEX_GENRE);
-//                    bIsGenre = Utility.isSelectedGenre(genre);
                     String title = context.getString(R.string.app_name)+context.getString(R.string.notification_subtitle);
-                    String contentText = String.format(context.getString(R.string.format_notification),
-                            movieTitle, genre);
-
-                    // NotificationCompatBuilder is a very convenient way to build backward-compatible
-                    // notifications.  Just throw in some data.
-                    NotificationCompat.Builder mBuilder =
-                            new NotificationCompat.Builder(getContext())
-                                    .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                                    .setContentTitle(title)
-                                    .setSmallIcon(R.drawable.ic_launcher_notification)
-                                    .setContentText(contentText);
-                    //TRYING
                      /* Add Big View Specific Configuration */
                     NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
                     String[] movies = new String[cursor.getCount()];
-                    movies[0] = String.format(context.getString(R.string.format_inbox_notification),
-                            movieTitle, genre);
-                    inboxStyle.addLine(movies[0]);
-//                    Log.i(LOG_TAG, "count  "+ cursor.getCount() + " "+ movies.length);
-                    for(int i=1; i< cursor.getCount(); i++) {
-                        Log.i(LOG_TAG,"i "+i);
+                    int count=0;
+                    int movieId = cursor.getInt(INDEX_ID);
+                    String movieTitle = cursor.getString(INDEX_TITLE);
+                    String genre = cursor.getString(INDEX_GENRE);
+                    bIsGenre = Utility.isSelectedGenre(getContext(), genre);
+//                    Log.i(LOG_TAG,"found first genre for notification "+bIsGenre);
+                    if(bIsGenre) {
+                        contentText = String.format(context.getString(R.string.format_notification),
+                                movieTitle, genre);
+                        movies[0] = String.format(context.getString(R.string.format_inbox_notification),
+                                movieTitle, genre);
+                        inboxStyle.addLine(movies[0]);
+                        count++;
+                    }
+                    for(int i=count; i< cursor.getCount(); i++) {
+//                        Log.i(LOG_TAG,"i "+i+"count "+count);
                         if(cursor.moveToNext()) {
-//                            Log.i(LOG_TAG, "title genre "+ cursor.getString(INDEX_TITLE)+"  "+ cursor.getString(INDEX_GENRE));
-                            movies[i] = String.format(context.getString(R.string.format_inbox_notification),
-                                    cursor.getString(INDEX_TITLE), cursor.getString(INDEX_GENRE));
-                            // Moves events into the big view
-//                            Log.i(LOG_TAG, "movie["+ i +"]" +"   " + movies[i]);
-                            inboxStyle.addLine(movies[i]);
+                            movieTitle = cursor.getString(INDEX_TITLE);
+                            genre = cursor.getString(INDEX_GENRE);
+                            if(Utility.isSelectedGenre(getContext(), genre)) {
+//                                Log.i(LOG_TAG, "found " + i + " genre for notification " + bIsGenre);
+                                movies[i] = String.format(context.getString(R.string.format_inbox_notification),
+                                        movieTitle, genre);
+                                // Moves events into the big view
+//                                Log.i(LOG_TAG, "movie[" + i + "]" + "   " + movies[i]);
+                                inboxStyle.addLine(movies[i]);
+                                count++;
+                                if (!bIsGenre) {
+                                    contentText = String.format(context.getString(R.string.format_notification),
+                                            movieTitle, genre);
+                                    bIsGenre = true;
+                                }
+                            }
                         }
                     }
-                    // Sets a title for the Inbox style big view
-                    inboxStyle.setBigContentTitle(title);
-                    mBuilder.setStyle(inboxStyle);
 
-                    // Open the app when the user clicks on the notification.
-                    Intent resultIntent = new Intent(context, MainActivity.class);
+                    if(bIsGenre) {
+                        // NotificationCompatBuilder is a very convenient way to build backward-compatible
+                        // notifications.
+                        NotificationCompat.Builder mBuilder =
+                                new NotificationCompat.Builder(getContext())
+                                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                                        .setContentTitle(title)
+                                        .setSmallIcon(R.drawable.ic_launcher_notification)
+                                        .setContentText(contentText);
+                        // Sets a title for the Inbox style big view
+                        inboxStyle.setBigContentTitle(title);
+                        mBuilder.setStyle(inboxStyle);
 
-                    // The stack builder object will contain an artificial back stack for the
-                    // started Activity.
-                    // This ensures that navigating backward from the Activity leads out of
-                    // your application to the Home screen.
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                    stackBuilder.addNextIntent(resultIntent);
-                    PendingIntent resultPendingIntent =
-                            stackBuilder.getPendingIntent(
-                                    0,
-                                    PendingIntent.FLAG_UPDATE_CURRENT
-                            );
-                    mBuilder.setContentIntent(resultPendingIntent);
+                        // Open the app when the user clicks on the notification.
+                        Intent resultIntent = new Intent(context, MainActivity.class);
 
-                    NotificationManager mNotificationManager =
-                            (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                    // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
-                    mNotificationManager.notify(MOVIE_NOTIFICATION_ID, mBuilder.build());
+                        // The stack builder object will contain an artificial back stack for the
+                        // started Activity. This ensures that navigating backward from the Activity leads out of
+                        // your application to the Home screen.
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                        stackBuilder.addNextIntent(resultIntent);
+                        PendingIntent resultPendingIntent =
+                                stackBuilder.getPendingIntent(
+                                        0,
+                                        PendingIntent.FLAG_UPDATE_CURRENT
+                                );
+                        mBuilder.setContentIntent(resultPendingIntent);
 
+                        NotificationManager mNotificationManager =
+                                (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        // MOVIE_NOTIFICATION_ID allows for updating the notification later on.
+                        mNotificationManager.notify(MOVIE_NOTIFICATION_ID, mBuilder.build());
+                    }
                     //refreshing last sync
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putLong(lastNotificationKey, System.currentTimeMillis());
                     editor.commit();
+
                 }
                 if(cursor!=null) {cursor.close();}
             }

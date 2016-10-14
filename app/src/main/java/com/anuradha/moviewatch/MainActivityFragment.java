@@ -78,8 +78,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         int mNoOfColumns = Utility.calculateNoOfColumns(getContext());
         gView.setLayoutManager(new GridLayoutManager(getActivity(),mNoOfColumns));
         gView.setItemAnimator(new DefaultItemAnimator());
-        mLoadingMsgView.setText(getString(R.string.loading));
-        mLoadingMsgView.setVisibility(View.VISIBLE);
+        if ((Utility.getPreferredSortOption(getActivity())).contains
+                (getContext().getResources().getStringArray(R.array.sort_values)[0])) {
+            mLoadingMsgView.setVisibility(View.GONE);
+        } else {
+            mLoadingMsgView.setVisibility(View.VISIBLE);
+        }
         if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.selected_position))) {
             // The gridview probably hasn't even been populated yet.  Actually perform the
             // swapout in onLoadFinished.
@@ -124,7 +128,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             MovieSyncAdapter.syncImmediately(getActivity());
         } else {
             mNoNetworkView.setVisibility(View.VISIBLE);
-            mLoadingMsgView.setText(" ");
             mLoadingMsgView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), R.string.network_not_available, Toast.LENGTH_LONG).show();
         }
@@ -137,7 +140,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String sortOrder;
         Uri uri;
         if (sortBy.equalsIgnoreCase(getResources().getStringArray(R.array.sort_values)[0])) {
-            mLoadingMsgView.setText(" ");
             mLoadingMsgView.setVisibility(View.GONE);
             uri = MovieContract.MoviesEntry.buildFavoritesUri();
         } else {
@@ -150,7 +152,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])){
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
             } else if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[8])) {
-                mLoadingMsgView.setText(" ");
                 mLoadingMsgView.setVisibility(View.GONE);
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[8] +
                         Utility.getSearchedTitle(getContext());

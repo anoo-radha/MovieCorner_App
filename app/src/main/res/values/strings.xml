@@ -108,28 +108,32 @@
     <string name="genre_dialog_title" translatable="false">Choose preferred Genre</string>
     <string name="genre_summary" translatable="false">All Genre(Default)</string>
     <string-array name="genre_values" translatable="false">
-        <item>action</item>
-        <item>adventure</item>
-        <item>biography</item>
-        <item>comedy</item>
-        <item>drama</item>
-        <item>documentary</item>
-        <item>family</item>
-        <item>fantasy</item>
-        <item>history</item>
-        <item>horror</item>
-        <item>mystery</item>
-        <item>romance</item>
-        <item>sci-fi</item>
-        <item>thriller</item>
-        <item>war</item>
-        <item>western</item>
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Animation</item>
+        <item>Biography</item>
+        <item>Comedy</item>
+        <item>Crime</item>
+        <item>Drama</item>
+        <item>Documentary</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>History</item>
+        <item>Horror</item>
+        <item>Mystery</item>
+        <item>Romance</item>
+        <item>Sci-Fi</item>
+        <item>Thriller</item>
+        <item>War</item>
+        <item>Western</item>
     </string-array>
     <string-array name="genre_entries" translatable="false">
         <item>Action</item>
         <item>Adventure</item>
+        <item>Animation</item>
         <item>Biography</item>
         <item>Comedy</item>
+        <item>Crime</item>
         <item>Drama</item>
         <item>Documentary</item>
         <item>Family</item>

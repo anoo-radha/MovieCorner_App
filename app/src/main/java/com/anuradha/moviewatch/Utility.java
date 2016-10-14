@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
+import java.util.Set;
+
 import retrofit.RetrofitError;
 
 public class Utility {
@@ -23,23 +25,23 @@ public class Utility {
                 context.getString(R.string.details_reset));
     }
 
-    public static String getSearchedTitle(Context context){
+    public static String getSearchedTitle(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPref.getString(context.getString(R.string.pref_search_title),
                 context.getString(R.string.default_search_title));
     }
 
-    public static String getDuration(String inMinutes){
+    public static String getDuration(String inMinutes) {
         int t = Integer.valueOf(inMinutes);
-        if(t>0) {
+        if (t > 0) {
             int hours = t / 60;
             int minutes = t % 60;
             return (hours + "hrs " + minutes + "m");
-        }
-        else{
+        } else {
             return "";
         }
     }
+
     // Error handling for Retrofit calls
     public static String ReportError(RetrofitError error) {
         String err;
@@ -61,13 +63,14 @@ public class Utility {
         final String BasePath = "http://image.tmdb.org/t/p/w185//";
         return BasePath + mPosterPath;
     }
+
     public static int calculateNoOfColumns(Context context) {
         int noOfColumns;
         final int column_width = (int) context.getResources().getDimension(R.dimen.column_width);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-            noOfColumns = (int) (dpWidth / (column_width ));
-        if(noOfColumns == 0){
+        noOfColumns = (int) (dpWidth / (column_width));
+        if (noOfColumns == 0) {
 //            Log.i("Utility", "no of columns  "+noOfColumns);
             noOfColumns = 2;
         }
@@ -75,9 +78,9 @@ public class Utility {
     }
 
     //get month name
-    public static String getMonthName(String month_num){
+    public static String getMonthName(String month_num) {
         int month = Integer.parseInt(month_num);
-        switch(month){
+        switch (month) {
             case 1:
                 return "Jan";
 
@@ -116,5 +119,29 @@ public class Utility {
         }
 
         return "";
+    }
+
+    public static boolean isSelectedGenre(Context context, String genre) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> pref_genre = sharedPref.getStringSet(context.getString(R.string.pref_genre_key), null);
+        String[] genre_list = genre.split(", ");
+
+        if (pref_genre != null) {
+            if(pref_genre.isEmpty()){
+                return true;
+            }
+            for (String s : pref_genre) {
+                for (String g : genre_list) {
+                    int compare = g.compareToIgnoreCase(s);
+                    if (compare==0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } else {
+            return true;
+        }
+
     }
 }
