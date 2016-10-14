@@ -657,6 +657,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
         boolean displayNotifications = prefs.getBoolean(displayNotificationsKey,
                 Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
+        boolean bIsGenre = true;
 
         if (displayNotifications) {
             String lastNotificationKey = context.getString(R.string.pref_last_notification);
@@ -667,17 +668,15 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 Uri movieUri = MovieContract.MoviesEntry
                         .buildMoviesWithSortorder(sort_order);
 
-                // we'll query our contentProvider, as always
+                //query our contentProvider
                 Cursor cursor = context.getContentResolver().query(movieUri, NOTIFY_PROJECTION, null, null, null);
 
                 if ( (cursor!=null) && (cursor.moveToFirst()) ) {
 //                    int movieId = cursor.getInt(INDEX_ID);
                     String movieTitle = cursor.getString(INDEX_TITLE);
                     String genre = cursor.getString(INDEX_GENRE);
-
+//                    bIsGenre = Utility.isSelectedGenre(genre);
                     String title = context.getString(R.string.app_name)+context.getString(R.string.notification_subtitle);
-
-                    // Define the text of the forecast.
                     String contentText = String.format(context.getString(R.string.format_notification),
                             movieTitle, genre);
 

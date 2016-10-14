@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Notification Settings (for Movies opening this week)">
     <CheckBoxPreference
         android:title="@string/pref_enable_notifications_label"
         android:key="@string/pref_enable_notifications_key"
         android:summaryOff="@string/pref_enable_notifications_false"
         android:summaryOn="@string/pref_enable_notifications_true"
         android:defaultValue="@string/pref_enable_notifications_default" />
-    <!--<ListPreference-->
-        <!--android:defaultValue="@string/default_sort"-->
-        <!--android:entries="@array/sort_entries"-->
-        <!--android:entryValues="@array/sort_values"-->
-        <!--android:key="@string/pref_sort_key"-->
-        <!--android:title="@string/pref_sort_label" />-->
+        <MultiSelectListPreference
+            android:entries="@array/genre_entries"
+            android:entryValues="@array/genre_values"
+            android:dialogTitle="@string/genre_dialog_title"
+            android:title="@string/pref_genre_label"
+            android:defaultValue="@string/default_genre"
+            android:summary="@string/genre_summary"
+            android:dependency="@string/pref_enable_notifications_key"
+            android:key="@string/pref_genre_key"/>
+    </PreferenceCategory>
 </PreferenceScreen>
