@@ -45,6 +45,7 @@ public class MovieContract {
         public static final String COLUMN_CAST = "cast_members";
         public static final String COLUMN_DIRECTOR = "director";
         public static final String COLUMN_RATING = "rating";
+        public static final String COLUMN_CERTIFICATE = "certificate";
         public static final String COLUMN_HOMEPAGE = "homepage";
         public static final String COLUMN_FAVORITE_INDICATION = "favorite";
         public static final String COLUMN_SORT_ORDER = "sort_order";
@@ -99,6 +100,7 @@ public class MovieContract {
                     MoviesEntry.COLUMN_CAST + " TEXT, " +
                     MoviesEntry.COLUMN_DIRECTOR + " TEXT, " +
                     MoviesEntry.COLUMN_RATING + " REAL, " +
+                    MoviesEntry.COLUMN_CERTIFICATE + " TEXT, " +
                     MoviesEntry.COLUMN_HOMEPAGE + " TEXT, " +
                     MoviesEntry.COLUMN_FAVORITE_INDICATION + " INTEGER, " +
                     MoviesEntry.COLUMN_SORT_ORDER + " TEXT " +

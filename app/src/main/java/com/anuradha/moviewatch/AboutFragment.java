@@ -48,8 +48,9 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     public static final int COLUMN_CAST = 9;
     public static final int COLUMN_DIRECTOR = 10;
     public static final int COLUMN_RATING = 11;
-    public static final int COLUMN_HOMEPAGE = 12;
-    public static final int COLUMN_FAVORITE_INDICATION = 13;
+    public static final int COLUMN_CERTIFICATE =12;
+    public static final int COLUMN_HOMEPAGE = 13;
+    public static final int COLUMN_FAVORITE_INDICATION = 14;
     private static final int DETAIL_LOADER = 0;
     //Columns needed from the database
     private static final String[] DETAIL_COLUMNS = {
@@ -65,6 +66,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
             MovieContract.MoviesEntry.COLUMN_CAST,
             MovieContract.MoviesEntry.COLUMN_DIRECTOR,
             MovieContract.MoviesEntry.COLUMN_RATING,
+            MovieContract.MoviesEntry.COLUMN_CERTIFICATE,
             MovieContract.MoviesEntry.COLUMN_HOMEPAGE,
             MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION
     };
@@ -79,6 +81,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     private TextView mDateView;
     private ImageView mPosterView;
     private TextView mRatingView;
+    private TextView mCertificateView;
     private TextView mGenreHeader;
     private TextView mGenreView;
     private TextView mRuntimeHeader;
@@ -104,6 +107,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
         mDateView = (TextView) rootView.findViewById(R.id.releasedt_view);
         mPosterView = (ImageView) rootView.findViewById(R.id.poster_imgview);
         mRatingView = (TextView) rootView.findViewById(R.id.rating_view);
+        mCertificateView = (TextView) rootView.findViewById(R.id.certificate_view);
         mGenreView = (TextView) rootView.findViewById(R.id.genre_view);
         mRuntimeView = (TextView) rootView.findViewById(R.id.runtime_view);
         mCastView = (TextView) rootView.findViewById(R.id.cast_view);
@@ -220,17 +224,19 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                 } else {
                                     mHomepage = getResources().getString(R.string.not_available_sign);
                                 }
-                                //extracting genre information
+                                //extracting certificate information
                                 mCertificate = getResources().getString(R.string.not_available_sign);
                                 if (movieExtrasPOJO.getRelease_dates() != null) {
                                     if (movieExtrasPOJO.getRelease_dates().getResults() != null) {
                                         for (int i = 0; i < movieExtrasPOJO.getRelease_dates().getResults().length; i++) {
-                                            if(movieExtrasPOJO.getRelease_dates().getResults()[i].getIso_3166_1().equals("US")) {
+                                            if (movieExtrasPOJO.getRelease_dates().getResults()[i].getIso_3166_1().equals("US")) {
                                                 if (movieExtrasPOJO.getRelease_dates().getResults()[i].getRelease_dates() != null) {
                                                     Release_dates[] object = movieExtrasPOJO.getRelease_dates().getResults()[i].getRelease_dates();
-                                                    if(object!=null) {
-                                                        if(object[0].getCertification()!=null) {
-                                                            mCertificate = object[0].getCertification();
+                                                    if (object != null) {
+                                                        if (object[0].getCertification() != null) {
+                                                            if (!object[0].getCertification().equals("")) {
+                                                                mCertificate = object[0].getCertification();
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -247,6 +253,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                             cValues.put(MovieContract.MoviesEntry.COLUMN_CAST, castList);
                             cValues.put(MovieContract.MoviesEntry.COLUMN_DIRECTOR, mDirector);
                             cValues.put(MovieContract.MoviesEntry.COLUMN_HOMEPAGE, mHomepage);
+                            cValues.put(MovieContract.MoviesEntry.COLUMN_CERTIFICATE, mCertificate);
 
 
                             // Using AsyncQueryHandler object for querying content provider in the background,
@@ -308,6 +315,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
             String date = data.getString(COLUMN_RELEASE_DATE);
 //            String[] releaseDate = date.split(getString(R.string.delimiter));
             float rating = data.getFloat(COLUMN_RATING);
+            String certificate = data.getString(COLUMN_CERTIFICATE);
             int fav = data.getInt(COLUMN_FAVORITE_INDICATION);
             String posterPath = data.getString(COLUMN_POSTER_PATH);
             backdropPath = data.getString(COLUMN_BACKDROP_PATH);
@@ -344,6 +352,11 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                 mHomepageView.setVisibility(View.INVISIBLE);
             } else {
                 mHomepageView.setText(String.format(getResources().getString(R.string.homepage), homepage));
+            }
+            if ((certificate != null) && (certificate.equals(getResources().getString(R.string.not_available_sign)))) {
+                mCertificateView.setVisibility(View.INVISIBLE);
+            } else {
+                mCertificateView.setText(certificate);
             }
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + posterPath)
                     .error(R.drawable.unavailable_poster_black)
