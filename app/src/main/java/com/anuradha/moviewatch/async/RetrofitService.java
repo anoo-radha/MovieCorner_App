@@ -7,8 +7,8 @@ import retrofit.http.Query;
 
 public interface RetrofitService {
 
-    //Async call for requesting Genre, Runtime, Cast and Director
-    // http://api.themoviedb.org/3/movie/<movie_id>?api_key=<api_key>&append_to_response=credits
+    //Async call for requesting Genre, Runtime, Certificate, Cast and Director
+    // http://api.themoviedb.org/3/movie/<movie_id>?api_key=<api_key>&append_to_response=release_dates%2Ccredits
     //<movie_id> for eg - 300669
     @GET("/3/movie/{id}")
     void listExtras(@Path("id") String id,

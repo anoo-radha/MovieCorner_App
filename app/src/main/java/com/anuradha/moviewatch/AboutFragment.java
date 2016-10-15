@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anuradha.moviewatch.async.MovieExtrasPOJO;
+import com.anuradha.moviewatch.async.Release_dates;
 import com.anuradha.moviewatch.async.RetrofitService;
 import com.anuradha.moviewatch.database.MovieContract;
 import com.squareup.picasso.Picasso;
@@ -30,7 +31,7 @@ import retrofit.client.Response;
 
 public class AboutFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-        public static final String LOG_TAG = AboutFragment.class.getSimpleName();
+    public static final String LOG_TAG = AboutFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
     //Chosen length for the list of cast members
@@ -69,7 +70,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     };
     RetrofitService service;
     int id, movieId = 0;
-    String title, genreList, castList, mDirector, mRuntime, backdropPath, mHomepage;
+    String title, genreList, castList, mDirector, mRuntime, backdropPath, mHomepage, mCertificate;
     private boolean bFavorited = false;
     private Uri mUri;
     //variables for UI views
@@ -145,7 +146,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     private void DisplayExtras() {
         if (movieId != 0) {
             service.listExtras(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
-                    "credits",
+                    "release_dates,credits",
                     new Callback<MovieExtrasPOJO>() {
                         @Override
                         public void success(MovieExtrasPOJO movieExtrasPOJO, Response response) {
@@ -212,14 +213,33 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                 //extracting homepage information
                                 if (movieExtrasPOJO.getHomepage() != null) {
                                     mHomepage = movieExtrasPOJO.getHomepage();
-                                    if(mHomepage.equals("")){
+                                    if (mHomepage.equals("")) {
                                         mHomepage = getResources().getString(R.string.not_available_sign);
                                     }
 //                                    Log.i(LOG_TAG, "home page is  "+ mHomepage);
                                 } else {
                                     mHomepage = getResources().getString(R.string.not_available_sign);
                                 }
+                                //extracting genre information
+                                mCertificate = getResources().getString(R.string.not_available_sign);
+                                if (movieExtrasPOJO.getRelease_dates() != null) {
+                                    if (movieExtrasPOJO.getRelease_dates().getResults() != null) {
+                                        for (int i = 0; i < movieExtrasPOJO.getRelease_dates().getResults().length; i++) {
+                                            if(movieExtrasPOJO.getRelease_dates().getResults()[i].getIso_3166_1().equals("US")) {
+                                                if (movieExtrasPOJO.getRelease_dates().getResults()[i].getRelease_dates() != null) {
+                                                    Release_dates[] object = movieExtrasPOJO.getRelease_dates().getResults()[i].getRelease_dates();
+                                                    if(object!=null) {
+                                                        if(object[0].getCertification()!=null) {
+                                                            mCertificate = object[0].getCertification();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
+
                             //enter the data in database
                             ContentValues cValues = new ContentValues();
                             cValues.put(MovieContract.MoviesEntry.COLUMN_GENRE, genreList);
@@ -243,7 +263,12 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
                                     MovieContract.MoviesEntry.CONTENT_URI,
                                     cValues,
                                     MovieContract.MoviesEntry.COLUMN_ID + " = ?",
-                                    new String[]{Integer.toString(id)}
+                                    new String[]
+
+                                            {
+                                                    Integer.toString(id)
+                                            }
+
                             );
                         }
 
@@ -318,7 +343,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
             if ((homepage != null) && (homepage.equals(getResources().getString(R.string.not_available_sign)))) {
                 mHomepageView.setVisibility(View.INVISIBLE);
             } else {
-                mHomepageView.setText(String.format(getResources().getString(R.string.homepage),homepage));
+                mHomepageView.setText(String.format(getResources().getString(R.string.homepage), homepage));
             }
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185//" + posterPath)
                     .error(R.drawable.unavailable_poster_black)

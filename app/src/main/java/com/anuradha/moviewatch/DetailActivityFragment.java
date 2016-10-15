@@ -275,7 +275,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private void BrowseExtras() {
         if (movieId != 0) {
             service.listExtras(Integer.toString(movieId), BuildConfig.MOVIEDB_KEY,
-                    "credits",
+                    "release_dates,credits",
                     new Callback<MovieExtrasPOJO>() {
                         @Override
                         public void success(MovieExtrasPOJO movieExtrasPOJO, Response response) {

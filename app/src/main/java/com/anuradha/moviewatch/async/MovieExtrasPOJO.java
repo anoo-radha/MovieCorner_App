@@ -2,6 +2,15 @@ package com.anuradha.moviewatch.async;
 
 public class MovieExtrasPOJO
 {
+    public class ReleaseDates
+    {
+        private Results[] results;
+
+        public Results[] getResults() { return this.results; }
+
+        public void setResults(Results[] results) { this.results = results; }
+    }
+
     private String budget;
 
     private Genres[] genres;
@@ -13,6 +22,8 @@ public class MovieExtrasPOJO
     private String runtime;
 
 //    private Spoken_languages[] spoken_languages;
+
+    private ReleaseDates release_dates;
 
     private String id;
 
@@ -113,6 +124,16 @@ public class MovieExtrasPOJO
 //    {
 //        this.spoken_languages = spoken_languages;
 //    }
+
+    public ReleaseDates getRelease_dates ()
+    {
+        return release_dates;
+    }
+
+    public void setRelease_dates (ReleaseDates release_dates)
+    {
+        this.release_dates = release_dates;
+    }
 
     public String getId ()
     {
@@ -317,6 +338,6 @@ public class MovieExtrasPOJO
 //    @Override
 //    public String toString()
 //    {
-//        return "ClassPojo [budget = "+budget+", genres = "+genres+", vote_average = "+vote_average+", credits = "+credits+", runtime = "+runtime+", spoken_languages = "+spoken_languages+", id = "+id+", title = "+title+", original_title = "+original_title+", video = "+video+", popularity = "+popularity+", revenue = "+revenue+", backdrop_path = "+backdrop_path+", status = "+status+", adult = "+adult+", homepage = "+homepage+", production_countries = "+production_countries+", overview = "+overview+", original_language = "+original_language+", production_companies = "+production_companies+", imdb_id = "+imdb_id+", belongs_to_collection = "+belongs_to_collection+", release_date = "+release_date+", vote_count = "+vote_count+", poster_path = "+poster_path+", tagline = "+tagline+"]";
+//        return "ClassPojo [budget = "+budget+", genres = "+genres+", vote_average = "+vote_average+", credits = "+credits+", runtime = "+runtime+", spoken_languages = "+spoken_languages+", release_dates = "+release_dates+", id = "+id+", title = "+title+", original_title = "+original_title+", video = "+video+", popularity = "+popularity+", revenue = "+revenue+", backdrop_path = "+backdrop_path+", status = "+status+", adult = "+adult+", homepage = "+homepage+", production_countries = "+production_countries+", overview = "+overview+", original_language = "+original_language+", production_companies = "+production_companies+", imdb_id = "+imdb_id+", belongs_to_collection = "+belongs_to_collection+", release_date = "+release_date+", vote_count = "+vote_count+", poster_path = "+poster_path+", tagline = "+tagline+"]";
 //    }
 }

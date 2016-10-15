@@ -2,9 +2,17 @@ package com.anuradha.moviewatch.async;
 
 
 public class Crew {
+    private String id;
+
+    private String credit_id;
+
     private String department;
+
     private String name;
+
     private String job;
+
+//    private null profile_path;
 
     public String getDepartment() {
         return department;
