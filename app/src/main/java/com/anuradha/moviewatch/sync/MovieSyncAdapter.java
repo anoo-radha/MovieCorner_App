@@ -24,7 +24,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.anuradha.moviewatch.BuildConfig;
-import com.anuradha.moviewatch.MainActivity;
+import com.anuradha.moviewatch.NotificationsActivity;
 import com.anuradha.moviewatch.R;
 import com.anuradha.moviewatch.Utility;
 import com.anuradha.moviewatch.database.MovieContract;
@@ -361,7 +361,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String JSON_MOVIES = "movies";
 //        final String JSON_ID = "idIMDB";
         final String JSON_TITLE = "title";
-        final String JSON_OVERVIEW = "plot";
+        final String JSON_OVERVIEW = "simplePlot";
         final String JSON_RELEASE_DATE = "releaseDate";
         final String JSON_POSTER_PATH = "urlPoster";
         final String JSON_GENRE = "genres";
@@ -673,12 +673,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 Cursor cursor = context.getContentResolver().query(movieUri, NOTIFY_PROJECTION, null, null, null);
 
                 if ( (cursor!=null) && (cursor.moveToFirst()) ) {
-                    String title = context.getString(R.string.app_name)+context.getString(R.string.notification_subtitle);
+                    String title = context.getString(R.string.app_name) + " "
+                            + context.getString(R.string.delimiter) + " " +
+                            context.getString(R.string.notification_subtitle);
                      /* Add Big View Specific Configuration */
                     NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
                     String[] movies = new String[cursor.getCount()];
                     int count=0;
-                    int movieId = cursor.getInt(INDEX_ID);
+//                    int movieId = cursor.getInt(INDEX_ID);
                     String movieTitle = cursor.getString(INDEX_TITLE);
                     String genre = cursor.getString(INDEX_GENRE);
                     bIsGenre = Utility.isSelectedGenre(getContext(), genre);
@@ -727,13 +729,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         mBuilder.setStyle(inboxStyle);
 
                         // Open the app when the user clicks on the notification.
-                        Intent resultIntent = new Intent(context, MainActivity.class);
-
+//                        Intent resultIntent = new Intent(context, MainActivity.class);
+                        Intent resultIntent = new Intent(context, NotificationsActivity.class);
                         // The stack builder object will contain an artificial back stack for the
                         // started Activity. This ensures that navigating backward from the Activity leads out of
                         // your application to the Home screen.
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                        stackBuilder.addNextIntent(resultIntent);
+//                        stackBuilder.addNextIntent(resultIntent);
+                        stackBuilder.addNextIntentWithParentStack(resultIntent);
                         PendingIntent resultPendingIntent =
                                 stackBuilder.getPendingIntent(
                                         0,

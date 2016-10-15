@@ -15,6 +15,7 @@
     <string name="menu_top_rated" translatable="false">Top Rated</string>
     <string name="menu_most_popular" translatable="false">Most Popular</string>
     <string name="menu_kids_movies" translatable="false">Kids Movies</string>
+    <string name="menu_notifications" translatable="false">Notifications</string>
     <string name="menu_communicate" translatable="false">Communicate</string>
     <string name="menu_comment" translatable="false">Comment</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
@@ -38,6 +39,7 @@
     <string name="runtime" translatable="false">RUNTIME</string>
     <string name="runtime_tab" translatable="false">RUNTIME\t\t\t%1$s</string>
     <string name="director" translatable="false">DIRECTOR</string>
+    <string name="director_tab" translatable="false">DIRECTOR\t\t\t%1$s</string>
     <string name="homepage" translatable="false">HOMEPAGE\n%1$s</string>
     <string name="homepage_tab" translatable="false">HOMEPAGE\t\t%1$s</string>
     <string name="backdrop" translatable="false">Backdrop Image</string>
@@ -91,7 +93,7 @@
     <!-- Muzei -->
     <string name="muzei_description" translatable="false">Today\'s poster</string>
     <!-- Notification Format -->
-    <string name="notification_subtitle" translatable="false"> - Week\'s Release:</string>
+    <string name="notification_subtitle" translatable="false">Week\'s Release</string>
     <string name="format_notification">\n<xliff:g id="title">%1$s</xliff:g> -- <xliff:g id="genre">%2$s</xliff:g> </string>
     <string name="format_inbox_notification">\n<xliff:g id="title">%1$s</xliff:g> -- <xliff:g id="genre">%2$s</xliff:g> </string>
     <!-- Strings related to Notification preference -->

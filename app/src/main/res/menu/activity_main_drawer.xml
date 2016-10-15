@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/nav_favorite"
-        android:icon="@drawable/favorite_black"
-        android:title="@string/menu_favorites" />
+    <group android:id="@+id/group_favorite">
+        <item
+            android:id="@+id/nav_favorite"
+            android:icon="@drawable/favorite_black"
+            android:title="@string/menu_favorites" />
+    </group>
+    <group android:id="@+id/group_sort">
+        <item android:title="@string/menu_sort_by">
 
-    <item android:title="@string/menu_sort_by">
+            <menu>
+                <item
+                    android:id="@+id/nav_now_playing"
+                    android:title="@string/menu_now_playing" />
+                <item
+                    android:id="@+id/nav_upcoming"
+                    android:title="@string/menu_upcoming" />
+                <item
+                    android:id="@+id/nav_top_rated"
+                    android:title="@string/menu_top_rated" />
+                <item
+                    android:id="@+id/nav_popular"
+                    android:title="@string/menu_most_popular" />
+                <item
+                    android:id="@+id/nav_kids_movies"
+                    android:title="@string/menu_kids_movies" />
+            </menu>
 
-        <menu>
-            <item
-                android:id="@+id/nav_now_playing"
-                android:title="@string/menu_now_playing" />
-            <item
-                android:id="@+id/nav_upcoming"
-                android:title="@string/menu_upcoming" />
-            <item
-                android:id="@+id/nav_top_rated"
-                android:title="@string/menu_top_rated" />
-            <item
-                android:id="@+id/nav_popular"
-                android:title="@string/menu_most_popular" />
-            <item
-                android:id="@+id/nav_kids_movies"
-                android:title="@string/menu_kids_movies" />
-        </menu>
-
-    </item>
-
-    <item android:title="@string/menu_communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_share"
-                android:title="@string/action_share"/>
-            <item
-                android:id="@+id/nav_comment"
-                android:icon="@drawable/ic_mail"
-                android:title="@string/menu_comment"/>
-        </menu>
-    </item>
-
+        </item>
+    </group>
+    <group android:id="@+id/group_notifications">
+        <item
+            android:id="@+id/nav_notifications"
+            android:title="@string/menu_notifications" />
+    </group>
+    <group android:id="@+id/group_communicate">
+        <item android:title="@string/menu_communicate">
+            <menu>
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_share"
+                    android:title="@string/action_share" />
+                <item
+                    android:id="@+id/nav_comment"
+                    android:icon="@drawable/ic_mail"
+                    android:title="@string/menu_comment" />
+            </menu>
+        </item>
+    </group>
 </menu>

@@ -49,6 +49,14 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
+            android:name=".NotificationsActivity"
+            android:label="@string/notification_subtitle"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
             android:name=".AboutMenu"
             android:parentActivityName=".MainActivity">
             <meta-data
