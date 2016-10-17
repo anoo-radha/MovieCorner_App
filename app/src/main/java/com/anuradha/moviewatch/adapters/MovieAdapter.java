@@ -20,20 +20,20 @@ import com.squareup.picasso.Picasso;
 import java.util.Locale;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private static String LOG_TAG = MovieAdapter.class.getSimpleName();
+//    private static String LOG_TAG = MovieAdapter.class.getSimpleName();
     final private Context mContext;
     private Cursor mCursor;
-    CursorAdapter mCursorAdapter;
+    private CursorAdapter mCursorAdapter;
     final private MovieAdapterOnClickHandler mClickHandler;
     /**
      * Cache of the children views for a forecast list item.
      */
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public final ImageView mImageView;
-        public final TextView mRelaseView, mRatingView;
+        final ImageView mImageView;
+        final TextView mRelaseView, mRatingView;
 
-        public MovieAdapterViewHolder(View view) {
+        MovieAdapterViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.poster_imgview);
             mRelaseView = (TextView) view.findViewById(R.id.movie_year);

@@ -30,10 +30,13 @@
 
         </item>
     </group>
-    <group android:id="@+id/group_notifications">
+    <group android:id="@+id/group_extras">
         <item
             android:id="@+id/nav_notifications"
             android:title="@string/menu_notifications" />
+        <item
+            android:id="@+id/nav_help"
+            android:title="@string/title_activity_help" />
     </group>
     <group android:id="@+id/group_communicate">
         <item android:title="@string/menu_communicate">

@@ -20,11 +20,11 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
     final private Context mContext;
     private List<Trailer> mTrailers;
 
-    public class TrailerRecyclerAdapterViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView mImageView;
-        public final TextView mDescriptionView;
+    class TrailerRecyclerAdapterViewHolder extends RecyclerView.ViewHolder {
+        final ImageView mImageView;
+        final TextView mDescriptionView;
 
-        public TrailerRecyclerAdapterViewHolder(View view) {
+        TrailerRecyclerAdapterViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.trailer_link_btn);
             mDescriptionView = (TextView) view.findViewById(R.id.trailer_name);

@@ -11,10 +11,9 @@ import com.anuradha.moviewatch.adapters.NotificationsListAdapter;
 import com.anuradha.moviewatch.database.MovieContract;
 
 
-public class NotificationsActivity extends AppCompatActivity{
+public class NotificationsActivity extends AppCompatActivity {
 
-    private static final int NOTIFICATIONS_LOADER = 3;
-    private static String LOG_TAG = NotificationsActivity.class.getSimpleName();
+    //    private static String LOG_TAG = NotificationsActivity.class.getSimpleName();
     public static final int COLUMN_MOVIE_ID = 1;
     public static final int COLUMN_POSTER_PATH = 2;
     public static final int COLUMN_TITLE = 3;
@@ -27,7 +26,6 @@ public class NotificationsActivity extends AppCompatActivity{
     public static final int COLUMN_HOMEPAGE = 10;
     public static final int COLUMN_CERTIFICATE = 11;
 
-    private static final int MOVIES_LOADER = 0;
     private static final String[] NOTIFICATIONS_COLUMNS = {
             MovieContract.TABLE_NAME + "." + MovieContract.MoviesEntry._ID,
             MovieContract.MoviesEntry.COLUMN_ID,

@@ -31,7 +31,7 @@ import retrofit.client.Response;
 
 public class AboutFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String LOG_TAG = AboutFragment.class.getSimpleName();
+    //    public static final String LOG_TAG = AboutFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
     //Chosen length for the list of cast members
@@ -48,7 +48,7 @@ public class AboutFragment extends Fragment implements LoaderManager.LoaderCallb
     public static final int COLUMN_CAST = 9;
     public static final int COLUMN_DIRECTOR = 10;
     public static final int COLUMN_RATING = 11;
-    public static final int COLUMN_CERTIFICATE =12;
+    public static final int COLUMN_CERTIFICATE = 12;
     public static final int COLUMN_HOMEPAGE = 13;
     public static final int COLUMN_FAVORITE_INDICATION = 14;
     private static final int DETAIL_LOADER = 0;

@@ -17,8 +17,9 @@
     <string name="menu_kids_movies" translatable="false">Kids Movies</string>
     <string name="menu_notifications" translatable="false">Notifications</string>
     <string name="menu_communicate" translatable="false">Communicate</string>
-    <string name="menu_comment" translatable="false">Comment</string>
+    <string name="menu_comment" translatable="false">Give Feedback</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
+    <string name="title_activity_help" translatable="false">Features</string>
     <string name="content_authority" translatable="false">com.anuradha.moviewatch</string>
     <string name="account_type" translatable="false">moviewatch.anuradha.com</string>
     <!-- for storing values in shared preferences -->
@@ -26,6 +27,7 @@
     <string name="pref_fragment_reset_key" translatable="false">orientation</string>
     <string name="pref_search_title_result" translatable="false">search_title_result</string>
     <string name="pref_search_title" translatable="false">search_title</string>
+    <string name="pref_nav_drawer_open" translatable="false">nav_drawer_open_key</string>
     <string name="default_search_title" translatable="false">default_search_title</string>
     <!-- for storing values in bundle during orientation changes -->
     <string name="reviews_data" translatable="false">reviews_data</string>
@@ -154,4 +156,14 @@
     <string name="widget_name" translatable="false"> MovieWatch</string>
     <string name="empty_widget" translatable="false">Oops! No movies for the selected genre </string>
     <string name="loading" translatable="false">Loading...</string>
+    <!--Help-->
+    <string name="widget_help_contentdesc" translatable="false">Widget</string>
+    <string name="widget_help_text" translatable="false">Access Top ten Box Office Hits from the homescreen! Add widget to the homescreen.
+        First, touch and hold an open space on your home screen. Click the widgets drawer and add Moviewatch widget</string>
+    <string name="notifications_help_contentdesc" translatable="false">Notifications</string>
+    <string name="notifications_help_text" translatable="false">Get Notified when movie of your favorite genre is released this week. Select favorite Genre from the Settings menu</string>
+    <string name="wallpaper_help_contentdesc" translatable="false">Setting Wallpaper</string>
+    <string name="wallpaper_help_text" translatable="false">Set your favorite movie poster as the wallpaper! just download
+                MUZEI Application and customize MovieWatch as the source</string>
+    <string name="help_general" translatable="false">Make your device more lively with these features!</string>
 </resources>

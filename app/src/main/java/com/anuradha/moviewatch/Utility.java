@@ -22,7 +22,7 @@ public class Utility {
     }
 
     // Getting the orientation option from shared preferences
-    public static String getFragmentResetOption(Context context) {
+    static String getFragmentResetOption(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPref.getString(context.getString(R.string.pref_fragment_reset_key),
                 context.getString(R.string.details_reset));
@@ -34,7 +34,7 @@ public class Utility {
                 context.getString(R.string.default_search_title));
     }
 
-    public static String getDuration(String inMinutes) {
+    static String getDuration(String inMinutes) {
         int t = Integer.valueOf(inMinutes);
         if (t > 0) {
             int hours = t / 60;
@@ -67,7 +67,7 @@ public class Utility {
         return BasePath + mPosterPath;
     }
 
-    public static int calculateNoOfColumns(Context context) {
+    static int calculateNoOfColumns(Context context) {
         int noOfColumns;
         final int column_width = (int) context.getResources().getDimension(R.dimen.column_width);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

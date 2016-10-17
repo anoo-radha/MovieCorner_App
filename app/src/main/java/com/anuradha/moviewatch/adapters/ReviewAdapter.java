@@ -1,6 +1,7 @@
 package com.anuradha.moviewatch.adapters;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,9 @@ public class ReviewAdapter extends ArrayAdapter<Reviews> {
      * @param parent      The parent ViewGroup that is used for inflation
      * @return The View for the position in the AdapterView.
      */
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.review_view, parent, false);
@@ -41,8 +43,14 @@ public class ReviewAdapter extends ArrayAdapter<Reviews> {
         TextView content = (TextView) convertView.findViewById(R.id.content_view);
         TextView name = (TextView) convertView.findViewById(R.id.name_view);
         Reviews reviews = getItem(position);
-        name.setText(String.format(getContext().getResources().getString(R.string.review_author), reviews.getAuthor()));
-        content.setText(reviews.getContent());
+        if(reviews!=null) {
+            if(reviews.getAuthor()!=null) {
+                name.setText(String.format(getContext().getResources().getString(R.string.review_author), reviews.getAuthor()));
+            }
+            if(reviews.getContent()!=null) {
+                content.setText(reviews.getContent());
+            }
+        }
         return convertView;
     }
 }

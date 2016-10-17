@@ -36,9 +36,12 @@ public class MainActivity extends AppCompatActivity implements
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private static String mcurrentSortBy;
     private boolean mTwoPane, mNetAvailability = true;
+    private Context context;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         //Adding Navigation Drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -72,6 +75,24 @@ public class MainActivity extends AppCompatActivity implements
 
         //Create Sync Account.. a dummy account for sync adapter
         MovieSyncAdapter.initializeSyncAdapter(this);
+
+        // Open navigation drawer only the first time app opens. use thread for performance
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                boolean isFirstStart = sp.getBoolean(getString(R.string.pref_nav_drawer_open), true);
+                // we will not get a value  at first start, so true will be returned
+
+                // if it was the first app start
+                if (isFirstStart) {
+                    drawer.openDrawer(GravityCompat.START);
+                    // we save the value "false", indicating that it is no longer the first appstart
+                    sp.edit().putBoolean(getString(R.string.pref_nav_drawer_open), false).apply();
+                }
+            }
+        });
+        t.start();
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
@@ -211,6 +232,8 @@ public class MainActivity extends AppCompatActivity implements
                     getResources().getStringArray(R.array.sort_values)[5]).apply();
         } else if (id == R.id.nav_notifications) {
             startActivity(new Intent(this, NotificationsActivity.class));
+        } else if (id == R.id.nav_help) {
+            startActivity(new Intent(this, HelpActivity.class));
         } else if (id == R.id.nav_share) {
             Intent intent_share = new Intent(Intent.ACTION_SEND);
             intent_share.setType("text/plain");

@@ -58,7 +58,7 @@ import retrofit.client.Response;
  */
 public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    //    public static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
 
@@ -77,7 +77,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public static final int COLUMN_CAST = 9;
     public static final int COLUMN_DIRECTOR = 10;
     public static final int COLUMN_RATING = 11;
-    public static final int COLUMN_CERTIFICATE =12;
+    public static final int COLUMN_CERTIFICATE = 12;
     public static final int COLUMN_HOMEPAGE = 13;
     public static final int COLUMN_FAVORITE_INDICATION = 14;
     private static final int DETAIL_LOADER = 0;
@@ -125,7 +125,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private NonScrollableListView mReviewsList;
     private TextView mReviewView;
     private TextView mGenreView;
-//    private TextView mRuntimeHeader;
+    //    private TextView mRuntimeHeader;
     private TextView mRuntimeView;
     private TextView mCastHeader;
     private TextView mCastView;
@@ -304,7 +304,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                 //extracting runtime information
                                 if (movieExtrasPOJO.getRuntime() != null) {
                                     mRuntime = Utility.getDuration(movieExtrasPOJO.getRuntime());
-                                    if( (mRuntime.equals("")) || (mRuntime.equals("null"))){
+                                    if ((mRuntime.equals("")) || (mRuntime.equals("null"))) {
                                         mRuntime = getResources().getString(R.string.not_available_sign);
                                     }
                                 } else {
@@ -349,7 +349,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                     if (mHomepage.equals("")) {
                                         mHomepage = getResources().getString(R.string.not_available_sign);
                                     }
-//                                    Log.i(LOG_TAG, "home page is  "+ mHomepage);
                                 } else {
                                     mHomepage = getResources().getString(R.string.not_available_sign);
                                 }
@@ -358,11 +357,11 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                 if (movieExtrasPOJO.getRelease_dates() != null) {
                                     if (movieExtrasPOJO.getRelease_dates().getResults() != null) {
                                         for (int i = 0; i < movieExtrasPOJO.getRelease_dates().getResults().length; i++) {
-                                            if(movieExtrasPOJO.getRelease_dates().getResults()[i].getIso_3166_1().equals("US")) {
+                                            if (movieExtrasPOJO.getRelease_dates().getResults()[i].getIso_3166_1().equals("US")) {
                                                 if (movieExtrasPOJO.getRelease_dates().getResults()[i].getRelease_dates() != null) {
                                                     Release_dates[] object = movieExtrasPOJO.getRelease_dates().getResults()[i].getRelease_dates();
-                                                    if(object!=null) {
-                                                        if(object[0].getCertification()!=null) {
+                                                    if (object != null) {
+                                                        if (object[0].getCertification() != null) {
                                                             if (!object[0].getCertification().equals("")) {
                                                                 mCertificate = object[0].getCertification();
                                                             }
@@ -421,10 +420,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                                     trailers = trailerPOJO.getTrailers();
                                     mTrailerAdapter = new TrailerRecyclerAdapter(getActivity(), trailers);
                                     mTrailerList.setAdapter(mTrailerAdapter);
-//                                    Log.i(LOG_TAG,"in trailer success  "+trailers.size());
                                     mPosterPlayView.setVisibility(View.VISIBLE);
-                                    if(trailers != null){
-//                                        Log.i(LOG_TAG, "creating share");
+                                    if (trailers != null) {
                                         if (mShareActionProvider != null) {
                                             mShareActionProvider.setShareIntent(createShareForecastIntent());
                                         }
@@ -618,6 +615,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             favoritesButton.setImageResource(R.drawable.favorite_black_border);
         }
     }
+
     private void updateMuzei() {
         // Muzei is only compatible with Jelly Bean MR1+ devices, so there's no need to update the
         // Muzei background on lower API level devices
@@ -627,6 +625,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                     .setClass(context, MovieMuzeiSource.class));
         }
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         // When tablets rotate, the review button state have to be preserved.

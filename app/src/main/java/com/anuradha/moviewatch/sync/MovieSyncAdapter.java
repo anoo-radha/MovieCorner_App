@@ -21,7 +21,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.anuradha.moviewatch.BuildConfig;
 import com.anuradha.moviewatch.NotificationsActivity;
@@ -168,8 +167,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         cVVector = null;
         final String MOVIES_BASE_URL = getContext().getString(R.string.base_url);
-        final String KIDS_MOVIES_BASE_URL ="http://api.themoviedb.org/3/discover/movie?certification_country=US&certification.lte=PG";
-        final String SEARCH_BY_TITLE_BASE_URL ="https://api.themoviedb.org/3/search/movie";
+        final String KIDS_MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie?certification_country=US&certification.lte=PG";
+        final String SEARCH_BY_TITLE_BASE_URL = "https://api.themoviedb.org/3/search/movie";
         final String MOVIE_PARAM = getContext().getString(R.string.movie_url_param);
         final String APPID_PARAM = getContext().getString(R.string.api_key);
         final String PAGE_PARAM = getContext().getString(R.string.page_url_param);
@@ -179,7 +178,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         long lastSync = prefs.getLong(lastNotificationKey, 0);
         //checking 2 minutes before, incase data takes some time
-        if (System.currentTimeMillis() - lastSync >= (DAY_IN_MILLIS-120000)) {
+        if (System.currentTimeMillis() - lastSync >= (DAY_IN_MILLIS - 120000)) {
             getMoviesInTheaters();
             insertData(cVVector);
             cVVector = null;
@@ -193,7 +192,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                             .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                             .build();
 //                    Log.i(LOG_TAG,"uri "+ uri);
-                    callAPI(uri,"themoviedb");
+                    callAPI(uri, "themoviedb");
 
                     //Get second page of movies for the sort order
                     for (int i = 2; i <= 5; i++) {
@@ -202,7 +201,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                                 .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
                                 .build();
 //                        Log.i(LOG_TAG,"uri "+ uri);
-                        callAPI(uri,"themoviedb");
+                        callAPI(uri, "themoviedb");
                     }
                     insertData(cVVector);
                 } catch (Exception e) {
@@ -212,24 +211,12 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     String title_to_search = prefs.getString(getContext().getString(R.string.pref_search_title),
                             getContext().getString(R.string.default_search_title));
-//                    Log.i(LOG_TAG,"title_to_search "+ title_to_search);
                     Uri uri = Uri.parse(SEARCH_BY_TITLE_BASE_URL).buildUpon()
                             .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                             .appendQueryParameter(QUERY_PARAM, title_to_search)
                             .build();
-                    Log.i(LOG_TAG,"uri "+ uri);
-                    callAPI(uri,"themoviedb");
-
-                    //Get second page of movies for the sort order
-//                    for (int i = 2; i <= 5; i++) {
-//                        uri = Uri.parse(KIDS_MOVIES_BASE_URL).buildUpon()
-//                                .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
-//                                .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
-//                                .build();
-////                        Log.i(LOG_TAG,"uri "+ uri);
-//                        callAPI(uri,"themoviedb");
-//                    }
-
+//                    Log.i(LOG_TAG, "uri " + uri);
+                    callAPI(uri, "themoviedb");
                     insertData(cVVector);
 
                 } catch (Exception e) {
@@ -243,7 +230,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                             .appendPath(sortOrder)
                             .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIEDB_KEY)
                             .build();
-                    callAPI(uri,"themoviedb");
+                    callAPI(uri, "themoviedb");
 
                     //Get second page of movies for the sort order
                     for (int i = 2; i <= 5; i++) {
@@ -254,7 +241,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                                 .appendQueryParameter(PAGE_PARAM, Integer.toString(i))
                                 .build();
 //                        Log.i(LOG_TAG, "uri " + uri);
-                        callAPI(uri,"themoviedb");
+                        callAPI(uri, "themoviedb");
                     }
 
                     insertData(cVVector);
@@ -270,7 +257,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     /* To get movies Opening this week (for Notification) and box office top ten (for widget)
     * http://www.myapifilms.com/imdb/inTheaters?token=<token_key>&format=json&language=en-us
     * */
-    private void getMoviesInTheaters(){
+    private void getMoviesInTheaters() {
 //        cVVector = null;
         final String MOVIES_INTHEATRES_URL =
                 "http://www.myapifilms.com/imdb/inTheaters";
@@ -279,15 +266,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             Uri uri = Uri.parse(MOVIES_INTHEATRES_URL).buildUpon()
                     .appendQueryParameter(TOKEN_PARAM, BuildConfig.MYAPIFILMS_TOKEN)
-                    .appendQueryParameter("format","json")
-                    .appendQueryParameter("language","en-us")
+                    .appendQueryParameter("format", "json")
+                    .appendQueryParameter("language", "en-us")
                     .build();
-                    Log.i(LOG_TAG,"uri "+ uri);
-            callAPI(uri,"myapifilms");
-//            insertData(cVVector);
+//            Log.i(LOG_TAG, "uri " + uri);
+            callAPI(uri, "myapifilms");
 
         } catch (Exception e) {
-                Log.e(LOG_TAG, "Error calling www.myapifilms.com API", e);
+//            Log.e(LOG_TAG, "Error calling www.myapifilms.com API", e);
         }
     }
 
@@ -321,15 +307,15 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 return;
             }
             moviesJsonResult = buffer.toString();
-            if(api_for_site.equals("themoviedb")) {
+            if (api_for_site.equals("themoviedb")) {
                 getMovieDataFromJson(moviesJsonResult);
             } else {
                 getInTheatersDataFromJson(moviesJsonResult);
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
+//            Log.e(LOG_TAG, "Error ", e);
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
+//            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         } finally {
             if (urlConnection != null) {
@@ -339,7 +325,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+//                    Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
@@ -370,13 +356,13 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String JSON_RATING = "rating";
         final String JSON_RUNTIME = "runtime";
         final String JSON_DIRECTORS = "directors";
-        final String JSON_DIRECTOR_NAME ="name";
+        final String JSON_DIRECTOR_NAME = "name";
         final String JSON_WEBPAGE = "urlIMDB";
         int favorited = 2;
         long id = 0;
-        String title = "", synopsis = "", releaseDate = "-", posterPath = "", sortOrder="";
-        String runtime = "-", backdropPath = "-", genre = "", director = "-", webPage ="-";
-        String cast = "-", certificate ="-" ;
+        String title = "", synopsis = "", releaseDate = "-", posterPath = "", sortOrder = "";
+        String runtime = "-", backdropPath = "-", genre = "-", director = "-", webPage = "-";
+        String cast = "-", certificate = "-";
         float rating = 0.0f;
         try {
             JSONObject movieJson = new JSONObject(moviesJsonResult);
@@ -384,38 +370,37 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             JSONArray movieCategoryArray = movieData.getJSONArray(JSON_IN_THEATER);
             for (int i = 0; i < movieCategoryArray.length(); i++) {
                 JSONObject moviesToAdd = movieCategoryArray.getJSONObject(i);
-                if( moviesToAdd.has(JSON_OPENING_THIS_WEEK) ){
+                if (moviesToAdd.has(JSON_OPENING_THIS_WEEK)) {
                     JSONArray movieArray = moviesToAdd.getJSONArray(JSON_MOVIES);
                     // Insert the new movies information into the database
-                    if(cVVector == null) {
-                        Log.i(LOG_TAG, "initializing vector in getInTheatersDataFromJson");
-                        cVVector = new Vector<>(movieArray.length() +10);
+                    if (cVVector == null) {
+                        cVVector = new Vector<>(movieArray.length() + 10);
                     }
                     for (int m = 0; m < movieArray.length(); m++) {
                         JSONObject movieToAdd = movieArray.getJSONObject(m);
 //                        int id = movieToAdd.getInt(JSON_ID);
-                        id = id-1;
-                        if(movieToAdd.has(JSON_TITLE)) {
+                        id = id - 1;
+                        if (movieToAdd.has(JSON_TITLE)) {
                             title = movieToAdd.getString(JSON_TITLE);
                         }
-                        if(movieToAdd.has(JSON_OVERVIEW)) {
+                        if (movieToAdd.has(JSON_OVERVIEW)) {
                             synopsis = movieToAdd.getString(JSON_OVERVIEW);
                         }
-                        if(movieToAdd.has(JSON_RELEASE_DATE)) {
+                        if (movieToAdd.has(JSON_RELEASE_DATE)) {
                             releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
                         }
-                        if(movieToAdd.has(JSON_POSTER_PATH)) {
+                        if (movieToAdd.has(JSON_POSTER_PATH)) {
                             posterPath = movieToAdd.getString(JSON_POSTER_PATH);
                         }
-                        if(movieToAdd.has(JSON_CERTIFICATE)) {
+                        if (movieToAdd.has(JSON_CERTIFICATE)) {
                             certificate = movieToAdd.getString(JSON_CERTIFICATE);
                         }
-                        if(movieToAdd.has(JSON_RATING)) {
-                        rating = Float.parseFloat( movieToAdd.getString(JSON_RATING) );
+                        if (movieToAdd.has(JSON_RATING)) {
+                            rating = Float.parseFloat(movieToAdd.getString(JSON_RATING));
                         }
                         genre = "";
                         int g;
-                        if(movieToAdd.has(JSON_GENRE)) {
+                        if (movieToAdd.has(JSON_GENRE)) {
                             JSONArray genreArray = movieToAdd.getJSONArray(JSON_GENRE);
                             for (g = 0; g < (genreArray.length() - 1); g++) {
                                 genre += genreArray.get(g) + ", ";
@@ -423,7 +408,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                             genre += genreArray.get(g);
                         }
                         director = "";
-                        if(movieToAdd.has(JSON_DIRECTORS)) {
+                        if (movieToAdd.has(JSON_DIRECTORS)) {
                             JSONArray directorArray = movieToAdd.getJSONArray(JSON_DIRECTORS);
                             for (g = 0; g < (directorArray.length() - 1); g++) {
                                 JSONObject directorObject = directorArray.getJSONObject(g);
@@ -432,10 +417,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                             JSONObject directorObject = directorArray.getJSONObject(g);
                             director += directorObject.getString(JSON_DIRECTOR_NAME);
                         }
-                        if(movieToAdd.has(JSON_WEBPAGE)) {
+                        if (movieToAdd.has(JSON_WEBPAGE)) {
                             webPage = movieToAdd.getString(JSON_WEBPAGE);
                         }
-                        if(movieToAdd.has(JSON_RUNTIME)) {
+                        if (movieToAdd.has(JSON_RUNTIME)) {
                             runtime = movieToAdd.getString(JSON_RUNTIME);
                         }
                         sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[6];
@@ -448,7 +433,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, releaseDate);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_POSTER_PATH, posterPath);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH, backdropPath);
-                        movieValues.put(MovieContract.MoviesEntry.COLUMN_GENRE , genre);
+                        movieValues.put(MovieContract.MoviesEntry.COLUMN_GENRE, genre);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_RUNTIME, runtime);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_CAST, cast);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_DIRECTOR, director);
@@ -459,34 +444,32 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_SORT_ORDER, sortOrder);
                         cVVector.add(movieValues);
                     }
-                } else if ( moviesToAdd.has(JSON_IN_THEATRES_NOW) ){
+                } else if (moviesToAdd.has(JSON_IN_THEATRES_NOW)) {
                     JSONArray movieArray = moviesToAdd.getJSONArray(JSON_MOVIES);
                     for (int m = 0; m < movieArray.length(); m++) {
                         JSONObject movieToAdd = movieArray.getJSONObject(m);
-//                        Log.i(LOG_TAG,"inTheatres json"+movieToAdd);
-//                        int id = movieToAdd.getInt(JSON_ID);
-                        id = id-1;
-                        if(movieToAdd.has(JSON_TITLE)) {
+                        id = id - 1;
+                        if (movieToAdd.has(JSON_TITLE)) {
                             title = movieToAdd.getString(JSON_TITLE);
                         }
-                        if(movieToAdd.has(JSON_OVERVIEW)) {
+                        if (movieToAdd.has(JSON_OVERVIEW)) {
                             synopsis = movieToAdd.getString(JSON_OVERVIEW);
                         }
-                        if(movieToAdd.has(JSON_RELEASE_DATE)) {
+                        if (movieToAdd.has(JSON_RELEASE_DATE)) {
                             releaseDate = movieToAdd.getString(JSON_RELEASE_DATE);
                         }
-                        if(movieToAdd.has(JSON_POSTER_PATH)) {
+                        if (movieToAdd.has(JSON_POSTER_PATH)) {
                             posterPath = movieToAdd.getString(JSON_POSTER_PATH);
                         }
-                        if(movieToAdd.has(JSON_RATING)) {
+                        if (movieToAdd.has(JSON_RATING)) {
                             rating = Float.parseFloat(movieToAdd.getString(JSON_RATING));
                         }
-                        if(movieToAdd.has(JSON_CERTIFICATE)) {
+                        if (movieToAdd.has(JSON_CERTIFICATE)) {
                             certificate = movieToAdd.getString(JSON_CERTIFICATE);
                         }
                         genre = "";
                         int g;
-                        if(movieToAdd.has(JSON_GENRE)) {
+                        if (movieToAdd.has(JSON_GENRE)) {
                             JSONArray genreArray = movieToAdd.getJSONArray(JSON_GENRE);
                             for (g = 0; g < (genreArray.length() - 1); g++) {
                                 genre += genreArray.get(g) + ", ";
@@ -494,7 +477,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                             genre += genreArray.get(g);
                         }
                         director = "";
-                        if(movieToAdd.has(JSON_DIRECTORS)) {
+                        if (movieToAdd.has(JSON_DIRECTORS)) {
                             JSONArray directorArray = movieToAdd.getJSONArray(JSON_DIRECTORS);
                             for (g = 0; g < (directorArray.length() - 1); g++) {
                                 JSONObject directorObject = directorArray.getJSONObject(g);
@@ -503,10 +486,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                             JSONObject directorObject = directorArray.getJSONObject(g);
                             director += directorObject.getString(JSON_DIRECTOR_NAME);
                         }
-                        if(movieToAdd.has(JSON_WEBPAGE)) {
+                        if (movieToAdd.has(JSON_WEBPAGE)) {
                             webPage = movieToAdd.getString(JSON_WEBPAGE);
                         }
-                        if(movieToAdd.has(JSON_RUNTIME)) {
+                        if (movieToAdd.has(JSON_RUNTIME)) {
                             runtime = movieToAdd.getString(JSON_RUNTIME);
                         }
                         sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[7];
@@ -519,7 +502,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, releaseDate);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_POSTER_PATH, posterPath);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH, backdropPath);
-                        movieValues.put(MovieContract.MoviesEntry.COLUMN_GENRE , genre);
+                        movieValues.put(MovieContract.MoviesEntry.COLUMN_GENRE, genre);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_RUNTIME, runtime);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_CAST, cast);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_DIRECTOR, director);
@@ -542,7 +525,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     new String[]{sortOrder});
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
+//            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
     }
@@ -571,7 +554,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             JSONObject movieJson = new JSONObject(moviesJsonResult);
             JSONArray movieArray = movieJson.getJSONArray(JSON_RESULTS);
-            if( movieJson.getInt(JSON_TOTAL_RESULTS) != 0 ) {
+            if (movieJson.getInt(JSON_TOTAL_RESULTS) != 0) {
                 // Insert the new movies information into the database
                 if (cVVector == null) {
 //                Log.i(LOG_TAG, "initializing vector");
@@ -597,12 +580,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])) {
                         sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[4];
                     } else if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[8])) {
-                        Log.i(LOG_TAG,"contains");
                         String title_to_search = Utility.getSearchedTitle(getContext());
                         sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[8] +
                                 title_to_search;
-                    }
-                    else {
+                    } else {
                         sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[5];
                     }
                     Cursor movieCursor = getContext().getContentResolver().query(
@@ -644,20 +625,19 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
+//            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
     }
 
-    private void insertData(Vector<ContentValues> cVVector){
+    private void insertData(Vector<ContentValues> cVVector) {
         if (cVVector.size() > 0) {
             ContentValues[] cvArray = new ContentValues[cVVector.size()];
             cVVector.toArray(cvArray);
             getContext().getContentResolver().bulkInsert(MovieContract.MoviesEntry.CONTENT_URI, cvArray);
         }
-            Log.i(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
+//        Log.i(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
         notifyOpeningThisWeek();
-//        updateMuzei();
     }
 
     private void notifyOpeningThisWeek() {
@@ -668,7 +648,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         boolean displayNotifications = prefs.getBoolean(displayNotificationsKey,
                 Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
         boolean bIsGenre = false;
-        String contentText="";
+        String contentText = "";
 
         if (displayNotifications) {
             String lastNotificationKey = context.getString(R.string.pref_last_notification);
@@ -682,20 +662,18 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 //query our contentProvider
                 Cursor cursor = context.getContentResolver().query(movieUri, NOTIFY_PROJECTION, null, null, null);
 
-                if ( (cursor!=null) && (cursor.moveToFirst()) ) {
+                if ((cursor != null) && (cursor.moveToFirst())) {
                     String title = context.getString(R.string.app_name) + " "
                             + context.getString(R.string.delimiter) + " " +
                             context.getString(R.string.notification_subtitle);
                      /* Add Big View Specific Configuration */
                     NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
                     String[] movies = new String[cursor.getCount()];
-                    int count=0;
-//                    int movieId = cursor.getInt(INDEX_ID);
+                    int count = 0;
                     String movieTitle = cursor.getString(INDEX_TITLE);
                     String genre = cursor.getString(INDEX_GENRE);
                     bIsGenre = Utility.isSelectedGenre(getContext(), genre);
-//                    Log.i(LOG_TAG,"found first genre for notification "+bIsGenre);
-                    if(bIsGenre) {
+                    if (bIsGenre) {
                         contentText = String.format(context.getString(R.string.format_notification),
                                 movieTitle, genre);
                         movies[0] = String.format(context.getString(R.string.format_inbox_notification),
@@ -703,17 +681,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         inboxStyle.addLine(movies[0]);
                         count++;
                     }
-                    for(int i=count; i< cursor.getCount(); i++) {
-//                        Log.i(LOG_TAG,"i "+i+"count "+count);
-                        if(cursor.moveToNext()) {
+                    for (int i = count; i < cursor.getCount(); i++) {
+                        if (cursor.moveToNext()) {
                             movieTitle = cursor.getString(INDEX_TITLE);
                             genre = cursor.getString(INDEX_GENRE);
-                            if(Utility.isSelectedGenre(getContext(), genre)) {
-//                                Log.i(LOG_TAG, "found " + i + " genre for notification " + bIsGenre);
+                            if (Utility.isSelectedGenre(getContext(), genre)) {
                                 movies[i] = String.format(context.getString(R.string.format_inbox_notification),
                                         movieTitle, genre);
                                 // Moves events into the big view
-//                                Log.i(LOG_TAG, "movie[" + i + "]" + "   " + movies[i]);
                                 inboxStyle.addLine(movies[i]);
                                 count++;
                                 if (!bIsGenre) {
@@ -725,7 +700,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         }
                     }
 
-                    if(bIsGenre) {
+                    if (bIsGenre) {
                         // NotificationCompatBuilder is a very convenient way to build backward-compatible
                         // notifications.
                         NotificationCompat.Builder mBuilder =
@@ -765,7 +740,9 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     editor.commit();
 
                 }
-                if(cursor!=null) {cursor.close();}
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
         }
     }

@@ -29,7 +29,7 @@ import com.anuradha.moviewatch.sync.MovieSyncAdapter;
 
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static String LOG_TAG = MainActivityFragment.class.getSimpleName();
+//    private static String LOG_TAG = MainActivityFragment.class.getSimpleName();
     public static final int COLUMN_MOVIE_ID = 1;
     public static final int COLUMN_POSTER_PATH = 2;
     public static final int COLUMN_MOVIE_RELEASEDATE = 3;

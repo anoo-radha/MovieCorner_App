@@ -33,7 +33,7 @@ import retrofit.client.Response;
 
 public class TrailersFragment extends Fragment {
 
-   public static final String LOG_TAG = TrailersFragment.class.getSimpleName();
+//   public static final String LOG_TAG = TrailersFragment.class.getSimpleName();
     // for retrofit call
     public static final String ENDPOINT = "http://api.themoviedb.org";
     List<Trailer> trailers;
@@ -43,7 +43,6 @@ public class TrailersFragment extends Fragment {
     String mTitle;
     private TrailerRecyclerAdapter mTrailerAdapter;
     //variables for UI views
-//    private RelativeLayout mPosterContainer;
     private ImageView mPosterPlayView, mBackdropView;
     private TextView mTrailerHeader;
     private RecyclerView mTrailerList;

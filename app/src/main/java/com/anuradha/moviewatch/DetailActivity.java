@@ -30,7 +30,7 @@ import java.util.List;
 /* This Activity displays the details of the movie that is clicked in the Main page */
 public class DetailActivity extends AppCompatActivity implements AboutFragment.CallbackForData,
         ReviewsFragment.CallbackSetData, TrailersFragment.CallbackSetTitle {
-    public static String LOG_TAG = DetailActivity.class.getSimpleName();
+    //    public static String LOG_TAG = DetailActivity.class.getSimpleName();
     public static Uri uri;
     public static String dTitle, dBackdropUrl;
     public static boolean dFavorited;
@@ -130,7 +130,7 @@ public class DetailActivity extends AppCompatActivity implements AboutFragment.C
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -144,7 +144,7 @@ public class DetailActivity extends AppCompatActivity implements AboutFragment.C
             return mFragmentList.size();
         }
 
-        public void addFrag(Fragment fragment, String title) {
+        void addFrag(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -163,7 +163,6 @@ public class DetailActivity extends AppCompatActivity implements AboutFragment.C
         dBackdropUrl = backdropUrl;
         dTitle = title;
         getSupportActionBar().setTitle(title);
-//        Log.i(LOG_TAG, "fav  " + dFavorited);
         if (bfavorited) {
             mFavoriteButton.setImageResource(R.drawable.favorite_black);
         } else {

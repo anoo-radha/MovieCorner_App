@@ -3,7 +3,6 @@ package com.anuradha.moviewatch.muzei;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import com.anuradha.moviewatch.MainActivity;
 import com.anuradha.moviewatch.database.MovieContract;
@@ -52,7 +51,6 @@ public class MovieMuzeiSource extends MuzeiArtSource {
                 int randomNum = rand.nextInt(favorites_count);
 
                 cursor.moveToPosition(randomNum);
-//                Log.i("MovieMuzeiSource", "count  randomnum   title  " + favorites_count + " " + randomNum + "  " + cursor.getString(INDEX_TITLE));
                 if (cursor.moveToFirst()) {
                     movieTitle = cursor.getString(INDEX_TITLE);
                     String imagePath = cursor.getString(INDEX_POSTER);
@@ -61,19 +59,16 @@ public class MovieMuzeiSource extends MuzeiArtSource {
             }
             cursor.close();
         } else {
-            Log.i("MovieMuzeiSource", "no FAV");
+//            Log.i("MovieMuzeiSource", "no FAV");
             // Only publish a new wallpaper if we have a valid image
             imageUrl = "http://www.androidcentral.com/wallpaper/abstract-glow";
         }
         // Only publish a new wallpaper if we have a valid image
-        if (imageUrl != null) {
-            publishArtwork(new Artwork.Builder()
-                    .imageUri(Uri.parse(imageUrl))
-//                            .title(movieTitle)
-                    .byline(movieTitle)
-                    .viewIntent(new Intent(this, MainActivity.class))
-                    .build());
+        publishArtwork(new Artwork.Builder()
+                .imageUri(Uri.parse(imageUrl))
+                .byline(movieTitle)
+                .viewIntent(new Intent(this, MainActivity.class))
+                .build());
 
-        }
     }
 }

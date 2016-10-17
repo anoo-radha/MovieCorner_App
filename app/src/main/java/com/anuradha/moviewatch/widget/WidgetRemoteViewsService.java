@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -90,7 +89,6 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                 RemoteViews views = new RemoteViews(getPackageName(),
                         R.layout.list_widget_item);
                 String title = data.getString(INDEX_TITLE);
-                views.setImageViewResource(R.id.widget_icon, R.drawable.ic_mail);
                 Bitmap poster = null;
                 String posterUrl = data.getString(INDEX_POSTER_PATH);
 //                Log.i(LOG_TAG, "  " + data.getString(INDEX_TITLE) + "  " + data.getString(INDEX_GENRE) + "  "

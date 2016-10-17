@@ -4,12 +4,7 @@
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
     android:gravity="center"
-    android:orientation="horizontal"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/small_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingStart="@dimen/small_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
@@ -17,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher_stencil" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
