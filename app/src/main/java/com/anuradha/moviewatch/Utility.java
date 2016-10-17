@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Set;
 
 import retrofit.RetrofitError;
@@ -121,6 +124,7 @@ public class Utility {
         return "";
     }
 
+    /* for sending notifications based on chosen genre */
     public static boolean isSelectedGenre(Context context, String genre) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> pref_genre = sharedPref.getStringSet(context.getString(R.string.pref_genre_key), null);
@@ -142,6 +146,11 @@ public class Utility {
         } else {
             return true;
         }
+    }
 
+    public static String getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        return dateFormat.format(calendar.getTime());
     }
 }

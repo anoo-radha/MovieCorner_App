@@ -39,7 +39,7 @@
     <string name="runtime" translatable="false">RUNTIME</string>
     <string name="runtime_tab" translatable="false">RUNTIME\t\t\t%1$s</string>
     <string name="director" translatable="false">DIRECTOR</string>
-    <string name="director_tab" translatable="false">DIRECTOR\t\t\t%1$s</string>
+    <string name="director_tab" translatable="false">DIRECTED BY:\t\t\t%1$s</string>
     <string name="homepage" translatable="false">HOMEPAGE\n%1$s</string>
     <string name="homepage_tab" translatable="false">HOMEPAGE\t\t%1$s</string>
     <string name="backdrop" translatable="false">Backdrop Image</string>

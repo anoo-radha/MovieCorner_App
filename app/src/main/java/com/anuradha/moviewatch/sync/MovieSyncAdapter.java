@@ -366,6 +366,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String JSON_POSTER_PATH = "urlPoster";
         final String JSON_GENRE = "genres";
 //        final String JSON_BACKDROP_PATH = "backdrop_path";
+        final String JSON_CERTIFICATE = "rated";
         final String JSON_RATING = "rating";
         final String JSON_RUNTIME = "runtime";
         final String JSON_DIRECTORS = "directors";
@@ -373,10 +374,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String JSON_WEBPAGE = "urlIMDB";
         int favorited = 2;
         long id = 0;
-        String title = "", synopsis = "", releaseDate = "", posterPath = "", sortOrder="";
-        String runtime = "", backdropPath = "-", genre = "", director = "", webPage ="";
-        String cast = "-" ;
-        float rating = 0;
+        String title = "", synopsis = "", releaseDate = "-", posterPath = "", sortOrder="";
+        String runtime = "-", backdropPath = "-", genre = "", director = "-", webPage ="-";
+        String cast = "-", certificate ="-" ;
+        float rating = 0.0f;
         try {
             JSONObject movieJson = new JSONObject(moviesJsonResult);
             JSONObject movieData = movieJson.getJSONObject(JSON_DATA);
@@ -406,7 +407,9 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         if(movieToAdd.has(JSON_POSTER_PATH)) {
                             posterPath = movieToAdd.getString(JSON_POSTER_PATH);
                         }
-//                        Log.i(LOG_TAG," opening this week json"+movieToAdd);
+                        if(movieToAdd.has(JSON_CERTIFICATE)) {
+                            certificate = movieToAdd.getString(JSON_CERTIFICATE);
+                        }
                         if(movieToAdd.has(JSON_RATING)) {
                         rating = Float.parseFloat( movieToAdd.getString(JSON_RATING) );
                         }
@@ -450,6 +453,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_CAST, cast);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_DIRECTOR, director);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_RATING, rating);
+                        movieValues.put(MovieContract.MoviesEntry.COLUMN_CERTIFICATE, certificate);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_HOMEPAGE, webPage);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, favorited);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_SORT_ORDER, sortOrder);
@@ -476,6 +480,9 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         }
                         if(movieToAdd.has(JSON_RATING)) {
                             rating = Float.parseFloat(movieToAdd.getString(JSON_RATING));
+                        }
+                        if(movieToAdd.has(JSON_CERTIFICATE)) {
+                            certificate = movieToAdd.getString(JSON_CERTIFICATE);
                         }
                         genre = "";
                         int g;
@@ -517,6 +524,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_CAST, cast);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_DIRECTOR, director);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_RATING, rating);
+                        movieValues.put(MovieContract.MoviesEntry.COLUMN_CERTIFICATE, certificate);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_HOMEPAGE, webPage);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION, favorited);
                         movieValues.put(MovieContract.MoviesEntry.COLUMN_SORT_ORDER, sortOrder);
@@ -578,10 +586,12 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     String posterPath = movieToAdd.getString(JSON_POSTER_PATH);
                     String backdropPath = movieToAdd.getString(JSON_BACKDROP_PATH);
                     float userRating = (float) movieToAdd.getDouble(JSON_VOTE_AVERAGE);
-                    if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
-                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1];
-                    } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[2])) {
-                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
+                    if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1] +
+                                Utility.getCurrentDate();
+                    } else if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[2])) {
+                        sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2] +
+                                Utility.getCurrentDate();
                     } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])) {
                         sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
                     } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])) {

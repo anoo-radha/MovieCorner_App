@@ -25,6 +25,7 @@ public class NotificationsActivity extends AppCompatActivity{
     public static final int COLUMN_DIRECTOR = 8;
     public static final int COLUMN_SYNOPSIS = 9;
     public static final int COLUMN_HOMEPAGE = 10;
+    public static final int COLUMN_CERTIFICATE = 11;
 
     private static final int MOVIES_LOADER = 0;
     private static final String[] NOTIFICATIONS_COLUMNS = {
@@ -38,7 +39,8 @@ public class NotificationsActivity extends AppCompatActivity{
             MovieContract.MoviesEntry.COLUMN_RATING,
             MovieContract.MoviesEntry.COLUMN_DIRECTOR,
             MovieContract.MoviesEntry.COLUMN_SYNOPSIS,
-            MovieContract.MoviesEntry.COLUMN_HOMEPAGE
+            MovieContract.MoviesEntry.COLUMN_HOMEPAGE,
+            MovieContract.MoviesEntry.COLUMN_CERTIFICATE
     };
     Cursor cursor;
 
@@ -62,31 +64,9 @@ public class NotificationsActivity extends AppCompatActivity{
 
     @Override
     protected void onDestroy() {
-        if(cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         super.onDestroy();
     }
-    //
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        String sortBy = getResources().getStringArray(R.array.sort_values)[6];
-//        Uri uri = MovieContract.MoviesEntry.buildMoviesWithSortorder(sortBy);
-//        return new CursorLoader(this,
-//                uri,
-//                NOTIFICATIONS_COLUMNS,
-//                null,
-//                null,
-//                null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//        mNotificationsAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        mNotificationsAdapter.swapCursor(null);
-//    }
 }

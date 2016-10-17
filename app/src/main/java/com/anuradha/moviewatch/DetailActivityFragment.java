@@ -524,7 +524,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             }
             if ((runtime != null) && (runtime.equals(getResources().getString(R.string.not_available_sign)))) {
 //                mRuntimeHeader.setVisibility(View.GONE);
-                mRatingView.setVisibility(View.GONE);
+                mRuntimeView.setVisibility(View.GONE);
             } else {
                 mRuntimeView.setText(Html.fromHtml(String.format(getResources().getString(R.string.runtime_tab),
                         "<big>" + runtime + "</big>")));

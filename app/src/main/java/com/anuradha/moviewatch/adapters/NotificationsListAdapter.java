@@ -36,24 +36,65 @@ public class NotificationsListAdapter extends CursorAdapter{
         TextView homepageView = (TextView) view.findViewById(R.id.notifications_webpage);
 
         String releaseDate = cursor.getString(NotificationsActivity.COLUMN_RELEASE_DATE);
-        if(!releaseDate.equals(context.getString(R.string.not_available_sign))) {
-//            String year = (releaseDate).substring(0, 4);
-//            String month = (releaseDate).substring(4, 2);
-//            String day = (releaseDate).substring(6, 2);
+        if ((releaseDate != null) && (releaseDate.equals(context.getResources().getString(R.string.not_available_sign)))) {
+            releaseDateView.setVisibility(View.INVISIBLE);
+        } else {
             String year = TextUtils.substring(releaseDate,0,4);
             String month = TextUtils.substring(releaseDate,4,6);
             String day = TextUtils.substring(releaseDate,6,8);
             releaseDateView.setText(Utility.getMonthName(month) + day + ", " + year);
         }
-//        releaseDateView.setText(cursor.getString(NotificationsActivity.COLUMN_RELEASE_DATE));
-        voteView.setText(cursor.getString(NotificationsActivity.COLUMN_RATING));
+
+        String rating = cursor.getString(NotificationsActivity.COLUMN_RATING);
+        if ((rating != null)&& (rating.equals(context.getResources().getString(R.string.not_available_sign))) ) {
+            voteView.setVisibility(View.INVISIBLE);
+        } else {
+            voteView.setText(String.format(context.getResources().getString(R.string.default_rating), rating));
+        }
+
         titleView.setText(cursor.getString(NotificationsActivity.COLUMN_TITLE));
-        runtimeView.setText(cursor.getString(NotificationsActivity.COLUMN_RUNTIME));
-        genreView.setText(cursor.getString(NotificationsActivity.COLUMN_GENRE));
-//        certificateView.setText(cursor.getString(NotificationsActivity.COLUMN_));
-        plotView.setText(cursor.getString(NotificationsActivity.COLUMN_SYNOPSIS));
-        directorView.setText(cursor.getString(NotificationsActivity.COLUMN_DIRECTOR));
-        homepageView.setText(cursor.getString(NotificationsActivity.COLUMN_HOMEPAGE));
+
+        String runtime = cursor.getString(NotificationsActivity.COLUMN_RUNTIME);
+        if ((runtime != null) && (runtime.equals(context.getResources().getString(R.string.not_available_sign)))) {
+            runtimeView.setVisibility(View.INVISIBLE);
+        } else {
+            runtimeView.setText(runtime);
+        }
+
+        String genre = cursor.getString(NotificationsActivity.COLUMN_GENRE);
+        if ((genre != null) && (genre.equals(context.getResources().getString(R.string.not_available_sign)))) {
+            genreView.setVisibility(View.INVISIBLE);
+        } else {
+            genreView.setText(genre);
+        }
+
+        String certificate = cursor.getString(NotificationsActivity.COLUMN_CERTIFICATE);
+        if ((certificate != null) && (certificate.equals(context.getResources().getString(R.string.not_available_sign)))) {
+            certificateView.setVisibility(View.INVISIBLE);
+        } else {
+            certificateView.setText(certificate);
+        }
+        String plot = cursor.getString(NotificationsActivity.COLUMN_SYNOPSIS);
+        if ((plot != null) && (plot.equals(context.getResources().getString(R.string.not_available_sign)))) {
+            plotView.setVisibility(View.INVISIBLE);
+        } else {
+            plotView.setText(plot);
+        }
+
+        String director = cursor.getString(NotificationsActivity.COLUMN_DIRECTOR);
+        if ((director != null) && (director.equals(context.getResources().getString(R.string.not_available_sign)))) {
+            directorView.setVisibility(View.INVISIBLE);
+        } else {
+            directorView.setText(String.format(context.getResources().getString(R.string.director_tab),director));
+        }
+
+        String homepage = cursor.getString(NotificationsActivity.COLUMN_HOMEPAGE);
+        if ((homepage != null) && (homepage.equals(context.getResources().getString(R.string.not_available_sign)))) {
+            homepageView.setVisibility(View.INVISIBLE);
+        } else {
+            homepageView.setText(homepage);
+        }
+
         Picasso.with(context).load(cursor.getString(NotificationsActivity.COLUMN_POSTER_PATH))
                 .error(R.drawable.unavailable_poster_black)
                 .into(imageView);

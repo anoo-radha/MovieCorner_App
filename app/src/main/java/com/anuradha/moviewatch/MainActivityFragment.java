@@ -143,10 +143,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             mLoadingMsgView.setVisibility(View.GONE);
             uri = MovieContract.MoviesEntry.buildFavoritesUri();
         } else {
-            if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
-                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1];
-            } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[2])) {
-                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2];
+            if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[1])) {
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[1] +
+                        Utility.getCurrentDate();
+            } else if (sortBy.contains(getContext().getResources().getStringArray(R.array.sort_values)[2])) {
+                sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[2] +
+                        Utility.getCurrentDate();
             } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[3])) {
                 sortOrder = getContext().getResources().getStringArray(R.array.sort_values)[3];
             } else if (sortBy.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[4])){
