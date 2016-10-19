@@ -33,27 +33,27 @@
             android:textSize="12sp"
             tools:text = "05/2013"/>
 
-        <ImageView
-            android:id="@+id/movie_vote_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/poster_imgview"
-            android:src="@drawable/ic_star"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:gravity="end"
-            android:contentDescription=" "/>
+        <!--<ImageView-->
+            <!--android:id="@+id/movie_vote_image"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/poster_imgview"-->
+            <!--android:src="@drawable/ic_star"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:gravity="end"-->
+            <!--android:contentDescription=" "/>-->
 
-        <TextView
-            android:id="@+id/movie_vote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:layout_toStartOf="@id/movie_vote_image"
-            android:layout_toLeftOf="@id/movie_vote_image"
-            android:textColor="@color/primary_text"
-            tools:text="4.9"
-            android:layout_below="@+id/poster_imgview" />
+        <!--<TextView-->
+            <!--android:id="@+id/movie_vote"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="11sp"-->
+            <!--android:layout_toStartOf="@id/movie_vote_image"-->
+            <!--android:layout_toLeftOf="@id/movie_vote_image"-->
+            <!--android:textColor="@color/primary_text"-->
+            <!--tools:text="4.9"-->
+            <!--android:layout_below="@+id/poster_imgview" />-->
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

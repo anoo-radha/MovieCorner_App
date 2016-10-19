@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/small_margin"
                     android:paddingTop="@dimen/small_margin"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     tools:text="@string/default_release_date" />
 
                 <TextView
@@ -91,14 +91,10 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/accent"
                     android:textSize="14sp"
-                    android:gravity="end"
-                    android:padding="@dimen/small_margin"
-                    android:background="@color/colorPrimary"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/small_margin"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
-
+                    android:paddingLeft="@dimen/small_margin"
+                    android:paddingStart="@dimen/small_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:background="@color/colorPrimary"/>
             </LinearLayout>
 
             <TextView

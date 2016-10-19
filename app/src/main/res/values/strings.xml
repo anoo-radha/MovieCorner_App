@@ -161,9 +161,11 @@
     <string name="widget_help_text" translatable="false">Access Top ten Box Office Hits from the homescreen! Add widget to the homescreen.
         First, touch and hold an open space on your home screen. Click the widgets drawer and add Moviewatch widget</string>
     <string name="notifications_help_contentdesc" translatable="false">Notifications</string>
-    <string name="notifications_help_text" translatable="false">Get Notified when movie of your favorite genre is released this week. Select favorite Genre from the Settings menu</string>
+    <string name="notifications_help_text" translatable="false">Get Notified when movie of your favorite genre is released this week!
+        Choose favorite Genre by clicking on the menu. (Click on Settings -> Favorite Genre and choose from the list. If none is selected, all movies releasing that week will be notified) </string>
     <string name="wallpaper_help_contentdesc" translatable="false">Setting Wallpaper</string>
-    <string name="wallpaper_help_text" translatable="false">Set your favorite movie poster as the wallpaper! just download
-                MUZEI Application and customize MovieWatch as the source</string>
+    <string name="wallpaper_help_text" translatable="false">Set your favorite movie poster as the wallpaper! Just select a movie as your *favorite, download
+                MUZEI Live Wallpaper Application and customize MovieWatch as the source. Also adjust Blur, Dim and Grey of wallpaper from Muzei settings.
+    \n  * Must have atleast one movie as your favorite for this feature to work</string>
     <string name="help_general" translatable="false">Make your device more lively with these features!</string>
 </resources>

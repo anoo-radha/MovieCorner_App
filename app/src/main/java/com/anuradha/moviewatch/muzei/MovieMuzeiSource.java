@@ -15,7 +15,7 @@ import java.util.Random;
 public class MovieMuzeiSource extends MuzeiArtSource {
     private static final String[] MUZEI_COLUMNS = new String[]{
             MovieContract.MoviesEntry.COLUMN_TITLE,
-            MovieContract.MoviesEntry.COLUMN_BACKDROP_PATH
+            MovieContract.MoviesEntry.COLUMN_POSTER_PATH
     };
     // these indices must match the projection
     private static final int INDEX_TITLE = 0;
@@ -54,7 +54,7 @@ public class MovieMuzeiSource extends MuzeiArtSource {
                 if (cursor.moveToFirst()) {
                     movieTitle = cursor.getString(INDEX_TITLE);
                     String imagePath = cursor.getString(INDEX_POSTER);
-                    imageUrl = "http://image.tmdb.org/t/p/w780//" + imagePath;
+                    imageUrl = "http://image.tmdb.org/t/p/w92//" + imagePath;
                 }
             }
             cursor.close();

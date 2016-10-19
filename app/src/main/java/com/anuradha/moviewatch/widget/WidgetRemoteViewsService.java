@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class WidgetRemoteViewsService extends RemoteViewsService {
-    public final String LOG_TAG = WidgetRemoteViewsService.class.getSimpleName();
+//    public final String LOG_TAG = WidgetRemoteViewsService.class.getSimpleName();
     private static final String[] WIDGET_COLUMNS = {
             MovieContract.MoviesEntry.COLUMN_ID,
             MovieContract.MoviesEntry.COLUMN_POSTER_PATH,
@@ -58,7 +58,6 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                 final long identityToken = Binder.clearCallingIdentity();
                 String sort_order = getResources().getStringArray(R.array.sort_values)[7];
                 Uri movieUri = MovieContract.MoviesEntry.buildMoviesWithSortorder(sort_order);
-//                Log.i(LOG_TAG, "uri " + movieUri);
                 data = getContentResolver().query(movieUri,
                         WIDGET_COLUMNS,
                         null,
@@ -91,8 +90,6 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                 String title = data.getString(INDEX_TITLE);
                 Bitmap poster = null;
                 String posterUrl = data.getString(INDEX_POSTER_PATH);
-//                Log.i(LOG_TAG, "  " + data.getString(INDEX_TITLE) + "  " + data.getString(INDEX_GENRE) + "  "
-//                        + data.getString(INDEX_RUNTIME)+"  "+posterUrl);
                 try {
                     poster = Glide.with(WidgetRemoteViewsService.this)
                             .load(posterUrl)

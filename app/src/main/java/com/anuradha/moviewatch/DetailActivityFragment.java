@@ -125,7 +125,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private NonScrollableListView mReviewsList;
     private TextView mReviewView;
     private TextView mGenreView;
-    //    private TextView mRuntimeHeader;
     private TextView mRuntimeView;
     private TextView mCastHeader;
     private TextView mCastView;
@@ -214,13 +213,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 }
             }
         });
-//        mTrailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                startActivity(new Intent(Intent.ACTION_VIEW,
-//                        Uri.parse("http://www.youtube.com/watch?v=" + mTrailerAdapter.getItem(position).getKey())));
-//            }
-//        });
 
         mReviewsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -380,6 +372,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                             cValues.put(MovieContract.MoviesEntry.COLUMN_CAST, castList);
                             cValues.put(MovieContract.MoviesEntry.COLUMN_DIRECTOR, mDirector);
                             cValues.put(MovieContract.MoviesEntry.COLUMN_HOMEPAGE, mHomepage);
+                            cValues.put(MovieContract.MoviesEntry.COLUMN_CERTIFICATE, mCertificate);
 
 
                             // Using AsyncQueryHandler object for querying content provider in the background,

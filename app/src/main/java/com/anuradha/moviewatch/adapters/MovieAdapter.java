@@ -1,6 +1,5 @@
 package com.anuradha.moviewatch.adapters;
 
-
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -17,39 +16,39 @@ import com.anuradha.moviewatch.Utility;
 import com.anuradha.moviewatch.database.MovieContract;
 import com.squareup.picasso.Picasso;
 
-import java.util.Locale;
-
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-//    private static String LOG_TAG = MovieAdapter.class.getSimpleName();
+    //    private static String LOG_TAG = MovieAdapter.class.getSimpleName();
     final private Context mContext;
     private Cursor mCursor;
     private CursorAdapter mCursorAdapter;
     final private MovieAdapterOnClickHandler mClickHandler;
+
     /**
      * Cache of the children views for a forecast list item.
      */
 
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView mImageView;
-        final TextView mRelaseView, mRatingView;
+        final TextView mRelaseView;
+//                final TextView mRatingView;
 
         MovieAdapterViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.poster_imgview);
             mRelaseView = (TextView) view.findViewById(R.id.movie_year);
-            mRatingView = (TextView) view.findViewById(R.id.movie_vote);
+//            mRatingView = (TextView) view.findViewById(R.id.movie_vote);
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-//            Log.i(LOG_TAG,"in onclick");
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
             int movieId = mCursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_ID);
             mClickHandler.onClick(mCursor.getInt(movieId), this);
         }
     }
+
     public interface MovieAdapterOnClickHandler {
         void onClick(int movieId, MovieAdapterViewHolder vh);
     }
@@ -74,18 +73,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                 // Binding operations
                 ImageView imageView = (ImageView) view.findViewById(R.id.poster_imgview);
                 TextView yearView = (TextView) view.findViewById(R.id.movie_year);
-                TextView voteView = (TextView) view.findViewById(R.id.movie_vote);
+//                TextView voteView = (TextView) view.findViewById(R.id.movie_vote);
                 String[] releaseDate = (cursor.getString(MainActivityFragment.COLUMN_MOVIE_RELEASEDATE))
                         .split("-");
                 //Calls the Picasso API for loading the imageView from the given path
                 Picasso.with(context).load(Utility.getActualPosterPath(cursor.getString(MainActivityFragment.COLUMN_POSTER_PATH)))
                         .error(R.drawable.unavailable_poster_black)
                         .into(imageView);
-                if( (releaseDate[0] != null) && (releaseDate.length == 3) )
-                yearView.setText(Utility.getMonthName(releaseDate[1]) + releaseDate[2]+ ", " + releaseDate[0]);
+                if ((releaseDate[0] != null) && (releaseDate.length == 3))
+                    yearView.setText(Utility.getMonthName(releaseDate[1]) + releaseDate[2] + ", " + releaseDate[0]);
 
-                String s = String.format(Locale.getDefault(),"%.1f", Float.parseFloat(cursor.getString(MainActivityFragment.COLUMN_MOVIE_VOTE)));
-                voteView.setText(s);
+//                String s = String.format(Locale.getDefault(),"%.1f", Float.parseFloat(cursor.getString(MainActivityFragment.COLUMN_MOVIE_VOTE)));
+//                voteView.setText(s);
             }
         };
     }

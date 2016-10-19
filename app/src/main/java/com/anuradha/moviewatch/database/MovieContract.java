@@ -10,9 +10,9 @@ import android.provider.BaseColumns;
 
 
 public class MovieContract {
-    public static final String CONTENT_AUTHORITY = "com.anuradha.moviewatch";
+    static final String CONTENT_AUTHORITY = "com.anuradha.moviewatch";
     // create the base of all URI's which apps will use to contact the content provider.
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     // Table name
     public static final String TABLE_NAME = "movies";
     public static final int NOT_FAVORITE_INDICATOR = 0;
@@ -21,7 +21,7 @@ public class MovieContract {
     public static final String sFavoritesNotSelection =
             MovieContract.TABLE_NAME + "." + MoviesEntry.COLUMN_FAVORITE_INDICATION + " = ? OR "
                     + MovieContract.TABLE_NAME + "." + MovieContract.MoviesEntry.COLUMN_FAVORITE_INDICATION + " IS NULL";
-    public static final String sFavoritesSelection =
+    static final String sFavoritesSelection =
             MovieContract.TABLE_NAME + "." + MoviesEntry.COLUMN_FAVORITE_INDICATION + " = ?";
     public static final String sSortOrderSelection =
             MovieContract.TABLE_NAME + "." + MoviesEntry.COLUMN_SORT_ORDER + " = ?";
@@ -30,8 +30,8 @@ public class MovieContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
 
         //Columns in the movies table
         public static final String COLUMN_ID = "id";
@@ -75,12 +75,12 @@ public class MovieContract {
     /**
      * Helper class that actually creates and manages the  data repository.
      */
-    public static class MovieDbHelper extends SQLiteOpenHelper {
+    static class MovieDbHelper extends SQLiteOpenHelper {
         static final String DATABASE_NAME = "movies.db";
         // If you change the database schema, you must increment the database version.
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 3;
 
-        public MovieDbHelper(Context context) {
+        MovieDbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 

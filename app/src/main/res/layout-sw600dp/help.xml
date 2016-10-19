@@ -33,16 +33,16 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="2"
                 android:layout_gravity="center"
                 android:contentDescription="@string/widget_help_contentdesc"
                 android:src="@drawable/widget_screenshot"
                 android:id="@+id/imageView2" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="@string/widget_help_text"
@@ -62,23 +62,23 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="120dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:contentDescription="@string/notifications_help_contentdesc"
                 android:src="@drawable/notifications_screenshot" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="@string/notifications_help_text"
                 android:textStyle="italic" />
         </LinearLayout>
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="end"
             android:src="@drawable/notification_settings_explain"
             android:contentDescription="@string/notifications_help_contentdesc"
@@ -98,15 +98,15 @@
             android:layout_marginBottom="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="120dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:contentDescription="@string/wallpaper_help_contentdesc"
                 android:src="@drawable/wallpaper_screenshot" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:autoLink="web"
