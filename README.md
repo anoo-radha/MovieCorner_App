@@ -1,4 +1,4 @@
-# PopularMovies
+# Movie Corner
 
 **[IMPORTANT: for the Application to work, Please enter the APIkey in the gradle file in the app folder in the place of 
 the string '&lt;api_key&gt;'. Add api key within double quotes.]**
@@ -34,4 +34,4 @@ This app can be run on Android Studio.
 
 Now all of the project files will be displayed in the project structure. Press the ‘Run’ button and choose the 
 running device to run the application.
-
+NOTE: Click on a empty space on homescreen , select widget and choose MovieCorner to place a widget for 'boxoffice top ten' on your homescreen
