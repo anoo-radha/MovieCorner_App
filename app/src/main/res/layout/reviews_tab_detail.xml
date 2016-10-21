@@ -21,7 +21,7 @@
             android:textAllCaps="true"
             android:textSize="14sp"/>
 
-        <com.anuradha.moviewatch.NonScrollableListView
+        <com.anuradha.moviecorner.NonScrollableListView
             android:id="@+id/reviews_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

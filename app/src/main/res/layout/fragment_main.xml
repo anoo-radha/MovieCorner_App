@@ -44,7 +44,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/fab_margin"
             tools:showIn="@layout/activity_main"
-            tools:context="com.anuradha.moviewatch.MainActivityFragment"
+            tools:context="com.anuradha.moviecorner.MainActivityFragment"
             android:scrollbars="vertical" />
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

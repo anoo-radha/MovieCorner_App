@@ -7,7 +7,7 @@
     android:layout_marginLeft="@dimen/fab_margin"
     android:layout_marginRight="@dimen/fab_margin"
     android:layout_marginStart="@dimen/fab_margin"
-    tools:context="com.anuradha.moviewatch.DetailActivityFragment">
+    tools:context="com.anuradha.moviecorner.DetailActivityFragment">
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -271,7 +271,7 @@
                 android:textSize="14sp"
                 android:visibility="gone" />
 
-            <com.anuradha.moviewatch.NonScrollableListView
+            <com.anuradha.moviecorner.NonScrollableListView
                 android:id="@+id/reviews_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

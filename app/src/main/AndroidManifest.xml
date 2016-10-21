@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.anuradha.moviewatch">
+    package="com.anuradha.moviecorner">
     <!-- Permission to use internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Permission to query status of network state before using internet -->
@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.anuradha.moviecorner.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,53 +31,53 @@
                 android:resource="@xml/searchable"/>
         </activity>
         <activity
-            android:name=".DetailActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.anuradha.moviecorner.DetailActivity"
+            android:parentActivityName="com.anuradha.moviecorner.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.anuradha.moviecorner.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.anuradha.moviecorner.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.anuradha.moviecorner.MainActivity"
             android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.anuradha.moviecorner.MainActivity" />
         </activity>
         <activity
-            android:name=".NotificationsActivity"
+            android:name="com.anuradha.moviecorner.NotificationsActivity"
             android:label="@string/notification_subtitle"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.anuradha.moviecorner.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.anuradha.moviecorner.MainActivity" />
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name="com.anuradha.moviecorner.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.anuradha.moviecorner.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.anuradha.moviecorner.MainActivity" />
         </activity>
         <activity
-            android:name=".AboutMenu"
-            android:parentActivityName=".MainActivity">
+            android:name="com.anuradha.moviecorner.AboutMenu"
+            android:parentActivityName="com.anuradha.moviecorner.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.anuradha.moviecorner.MainActivity" />
         </activity>
 
         <provider
-            android:name=".database.MovieProvider"
+            android:name="com.anuradha.moviecorner.database.MovieProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".sync.MovieAuthenticatorService">
+        <service android:name="com.anuradha.moviecorner.sync.MovieAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -87,7 +87,7 @@
         </service>
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.MovieSyncService"
+            android:name="com.anuradha.moviecorner.sync.MovieSyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
@@ -99,7 +99,7 @@
 
         <!-- Muzei Extension -->
         <service
-            android:name=".muzei.MovieMuzeiSource"
+            android:name="com.anuradha.moviecorner.muzei.MovieMuzeiSource"
             android:icon="@drawable/ic_launcher_stencil"
             android:description="@string/muzei_description"
             android:label="@string/app_name">
@@ -112,7 +112,7 @@
         </service>
 
         <!--Widget-->
-        <receiver android:name=".widget.WidgetProvider"
+        <receiver android:name="com.anuradha.moviecorner.widget.WidgetProvider"
             android:label="@string/widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -123,7 +123,7 @@
                 android:resource="@xml/widget_info" />
         </receiver>
         <service
-            android:name=".widget.WidgetRemoteViewsService"
+            android:name="com.anuradha.moviecorner.widget.WidgetRemoteViewsService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 

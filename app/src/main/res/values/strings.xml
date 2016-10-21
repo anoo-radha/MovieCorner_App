@@ -1,6 +1,6 @@
 <resources
     xmlns:xliff="http://schemas.android.com/apk/res-auto">
-    <string name="app_name" translatable="false">Movie Watch</string>
+    <string name="app_name" translatable="false">MovieCorner</string>
     <string name="action_about" translatable="false">About</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="action_share" translatable="false">Share</string>
@@ -20,8 +20,8 @@
     <string name="menu_comment" translatable="false">Give Feedback</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
     <string name="title_activity_help" translatable="false">Features</string>
-    <string name="content_authority" translatable="false">com.anuradha.moviewatch</string>
-    <string name="account_type" translatable="false">moviewatch.anuradha.com</string>
+    <string name="content_authority" translatable="false">com.anuradha.moviecorner</string>
+    <string name="account_type" translatable="false">moviecorner.anuradha.com</string>
     <!-- for storing values in shared preferences -->
     <string name="pref_sort_key" translatable="false">sort_by</string>
     <string name="pref_fragment_reset_key" translatable="false">orientation</string>
@@ -86,7 +86,7 @@
     <string name="favorite_text" translatable="false">FAVORITE</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="share_body" translatable="false"> Let me recommend you the MovieWatch application. https://play.google.com/store/apps/details?id=com.anuradha.moviewatch \n</string>
+    <string name="share_body" translatable="false"> Let me recommend you the MovieCorner application. https://play.google.com/store/apps/details?id=com.anuradha.moviewatch \n</string>
     <string name="email_body" translatable="false"> &lt;Please send us your comments or any suggestions for improvement.\nThanks&gt;</string>
     <string name="email_id" translatable="false">anoo_radha@outlook.com</string>
     <string name="choose_one" translatable="false"> choose one </string>
@@ -153,19 +153,19 @@
     </string-array>
     <!-- Widget -->
     <string name="widget_title" translatable="false">BoxOffice Top Ten</string>
-    <string name="widget_name" translatable="false"> MovieWatch</string>
+    <string name="widget_name" translatable="false"> MovieCorner</string>
     <string name="empty_widget" translatable="false">Oops! No movies for the selected genre </string>
     <string name="loading" translatable="false">Loading...</string>
     <!--Help-->
     <string name="widget_help_contentdesc" translatable="false">Widget</string>
     <string name="widget_help_text" translatable="false">Access Top ten Box Office Hits from the homescreen! Add widget to the homescreen.
-        First, touch and hold an open space on your home screen. Click the widgets drawer and add Moviewatch widget</string>
+        First, touch and hold an open space on your home screen. Click the widgets drawer and add MovieCorner widget</string>
     <string name="notifications_help_contentdesc" translatable="false">Notifications</string>
     <string name="notifications_help_text" translatable="false">Get Notified when movie of your favorite genre is released this week!
         Choose favorite Genre by clicking on the menu. (Click on Settings -> Favorite Genre and choose from the list. If none is selected, all movies releasing that week will be notified) </string>
     <string name="wallpaper_help_contentdesc" translatable="false">Setting Wallpaper</string>
     <string name="wallpaper_help_text" translatable="false">Set your favorite movie poster as the wallpaper! Just select a movie as your *favorite, download
-                MUZEI Live Wallpaper Application and customize MovieWatch as the source. Also adjust Blur, Dim and Grey of wallpaper from Muzei settings.
+                MUZEI Live Wallpaper Application and customize MovieCorner as the source. Also adjust Blur, Dim and Grey of wallpaper from Muzei settings.
     \n  * Must have atleast one movie as your favorite for this feature to work</string>
     <string name="help_general" translatable="false">Make your device more lively with these features!</string>
 </resources>
