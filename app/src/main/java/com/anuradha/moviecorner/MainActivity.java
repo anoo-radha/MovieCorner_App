@@ -16,7 +16,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements
         MainActivityFragment.Callback, NavigationView.OnNavigationItemSelectedListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static String LOG_TAG = MainActivity.class.getSimpleName();
+//    public static String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private static String mcurrentSortBy;
     private boolean mTwoPane, mNetAvailability = true;
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements
                     getString(R.string.default_sort));
             if (sort_order.contains(getResources().getStringArray(R.array.sort_values)[8])) {
                 doMySearch(query);
-                Log.i("Searching", query);
             } else {
                 sharedPref.edit().putString(getString(R.string.pref_search_title),
                         getString(R.string.default_search_title)).apply();
@@ -317,7 +315,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void doMySearch(String movie_title) {
-        Log.i(LOG_TAG, "in doMySearch");
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String sort_order_with_title = getResources().getStringArray(R.array.sort_values)[8] + movie_title;
         sharedPref.edit().putString(getString(R.string.pref_sort_key),

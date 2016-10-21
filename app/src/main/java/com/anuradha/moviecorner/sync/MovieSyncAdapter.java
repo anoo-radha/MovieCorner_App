@@ -71,7 +71,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Set up the sync adapter
      */
-    public MovieSyncAdapter(Context context, boolean autoInitialize) {
+    MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContext = context;
     }
@@ -181,7 +181,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         if (System.currentTimeMillis() - lastSync >= (DAY_IN_MILLIS - 120000)) {
             getMoviesInTheaters();
             insertData(cVVector);
-            cVVector = null;
         }
 
         if (!sortOrder.equalsIgnoreCase(getContext().getResources().getStringArray(R.array.sort_values)[0])) {

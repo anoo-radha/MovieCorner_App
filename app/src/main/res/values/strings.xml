@@ -1,6 +1,6 @@
 <resources
     xmlns:xliff="http://schemas.android.com/apk/res-auto">
-    <string name="app_name" translatable="false">MovieCorner</string>
+    <string name="app_name" translatable="false">Movie Corner</string>
     <string name="action_about" translatable="false">About</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="action_share" translatable="false">Share</string>
@@ -153,7 +153,7 @@
     </string-array>
     <!-- Widget -->
     <string name="widget_title" translatable="false">BoxOffice Top Ten</string>
-    <string name="widget_name" translatable="false"> MovieCorner</string>
+    <string name="widget_name" translatable="false"> Movie Corner</string>
     <string name="empty_widget" translatable="false">Oops! No movies for the selected genre </string>
     <string name="loading" translatable="false">Loading...</string>
     <!--Help-->
