@@ -3,7 +3,7 @@
 **[IMPORTANT: for the Application to work, Please enter the APIkey in the gradle file in the app folder in the place of 
 the string '&lt;api_key&gt;'. Add api key within double quotes.]**
 
-Searching for Movies? This Android app makes it easy to discover, search movies and mark them to your favorites. 
+Searching for Movies? This Android app makes it easy to discover, search movies and mark them to your favorites.  Also make your device lively with added features like notifications for movies releasing this week, widget for box office top ten, setting favorite movie poster as wallpaper
 This Application opens a grid arrangement of the movieposters according to the selected sort-order (from Settings menu).
 The order can be most-popular or highest-rated or favorites. When a poster is clicked the details of the coresponding movie is displayed. Each movies shows original title, movie poster, plot synopsis, user rating, release date, trailers and user reviews. 
 It is compatible with all devices running on Ice Cream Sandwich and higher (API Level 15).
