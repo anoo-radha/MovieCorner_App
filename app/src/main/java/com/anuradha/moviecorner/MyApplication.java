@@ -3,7 +3,6 @@ package com.anuradha.moviecorner;
 import android.app.Application;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 
 
@@ -28,8 +27,8 @@ public class MyApplication extends Application {
             ga.enableAutoActivityReports(this);
 
             // Set the log level to verbose.
-            ga.getLogger()
-                    .setLogLevel(Logger.LogLevel.VERBOSE);
+//            ga.getLogger()
+//                    .setLogLevel(Logger.LogLevel.VERBOSE);
         }
     }
 

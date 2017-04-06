@@ -23,8 +23,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.anuradha.moviecorner.sync.MovieSyncAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
-/* This Activity is the main page of the Pop Movies application
+/* This Activity is the main page of the application
  * It displays the posters for the movies according to the selected sort order
  */
 public class MainActivity extends AppCompatActivity implements
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements
     private boolean mTwoPane, mNetAvailability = true;
     private Context context;
     DrawerLayout drawer;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements
 
         //Start Tracking
         ( (MyApplication)getApplication() ).startTracking();
+        //Adding banner ads
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         // Open navigation drawer only the first time app opens. use thread for performance
         Thread t = new Thread(new Runnable() {
             @Override

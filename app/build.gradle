@@ -25,16 +25,6 @@ android {
             it.buildConfigField 'String', 'MYAPIFILMS_TOKEN', '"56cdcb64-c32b-4f62-8dac-296444e848e9"'
         }
     }
-    productFlavors {
-        legacy {
-            minSdkVersion 9
-
-        }
-        current {
-            minSdkVersion 14
-
-        }
-    }
 }
 
 dependencies {
@@ -51,11 +41,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
-    currentCompile 'com.google.android.gms:play-services-analytics:10.2.1'
-    currentCompile 'com.google.android.gms:play-services-ads:10.2.1'
-
-    legacyCompile 'com.google.android.gms:play-services-analytics:10.0.1'
-    legacyCompile 'com.google.android.gms:play-services-ads:10.0.1'
+    compile 'com.google.android.gms:play-services-analytics:10.0.1'
+    compile 'com.google.android.gms:play-services-ads:10.0.1'
 
 }
 

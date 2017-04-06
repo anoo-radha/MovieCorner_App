@@ -168,4 +168,8 @@
                 MUZEI Live Wallpaper Application and customize MovieCorner as the source. Also adjust Blur, Dim and Grey of wallpaper from Muzei settings.
     \n  * Must have atleast one movie as your favorite for this feature to work</string>
     <string name="help_general" translatable="false">Make your device more lively with these features!</string>
+
+    <string name="banner_ad">Banner Ad</string>
+    //Adding Google AdMob - testing the banner ad unit ID
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

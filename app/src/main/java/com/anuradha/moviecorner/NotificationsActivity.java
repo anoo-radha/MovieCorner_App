@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import com.anuradha.moviecorner.adapters.NotificationsListAdapter;
 import com.anuradha.moviecorner.database.MovieContract;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 
 public class NotificationsActivity extends AppCompatActivity {
@@ -41,12 +43,19 @@ public class NotificationsActivity extends AppCompatActivity {
             MovieContract.MoviesEntry.COLUMN_CERTIFICATE
     };
     Cursor cursor;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications);
         ListView listView = (ListView) findViewById(R.id.notifications_listview);
+
+        //Adding banner ads
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         String sortBy = getResources().getStringArray(R.array.sort_values)[6];
         Uri uri = MovieContract.MoviesEntry.buildMoviesWithSortorder(sortBy);
         cursor = getContentResolver().query(
