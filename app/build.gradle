@@ -3,11 +3,16 @@ repositories {
     mavenCentral()
 }
 android {
+    signingConfigs {
+        config {
+            keyAlias 'keystoreAnu'
+            keyPassword 'Google123'
+            storeFile file('./keystore.jks')
+            storePassword 'Google123'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion '25.0.0'
-
-
-
     defaultConfig {
         applicationId "com.anuradha.moviecorner"
         minSdkVersion 11
@@ -19,16 +24,19 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         buildTypes.each {
-            it.buildConfigField 'String', 'MOVIEDB_KEY', '"e7c3bd5e4b0f39897bb04ddb998b0f6d"'
-            it.buildConfigField 'String', 'MYAPIFILMS_TOKEN', '"56cdcb64-c32b-4f62-8dac-296444e848e9"'
+            it.buildConfigField 'String', 'MOVIEDB_KEY', '<api_key>'
+            it.buildConfigField 'String', 'MYAPIFILMS_TOKEN', '<api_key>'
+        }
+        debug {
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
@@ -43,6 +51,5 @@ dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
     compile 'com.google.android.gms:play-services-analytics:10.0.1'
     compile 'com.google.android.gms:play-services-ads:10.0.1'
-
 }
 
