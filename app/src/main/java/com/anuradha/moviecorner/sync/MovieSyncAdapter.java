@@ -180,6 +180,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         //checking 2 minutes before, incase data takes some time
         if (System.currentTimeMillis() - lastSync >= (DAY_IN_MILLIS - 120000)) {
             getMoviesInTheaters();
+            if(cVVector!=null)
             insertData(cVVector);
         }
 
@@ -363,6 +364,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         String runtime = "-", backdropPath = "-", genre = "-", director = "-", webPage = "-";
         String cast = "-", certificate = "-";
         float rating = 0.0f;
+        cVVector = null;
         try {
             JSONObject movieJson = new JSONObject(moviesJsonResult);
             JSONObject movieData = movieJson.getJSONObject(JSON_DATA);

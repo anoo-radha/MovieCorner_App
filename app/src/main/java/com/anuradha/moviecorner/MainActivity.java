@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements
         //Create Sync Account.. a dummy account for sync adapter
         MovieSyncAdapter.initializeSyncAdapter(this);
 
+        //Start Tracking
+        ( (MyApplication)getApplication() ).startTracking();
         // Open navigation drawer only the first time app opens. use thread for performance
         Thread t = new Thread(new Runnable() {
             @Override

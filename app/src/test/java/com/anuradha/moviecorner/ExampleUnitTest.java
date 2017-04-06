@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.anuradha.moviecorner;
 
 import org.junit.Test;
 
