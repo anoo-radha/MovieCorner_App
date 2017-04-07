@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="Play the trailer"
+                android:contentDescription="@string/play_trailer"
                 android:src="@drawable/ic_play"
                 android:visibility="gone" />
 

@@ -92,6 +92,10 @@
     <string name="choose_one" translatable="false"> choose one </string>
     <string name="no_mail_apps" translatable="false">No applications to support email!</string>
     <string name="searched_movie_title_unavailable" translatable="false"> Please Search a Movie Title</string>
+    <string name="play_trailer">Play the trailer</string>
+    <!--For About Activity-->
+    <string name="by">by</string>
+    <string name="name">ANURADHA OHM</string>
     <!-- Muzei -->
     <string name="muzei_description" translatable="false">Today\'s poster</string>
     <!-- Notification Format -->
